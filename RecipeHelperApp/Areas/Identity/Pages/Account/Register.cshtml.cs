@@ -163,6 +163,24 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+
+     /*   For future use:
+     
+        private bool ValidateFields()
+        {
+            // Additional validation logic here
+            // Return true if all validation passes, false otherwise
+
+            if (Input.BirthDate > DateTime.Now)
+            {
+                ModelState.AddModelError(nameof(Input.BirthDate), "Birth date cannot be in the future.");
+                return false;
+            }
+
+            return true;
+
+        } */
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

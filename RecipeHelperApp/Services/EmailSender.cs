@@ -31,9 +31,11 @@ namespace RecipeHelperApp.Services
         public async Task Execute(string apiKey, string subject, string message, string toEmail)
         {
             var client = new SendGridClient(apiKey);
+            // var sender = new SendSenderClient(sender); 
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("recipehelper@gmail.com", "Password Recovery"),
+                // Change this email address as needed. Email **must** be the same as sender. 
+                From = new EmailAddress("k.markus.mail@gmail.com", "Password Recovery"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
