@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeHelperApp.Data;
 
@@ -11,13 +12,15 @@ using RecipeHelperApp.Data;
 namespace RecipeHelperApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240119071938_MealPlanner")]
+    partial class MealPlanner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -172,7 +175,7 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -230,7 +233,7 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasPrecision(7, 2)
                         .HasColumnType("decimal(7,2)");
 
-                    b.Property<DateTime>("TargetWeightDate")
+                    b.Property<DateOnly>("TargetWeightDate")
                         .HasColumnType("date");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -257,7 +260,7 @@ namespace RecipeHelperApp.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.Day", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.DayModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -278,102 +281,44 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("WeekDay")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WeekId")
+                    b.Property<int>("WeekId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("WeekId");
 
-                    b.ToTable("Day");
+                    b.ToTable("DayModel");
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.NutritionForm", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.RecipeModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("ExcludeIngredients")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ExcludedIngredients")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IncludeIngredients")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IncludeNutrition")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("IncludedIngredients")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NutrientsJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("NutritionForm");
-                });
-
-            modelBuilder.Entity("RecipeHelperApp.Models.Recipe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Calories")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Carbs")
-                        .HasColumnType("float");
 
                     b.Property<int>("DayId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Fat")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Ingredients")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Instructions")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MealType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Protein")
-                        .HasColumnType("float");
+                    b.Property<int>("ResultId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DayId");
 
-                    b.ToTable("Recipe");
+                    b.ToTable("RecipeModel");
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.Week", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.WeekModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -381,20 +326,16 @@ namespace RecipeHelperApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("WeekName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("Week");
+                    b.ToTable("WeekModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -448,27 +389,20 @@ namespace RecipeHelperApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.Day", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.DayModel", b =>
                 {
-                    b.HasOne("RecipeHelperApp.Models.Week", "Week")
+                    b.HasOne("RecipeHelperApp.Models.WeekModel", "Week")
                         .WithMany("Days")
-                        .HasForeignKey("WeekId");
+                        .HasForeignKey("WeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Week");
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.NutritionForm", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.RecipeModel", b =>
                 {
-                    b.HasOne("RecipeHelperApp.Data.ApplicationUser", "User")
-                        .WithOne("NutritionFormModel")
-                        .HasForeignKey("RecipeHelperApp.Models.NutritionForm", "UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RecipeHelperApp.Models.Recipe", b =>
-                {
-                    b.HasOne("RecipeHelperApp.Models.Day", "Day")
+                    b.HasOne("RecipeHelperApp.Models.DayModel", "Day")
                         .WithMany("Recipes")
                         .HasForeignKey("DayId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -477,29 +411,29 @@ namespace RecipeHelperApp.Data.Migrations
                     b.Navigation("Day");
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.Week", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.WeekModel", b =>
                 {
                     b.HasOne("RecipeHelperApp.Data.ApplicationUser", "User")
-                        .WithMany("WeekModel")
-                        .HasForeignKey("UserId");
+                        .WithOne("WeekModel")
+                        .HasForeignKey("RecipeHelperApp.Models.WeekModel", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("RecipeHelperApp.Data.ApplicationUser", b =>
                 {
-                    b.Navigation("NutritionFormModel")
+                    b.Navigation("WeekModel")
                         .IsRequired();
-
-                    b.Navigation("WeekModel");
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.Day", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.DayModel", b =>
                 {
                     b.Navigation("Recipes");
                 });
 
-            modelBuilder.Entity("RecipeHelperApp.Models.Week", b =>
+            modelBuilder.Entity("RecipeHelperApp.Models.WeekModel", b =>
                 {
                     b.Navigation("Days");
                 });

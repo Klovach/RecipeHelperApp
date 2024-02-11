@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeHelperApp.Data;
 
@@ -11,9 +12,11 @@ using RecipeHelperApp.Data;
 namespace RecipeHelperApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240210024838_NutritionForm")]
+    partial class NutritionForm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,9 +281,10 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("WeekDay")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WeekId")
+                    b.Property<int>("WeekId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -314,6 +318,7 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NutrientsJson")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -346,21 +351,25 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Fat")
                         .HasColumnType("float");
 
                     b.Property<string>("Ingredients")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Instructions")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MealType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Protein")
@@ -381,18 +390,18 @@ namespace RecipeHelperApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("WeekName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Week");
                 });
@@ -452,7 +461,9 @@ namespace RecipeHelperApp.Data.Migrations
                 {
                     b.HasOne("RecipeHelperApp.Models.Week", "Week")
                         .WithMany("Days")
-                        .HasForeignKey("WeekId");
+                        .HasForeignKey("WeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Week");
                 });
@@ -480,8 +491,10 @@ namespace RecipeHelperApp.Data.Migrations
             modelBuilder.Entity("RecipeHelperApp.Models.Week", b =>
                 {
                     b.HasOne("RecipeHelperApp.Data.ApplicationUser", "User")
-                        .WithMany("WeekModel")
-                        .HasForeignKey("UserId");
+                        .WithOne("WeekModel")
+                        .HasForeignKey("RecipeHelperApp.Models.Week", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -491,7 +504,8 @@ namespace RecipeHelperApp.Data.Migrations
                     b.Navigation("NutritionFormModel")
                         .IsRequired();
 
-                    b.Navigation("WeekModel");
+                    b.Navigation("WeekModel")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RecipeHelperApp.Models.Day", b =>

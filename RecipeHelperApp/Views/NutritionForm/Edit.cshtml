@@ -1,0 +1,82 @@
+﻿@model RecipeHelperApp.Models.NutritionForm
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h1>Edit</h1>
+
+<h4>NutritionForm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IncludeNutrition" /> @Html.DisplayNameFor(model => model.IncludeNutrition)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IncludeIngredients" /> @Html.DisplayNameFor(model => model.IncludeIngredients)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ExcludeIngredients" /> @Html.DisplayNameFor(model => model.ExcludeIngredients)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="IncludedIngredients" class="control-label"></label>
+                <input asp-for="IncludedIngredients" class="form-control" />
+                <span asp-validation-for="IncludedIngredients" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExcludedIngredients" class="control-label"></label>
+                <input asp-for="ExcludedIngredients" class="form-control" />
+                <span asp-validation-for="ExcludedIngredients" class="text-danger"></span>
+            </div>
+            <!-- ALL ATTRIBUTES -->
+            <div class="form-group">
+                <label asp-for="Nutrients.Calories" class="control-label"></label>
+                <input asp-for="Nutrients.Calories" class="form-control" />
+                <span asp-validation-for="Nutrients.Calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nutrients.Protein" class="control-label"></label>
+                <input asp-for="Nutrients.Protein" class="form-control" />
+                <span asp-validation-for="Nutrients.Protein" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nutrients.Carbs" class="control-label"></label>
+                <input asp-for="Nutrients.Carbs" class="form-control" />
+                <span asp-validation-for="Nutrients.Carbs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nutrients.Fat" class="control-label"></label>
+                <input asp-for="Nutrients.Fat" class="form-control" />
+                <span asp-validation-for="Nutrients.Fat" class="text-danger"></span>
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

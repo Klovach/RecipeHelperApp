@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using RecipeHelperApp.Models;
 
 namespace RecipeHelperApp.Data
 {
@@ -21,6 +22,7 @@ namespace RecipeHelperApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ApplicationUser>()
@@ -34,6 +36,7 @@ namespace RecipeHelperApp.Data
             modelBuilder.Entity<ApplicationUser>()
               .Property(e => e.Height)
               .HasPrecision(5, 2); 
+
 
             modelBuilder.Entity<ApplicationUser>()
               .Property(e => e.Weight)
@@ -56,5 +59,9 @@ namespace RecipeHelperApp.Data
             .HasMaxLength(250);
 
         }
+        public DbSet<RecipeHelperApp.Models.NutritionForm> NutritionForm { get; set; } = default!;
+        public DbSet<RecipeHelperApp.Models.Week> Week { get; set; } = default!;
+        public DbSet<RecipeHelperApp.Models.Day> Day { get; set; } = default!;
+        public DbSet<RecipeHelperApp.Models.Recipe> Recipe { get; set; } = default!;
     }
 }

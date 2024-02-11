@@ -37,6 +37,11 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+// Added
+app.MapControllers();
+// ^^^^^^^^^
+
+
 app.UseRouting();
 
 app.UseAuthorization();

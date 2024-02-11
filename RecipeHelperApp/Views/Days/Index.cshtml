@@ -1,0 +1,59 @@
+﻿@model IEnumerable<RecipeHelperApp.Models.Day>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WeekDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCalories)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalProtein)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalFat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCarbs)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeekDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCalories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalProtein)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalFat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCarbs)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Recipes" asp-action="Index" asp-route-dayId="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

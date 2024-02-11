@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Server;
 using RecipeHelperApp.Data;
+using RecipeHelperApp.Models;
 
 namespace RecipeHelperApp.Areas.Identity.Pages.Account
 {
@@ -92,7 +93,7 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Birth Date")]
-            public DateOnly BirthDate { get; set; }
+            public DateTime BirthDate { get; set; }
 
             [Required]
             public string Sex{ get; set; }
@@ -129,7 +130,7 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Target Weight Date")]
-            public DateOnly TargetWeightDate { get; set; }
+            public DateTime TargetWeightDate { get; set; }
 
             [Required]
             [Display(Name = "Activity Level")]
@@ -163,24 +164,6 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-
-     /*   For future use:
-     
-        private bool ValidateFields()
-        {
-            // Additional validation logic here
-            // Return true if all validation passes, false otherwise
-
-            if (Input.BirthDate > DateTime.Now)
-            {
-                ModelState.AddModelError(nameof(Input.BirthDate), "Birth date cannot be in the future.");
-                return false;
-            }
-
-            return true;
-
-        } */
-
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -203,9 +186,14 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
                     FitnessGoal = Input.FitnessGoal
                 };
 
+                // Create WeekModel : Meal Plan Manager For User 
+                user.WeekModel = new List<Week>(); 
+                Week week = new Week("My First Week");
+                user.WeekModel.Add(week); 
 
-
-                //   var user = CreateUser();
+                // Create Default Nutritional Form : Nutritional Settings For User 
+                Console.WriteLine("Called NutritionForm Create");
+                user.NutritionFormModel = new NutritionForm(user.BirthDate, user.Sex, user.Height, user.Weight, user.TargetWeight, user.TargetWeightDate, user.ActivityLevel, user.FitnessGoal);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
