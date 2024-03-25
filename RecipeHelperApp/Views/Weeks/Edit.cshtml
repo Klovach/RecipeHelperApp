@@ -1,5 +1,4 @@
 ﻿@model RecipeHelperApp.Models.Week
-@Html.HiddenFor(model => model.User)
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,7 +13,8 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="User" />
+            <input type="hidden" asp-for="UserId" />
+            <span asp-validation-for="UserId" class="text-danger"></span>
             <div class="form-group">
                 <label asp-for="WeekName" class="control-label"></label>
                 <input asp-for="WeekName" class="form-control" />
@@ -25,6 +25,18 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            
+         
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                {
+                <div class="alert alert-danger" role="alert">
+                    <span>@error.ErrorMessage</span>
+
+                    <br />
+                </div>
+                }
+         
+            
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

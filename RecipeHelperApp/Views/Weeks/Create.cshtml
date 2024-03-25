@@ -1,5 +1,5 @@
 ﻿@using System.Security.Claims
-@model RecipeHelperApp.Models.Week
+@model RecipeHelperApp.ViewModels.WeekDTO
 
 @{
     ViewData["Title"] = "Create";
@@ -14,6 +14,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <input type="hidden" name="UserId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
+            </div>
+            <div class="form-group">
                 <label asp-for="WeekName" class="control-label"></label>
                 <input asp-for="WeekName" class="form-control" />
                 <span asp-validation-for="WeekName" class="text-danger"></span>
@@ -23,7 +26,19 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <input type="hidden" name="userId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
+            
+         
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                {
+                <div class="alert alert-danger" role="alert">
+
+                    <span>@error.ErrorMessage</span>
+
+                    <br />
+                </div>
+                }
+         
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

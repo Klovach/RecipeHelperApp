@@ -12,17 +12,20 @@ namespace RecipeHelperApp.Models
 
         }
 
-        public Nutrients(decimal calories, decimal carbs, decimal protein, decimal fat)
+        public Nutrients(double dailyCalories, double maxCarbohydrates, double maxProtein, double maxFat)
         {
-            Calories = calories;
-            Carbs = carbs;
-            Protein = protein;
-            Fat = fat;
+            Calories = dailyCalories;
+            Carbs = maxCarbohydrates;
+            Protein = maxProtein;
+            Fat = maxFat;
         }
 
-        public decimal Calories { get; set; }
-        public decimal Carbs { get; set; }
-        public decimal Protein { get; set; }
-        public decimal Fat {  get; set; }
+
+        public double Calories { get; set; }
+        public double Carbs { get; set; }
+        public double Protein { get; set; }
+        public double Fat {  get; set; }
+
+        
     }
 }

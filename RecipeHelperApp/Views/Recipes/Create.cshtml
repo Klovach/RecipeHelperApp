@@ -1,10 +1,8 @@
-﻿@model RecipeHelperApp.Models.Recipe
+﻿@model RecipeHelperApp.ViewModels.RecipeDTO
 
 @{
     ViewData["Title"] = "Create";
 }
-
-
 
 <h1>Create</h1>
 
@@ -14,6 +12,15 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DayId" />
+
+            <!-- Add Image -->
+            <div class="form-group">
+                  <label asp-for="Image">Image</label>
+                    <input asp-for="Image" type="file" class="form-control" placeholder="Image">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="MealType" class="control-label"></label>
                 <input asp-for="MealType" class="form-control" />
@@ -59,6 +66,20 @@
                 <input asp-for="Carbs" class="form-control" />
                 <span asp-validation-for="Carbs" class="text-danger"></span>
             </div>
+
+             @if (ViewData.ModelState.IsValid == false)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                    {
+                        <span>@error.ErrorMessage</span>
+
+                        <br />
+                    }
+                </div>
+            }
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

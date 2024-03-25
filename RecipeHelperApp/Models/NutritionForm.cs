@@ -13,15 +13,14 @@ namespace RecipeHelperApp.Models
     public class NutritionForm
     {
         public int Id { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual ApplicationUser User { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
         public bool IncludeNutrition { get; set; }
         public bool IncludeIngredients { get; set; }
         public bool ExcludeIngredients { get; set; }
         public string? IncludedIngredients { get; set; }
         public string? ExcludedIngredients { get; set; }
-        public string? NutrientsJson
+        public string NutrientsJson
         {
             get => JsonConvert.SerializeObject(Nutrients);
             set => Nutrients = JsonConvert.DeserializeObject<Nutrients>(value);
@@ -31,19 +30,37 @@ namespace RecipeHelperApp.Models
 
         NutritionalFormService nutritionalFormService = new NutritionalFormService();
 
+
         public NutritionForm()
         {
+           
         }
 
-        public NutritionForm(DateTime birthDate, string sex, decimal weight, decimal height, decimal targetWeight, DateTime targetWeightDate, string activityLevel, string fitnessGoal)
+
+        public NutritionForm(ApplicationUser user)
         {
-            Nutrients newNutrients = nutritionalFormService.calculateNeeds(birthDate, sex, weight, height, targetWeight, targetWeightDate, activityLevel, fitnessGoal);
-            UpdateNutritionForm(newNutrients);
+            CalculateNewValues(user);
         }
 
-        private void UpdateNutritionForm(Nutrients newNutrients)
+        public void CalculateNewValues(ApplicationUser user)
         {
+            Nutrients newNutrients = nutritionalFormService.CalculateNeeds(user);
             Nutrients = newNutrients;
         }
+
+
+        public void ResetValues()
+        {
+            IncludeNutrition = true;
+            IncludeIngredients = false;
+            ExcludeIngredients = false;
+            IncludedIngredients = null;
+            ExcludedIngredients = null;
+            Nutrients.Carbs = 0;
+            Nutrients.Protein = 0;
+            Nutrients.Calories = 0;
+            Nutrients.Fat = 0;
+        }
+
     }
 }

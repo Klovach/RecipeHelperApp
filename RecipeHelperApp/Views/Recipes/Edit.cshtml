@@ -1,8 +1,9 @@
-﻿@model RecipeHelperApp.Models.Recipe
+﻿@model RecipeHelperApp.ViewModels.RecipeDTO 
 
 @{
     ViewData["Title"] = "Edit";
 }
+
 
 <h1>Edit</h1>
 
@@ -10,10 +11,30 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" method="post"> Edit</a>
+        <form method="post" asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Day.Id" />
+            <input type="hidden" asp-for="DayId" />
+            <span asp-validation-for="DayId" class="text-danger"></span>
+
+
+            <div class="form-group">
+            <img id="image-preview" src="@Model.Image" alt="Current Image" style="max-width: 500px; max-height: 500px;" />
+            </div>
+
+            <!-- Add Image -->
+            <div class="form-group">
+                <input id="new-image-input" asp-for="ImageFile" type="file" class="form-control" onchange="previewImage(event)" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+            <button type="button" onclick="resetImage()">Reset Image</button>
+            </div>
+
+            <br />
+
+
             <div class="form-group">
                 <label asp-for="MealType" class="control-label"></label>
                 <input asp-for="MealType" class="form-control" />
@@ -59,6 +80,9 @@
                 <input asp-for="Carbs" class="form-control" />
                 <span asp-validation-for="Carbs" class="text-danger"></span>
             </div>
+
+             
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -67,9 +91,34 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="@Url.Action("Index", "Recipes", new { dayId = Model.DayId })">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            reader.onload = function () {
+                var img = document.getElementById('image-preview');
+                img.src = reader.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function resetImage() {
+            var img = document.getElementById('image-preview');
+            img.src = '@Model.Image';
+            img.style.display = 'block';
+
+            // Show the current image
+            document.getElementById('current-image').style.display = 'block';
+        }
+    </script>
 }
+

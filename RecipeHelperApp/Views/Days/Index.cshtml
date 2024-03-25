@@ -4,56 +4,136 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Days Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.WeekDay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalCalories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalProtein)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalFat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalCarbs)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.WeekDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalCalories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalProtein)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalFat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalCarbs)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Recipes" asp-action="Index" asp-route-dayId="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@foreach (var item in Model)
+{
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-4 d-flex align-items-center justify-content-center">
+                <div class="card-body text-center">
+                    <div class="chart-container">
+                        <canvas id="chart-@item.Id"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Protein
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Carbohydrates
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Fat
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+               
+                <div class="card-body">
+                    <h1> @item.WeekDay </h1>
+                    <p> @item.TotalCalories g</p>
+                    <p> @item.TotalProtein g</p>
+                    <p> @item.TotalCarbs g</p>
+                    <p> @item.TotalFat g</p>
+                    <!-- Add other day information here -->
+                    <div class="btn-group">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">See Recipes</a>
+                        <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-warning">Reset</a>
+                        <a asp-action="Generate" asp-route-id="@item.Id" class="btn btn-success">Generate</a>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Loop through each item and initialize Chart.js
+        @foreach (var item in Model)
+        {
+            if ((@item.TotalProtein + @item.TotalCarbs + @item.TotalFat + @item.TotalCalories) == 0)
+            {
+                <text>
+                var ctx = document.getElementById('chart-@item.Id').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['No Nutrients'],
+                        datasets: [{
+                            data: [1, 1, 1], 
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.8)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return "No nutrients yet!";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                </text>
+            }
+            else
+            {
+                <text>
+                                    var ctx = document.getElementById('chart-@item.Id').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Protein', 'Carbohydrates', 'Fat'],
+                        datasets: [{
+                            data: [@item.TotalProtein, @item.TotalCarbs, @item.TotalFat],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 206, 86, 0.8)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+                </text>
+            }
+        }
+    </script>
+}
+
+

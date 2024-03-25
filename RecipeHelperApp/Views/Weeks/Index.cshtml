@@ -4,14 +4,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="container">
+   
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="~/theme/img/undraw_eating_together_re_ux62.svg" class="img-fluid" alt="Week Image" width="500" height="500" loading="lazy">
+            </div>
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold lh-1 mb-3">Manage Weeks</h1>
+            <p class="lead mb-4">Welcome to the "Manage Weeks" page! This is where you're in control of your weeks. Need to make changes? No problem! You can edit, delete, and read your existing weeks right from here. </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a class="btn btn-primary btn-lg px-4 me-md-2"  asp-action="Create">Create Week</a>
+                <a class="btn btn-outline-secondary btn-lg px-4" asp-controller="Home" asp-action="Index"> Back To Home </a>
+                </div>
+            </div>
+        </div>
+
+    <hr />
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.WeekName)
             </th>
@@ -25,18 +42,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.WeekName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-                @Html.HiddenFor(modeItem => item.User)
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Days" asp-action="Index" asp-route-weekId="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">View Days</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+              
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

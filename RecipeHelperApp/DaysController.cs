@@ -10,7 +10,7 @@ using RecipeHelperApp.Data;
 using RecipeHelperApp.Data.Migrations;
 using RecipeHelperApp.Models;
 
-namespace RecipeHelperApp.Controllers
+namespace RecipeHelperApp
 {
     public class DaysController : Controller
     {
@@ -21,12 +21,11 @@ namespace RecipeHelperApp.Controllers
             _context = context;
         }
 
-
         // GET: Days
-        public async Task<IActionResult> Index(int? weekId)
+        public async Task<IActionResult> Index(int weekId)
         {
             // Retrieve days associated with the weeks of the current user
-            var days = await _context.Day
+            var days = await _context.Days
                                     // Filter day by week id & include recipes. 
                                     .Include(d => d.Week)
                                     .Include(d => d.Recipes)
@@ -35,10 +34,11 @@ namespace RecipeHelperApp.Controllers
 
             foreach (var day in days)
             {
-               await Task.Run(() => day.CalculateRecipeTotals()); // Calculate totals for each day
+                await Task.Run(() => day.CalculateRecipeTotals()); 
             }
             return View(days);
         }
+
 
         // GET: Days/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -48,7 +48,7 @@ namespace RecipeHelperApp.Controllers
                 return NotFound();
             }
 
-            var day = await _context.Day
+            var day = await _context.Days
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (day == null)
             {
@@ -61,6 +61,7 @@ namespace RecipeHelperApp.Controllers
         // GET: Days/Create
         public IActionResult Create()
         {
+            ViewData["WeekId"] = new SelectList(_context.Weeks, "Id", "UserId");
             return View();
         }
 
@@ -69,7 +70,7 @@ namespace RecipeHelperApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,WeekDay,TotalCalories,TotalProtein,TotalFat,TotalCarbs")] Day day)
+        public async Task<IActionResult> Create([Bind("Id,WeekId,WeekDay,TotalCalories,TotalProtein,TotalFat,TotalCarbs")] Day day)
         {
             if (ModelState.IsValid)
             {
@@ -77,6 +78,7 @@ namespace RecipeHelperApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WeekId"] = new SelectList(_context.Weeks, "Id", "UserId", day.WeekId);
             return View(day);
         }
 
@@ -88,11 +90,12 @@ namespace RecipeHelperApp.Controllers
                 return NotFound();
             }
 
-            var day = await _context.Day.FindAsync(id);
+            var day = await _context.Days.FindAsync(id);
             if (day == null)
             {
                 return NotFound();
             }
+            ViewData["WeekId"] = new SelectList(_context.Weeks, "Id", "UserId", day.WeekId);
             return View(day);
         }
 
@@ -101,7 +104,7 @@ namespace RecipeHelperApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WeekDay,TotalCalories,TotalProtein,TotalFat,TotalCarbs")] Day day)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WeekId,WeekDay,TotalCalories,TotalProtein,TotalFat,TotalCarbs")] Day day)
         {
             if (id != day.Id)
             {
@@ -128,8 +131,99 @@ namespace RecipeHelperApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WeekId"] = new SelectList(_context.Weeks, "Id", "UserId", day.WeekId);
             return View(day);
         }
+
+
+        public async Task<IActionResult> Generate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var day = await _context.Days.FindAsync(id);
+            if (day == null)
+            {
+                return NotFound();
+            }
+
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _context.Users.FindAsync(userId);
+
+         
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var nutritionForm = await _context.NutritionForms.FirstOrDefaultAsync(nf => nf.UserId == userId);
+            if (nutritionForm == null)
+            {
+                return NotFound();
+            }
+
+            // Call the CalculateNewValues method
+
+            var recipes = _context.Recipes.Where(r => r.DayId == day.Id);
+
+            foreach (var recipe in recipes)
+            {
+                var genRecipe = await recipe.GenerateRecipe(nutritionForm);
+
+                // Detach the existing entity from the context
+                _context.Entry(recipe).State = EntityState.Detached;
+
+                _context.Update(genRecipe);
+            }
+
+
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index", new { weekId = day.WeekId });
+        }
+
+        public async Task<IActionResult> Reset(int? id)
+        {
+            Console.WriteLine("Id was " + id); 
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var day = await _context.Days.FindAsync(id);
+            if (day == null)
+            {
+                return NotFound();
+            }
+
+            var week = await _context.Weeks.FindAsync(day.WeekId);
+            if (week == null)
+            {
+                return NotFound();
+            }
+
+            var recipes = _context.Recipes.Where(r => r.DayId == day.Id);
+
+            foreach (var recipe in recipes)
+            {
+                
+                recipe.ResetValues(); 
+            }
+
+ 
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index", new { weekId = day.WeekId });
+        }
+
+
 
         // GET: Days/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -139,7 +233,8 @@ namespace RecipeHelperApp.Controllers
                 return NotFound();
             }
 
-            var day = await _context.Day
+            var day = await _context.Days
+                .Include(d => d.Week)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (day == null)
             {
@@ -149,15 +244,16 @@ namespace RecipeHelperApp.Controllers
             return View(day);
         }
 
+
         // POST: Days/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var day = await _context.Day.FindAsync(id);
+            var day = await _context.Days.FindAsync(id);
             if (day != null)
             {
-                _context.Day.Remove(day);
+                _context.Days.Remove(day);
             }
 
             await _context.SaveChangesAsync();
@@ -166,7 +262,7 @@ namespace RecipeHelperApp.Controllers
 
         private bool DayExists(int id)
         {
-            return _context.Day.Any(e => e.Id == id);
+            return _context.Days.Any(e => e.Id == id);
         }
     }
 }

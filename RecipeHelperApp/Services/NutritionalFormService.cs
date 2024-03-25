@@ -12,27 +12,24 @@ namespace RecipeHelperApp.Services
         {
         }
 
-        public Nutrients calculateNeeds(DateTime birthDate, string sex, decimal weight, decimal height, decimal
-            targetWeight, DateTime targetWeightDate, string activityLevel, string fitnessGoal)
+        public Nutrients CalculateNeeds(ApplicationUser user)
         {
-            int userAge = CalculateAge(birthDate);  
-            decimal BMR = GetBaseMetabolicRate(sex, weight, height, userAge);
-            decimal TDEE = GetTotalDailyExpenditure(activityLevel, BMR);
-            decimal poundsPerWeek = GetPoundsPerWeek(weight,targetWeight,targetWeightDate);
-            decimal dailyCalories = GetDailyCalories(fitnessGoal, weight, poundsPerWeek, TDEE);
-            Nutrients nutrients = GetMacroRatios(fitnessGoal, dailyCalories);
-       
-            return nutrients; 
+            int userAge = CalculateAge(user.BirthDate);
+            double BMR = GetBaseMetabolicRate(user.Sex, user.Weight, user.Height, userAge);
+            double TDEE = GetTotalDailyExpenditure(user.ActivityLevel, BMR);
+            double poundsPerWeek = GetPoundsPerWeek(user.Weight, user.TargetWeight, user.TargetWeightDate);
+            double dailyCalories = GetDailyCalories(user.FitnessGoal, user.Weight, poundsPerWeek, TDEE);
+            Nutrients nutrients = GetMacroRatios(user.FitnessGoal, dailyCalories);
+
+            return nutrients;
         }
 
-
-        // Calculate a user's age accurately from birth date. 
+        // Calculate a user's age from birth date.
         public int CalculateAge(DateTime birthDate)
         {
             DateTime currentDate = DateTime.Now;
             int age = currentDate.Year - birthDate.Year;
 
-            
             if (birthDate > currentDate.AddYears(-age))
             {
                 age--;
@@ -42,49 +39,49 @@ namespace RecipeHelperApp.Services
         }
 
         // Calculate Base Metabolic Rate Using Miffin-St Jeor Equation:
-        public decimal GetBaseMetabolicRate(string sex, decimal weight, decimal height, int age)
+        public double GetBaseMetabolicRate(string sex, double weight, double height, int age)
         {
-            decimal BMR;
+            double BMR;
 
             // If Male:
             if (sex == "Male")
             {
-                BMR = 10 * weight + 6.25m * height - 5 * age + 5;
+                BMR = 10 * weight + 6.25 * height - 5 * age + 5;
             }
             // If Female:
             else
             {
-                BMR = 10 * weight + 6.25m * height - 5 * age - 161;
+                BMR = 10 * weight + 6.25 * height - 5 * age - 161;
             }
 
             return BMR;
         }
 
-        public decimal GetTotalDailyExpenditure(string activityLevel, decimal BMR)
+        public double GetTotalDailyExpenditure(string activityLevel, double BMR)
         {
-            decimal activityMultiplier;
-            decimal TDEE = 0;
+            double activityMultiplier;
+            double TDEE = 0;
 
             switch (activityLevel)
             {
                 case "Sedentary":
-                    activityMultiplier = 1.2m;
+                    activityMultiplier = 1.2;
                     TDEE = BMR * activityMultiplier;
                     break;
                 case "Minimally Active":
-                    activityMultiplier = 3.755m;
+                    activityMultiplier = 3.755;
                     TDEE = BMR * activityMultiplier;
                     break;
                 case "Moderately Active":
-                    activityMultiplier = 1.55m; 
+                    activityMultiplier = 1.55;
                     TDEE = BMR * activityMultiplier;
                     break;
                 case "Very Active":
-                    activityMultiplier = 1.725m;
+                    activityMultiplier = 1.725;
                     TDEE = BMR * activityMultiplier;
                     break;
                 case "Extremely Active":
-                    activityMultiplier = 1.9m;
+                    activityMultiplier = 1.9;
                     TDEE = BMR * activityMultiplier;
                     break;
                 default:
@@ -94,89 +91,75 @@ namespace RecipeHelperApp.Services
             return TDEE;
         }
 
-        public decimal GetPoundsPerWeek(decimal userWeight, decimal userGoalWeight, DateTime goalDate)
+        public double GetPoundsPerWeek(double userWeight, double userGoalWeight, DateTime goalDate)
         {
             TimeSpan timeRemaining = goalDate - DateTime.Now;
             int weeksRemaining = (int)Math.Ceiling(timeRemaining.TotalDays / 7);
-            decimal poundsPerWeek = (userWeight - userGoalWeight) / weeksRemaining;
+            double poundsPerWeek = (userWeight - userGoalWeight) / weeksRemaining;
             return poundsPerWeek;
         }
 
-
-        public decimal GetDailyCalories(string nutritionalGoal, decimal userWeight, decimal poundsPerWeek, decimal TDEE)
+        public double GetDailyCalories(string nutritionalGoal, double userWeight, double poundsPerWeek, double TDEE)
         {
             if (string.IsNullOrEmpty(nutritionalGoal)) return 0;
 
-            decimal dailyCalories = 0;
-            decimal caloricDifference = poundsPerWeek * (3500 / userWeight) / 7;
+            double dailyCalories = 0;
+            double caloricDifference = poundsPerWeek * (3500 / userWeight) / 7;
 
             switch (nutritionalGoal)
             {
-               
                 case "Lose Weight":
                     dailyCalories = TDEE - caloricDifference;
                     break;
-                    
+
                 case "Mantain Weight":
                     dailyCalories = TDEE;
                     break;
 
                 case "Gain Weight":
                     dailyCalories = TDEE + caloricDifference;
-                    break; 
-
+                    break;
             }
 
             return dailyCalories;
         }
 
         // Change to minMax 
-        public Nutrients GetMacroRatios(string nutritionalGoal, decimal dailyCalories)
+        public Nutrients GetMacroRatios(string nutritionalGoal, double dailyCalories)
         {
-
-            var carbohydratesRange = 0..0;
-            var proteinRange = 0..0;
-            var fatRange = 0..0;
+            double carbPercentage = 0, proteinPercentage = 0, fatPercentage = 0;
 
             switch (nutritionalGoal)
             {
                 case "Lose Weight":
-                    carbohydratesRange = 10..20;
-                    proteinRange = 40..50;
-                    fatRange = 30..40;
+                    carbPercentage = 0.4;
+                    proteinPercentage = 0.25;
+                    fatPercentage = 0.35;
                     break;
-                case "Mantain Weight":
-                    carbohydratesRange = 30..40;
-                    proteinRange = 25..35;
-                    fatRange = 25..35;
+                case "Maintain Weight":
+                    carbPercentage = 0.5;
+                    proteinPercentage = 0.25;
+                    fatPercentage = 0.25;
                     break;
                 case "Gain Weight":
-                    carbohydratesRange = 50..60;
-                    proteinRange = 25..35;
-                    fatRange = 20..35;
+                    carbPercentage = 0.6;
+                    proteinPercentage = 0.25;
+                    fatPercentage = 0.15;
+                    break;
+                default:
                     break;
             }
-            // GET VALUE FROM STRUCT 
-            var startCarbs = carbohydratesRange.Start.Value;
-            var endCarbs = carbohydratesRange.End.Value;
 
-            var startProtein = proteinRange.Start.Value;
-            var endProtein = proteinRange.End.Value;
+            double carbCalories = dailyCalories * carbPercentage;
+            double proteinCalories = dailyCalories * proteinPercentage;
+            double fatCalories = dailyCalories * fatPercentage;
 
-            var startFat = fatRange.Start.Value;
-            var endFat = fatRange.End.Value;
+            double carbGrams = carbCalories / 4;
+            double proteinGrams = proteinCalories / 4;
+            double fatGrams = fatCalories / 9;
 
-            dailyCalories = Math.Round(dailyCalories, 0); 
-            decimal minProtein = Math.Round(((startProtein * dailyCalories) / 4), 0);
-            decimal maxProtein = Math.Round(((endProtein * dailyCalories) / 4), 0);
 
-            decimal minCarbohydrates = Math.Round(((startCarbs * dailyCalories) / 4), 0);
-            decimal maxCarbohydrates = Math.Round(((endCarbs * dailyCalories) / 4), 0);
-
-            decimal minFat = Math.Round(((startFat * dailyCalories) / 9), 0);
-            decimal maxFat = Math.Round(((endFat * dailyCalories) / 9), 0);
-
-            Nutrients macroRatios = new Nutrients(dailyCalories, maxCarbohydrates, maxProtein, maxFat);
+            Nutrients macroRatios = new Nutrients(Math.Round(dailyCalories), Math.Round(carbGrams), Math.Round(proteinGrams), Math.Round(fatGrams));
 
             return macroRatios;
         }

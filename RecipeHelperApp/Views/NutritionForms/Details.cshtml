@@ -1,0 +1,67 @@
+﻿@model RecipeHelperApp.ViewModels.NutritionFormDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>NutritionForm</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IncludeNutrition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IncludeNutrition)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IncludeIngredients)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IncludeIngredients)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExcludeIngredients)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExcludeIngredients)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IncludedIngredients)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IncludedIngredients)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExcludedIngredients)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExcludedIngredients)
+        </dd>
+        <dt class="col-sm-2">Calories</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Calories)</dd>
+        <dt class="col-sm-2">Carbs</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Carbs)</dd>
+        <dt class="col-sm-2">Protein</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Protein)</dd>
+        <dt class="col-sm-2">Fat</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Fat)</dd>
+        <dt class="col-sm-2">Weight</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Weight)</dd>
+        <dt class="col-sm-2">Target Weight</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.TargetWeight)</dd>
+        <dt class="col-sm-2">Target Weight Date</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.TargetWeightDate)</dd>
+        <dt class="col-sm-2">Activity Level</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ActivityLevel)</dd>
+        <dt class="col-sm-2">Fitness Goal</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.FitnessGoal)</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

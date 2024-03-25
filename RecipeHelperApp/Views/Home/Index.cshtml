@@ -13,6 +13,35 @@
     <!-- Content Row -->
     <div class="row">
 
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-controller="Recipes" asp-action="Search" method="get">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search recipes" name="searchString">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form asp-controller="Recipes" asp-action="Filter" method="get">
+                    <div class="input-group mb-3">
+                        <select class="custom-select" name="mealType">
+                            <option selected disabled>Filter by Category</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Dessert">Dessert</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Apply Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 
         <!-- Illustrations -->
         <div class="card shadow mb-4">

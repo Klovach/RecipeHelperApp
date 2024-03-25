@@ -6,12 +6,11 @@ namespace RecipeHelperApp.Models
     public class Week
     {
         public int Id { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual ApplicationUser User { get; set; }
-        public string? WeekName {  get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+        public string? WeekName { get; set; }
         public string? Description { get; set; }
-        public virtual List<Day> Days { get; set; }
+        public ICollection<Day> Days { get; set; }
 
         public Week()
         {
@@ -20,12 +19,13 @@ namespace RecipeHelperApp.Models
         }
         public Week(string weekName)
         {
+            Days = new List<Day>();
             WeekName = weekName;
             InitializeDays();
         }
         public void InitializeDays()
         {
-            Days = new List<Day>();
+            Console.WriteLine("Called initialize");
             string[] weekdaysList = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
             foreach (var weekDay in weekdaysList)

@@ -12,12 +12,11 @@ namespace RecipeHelperApp.Data
         {
         }
 
-        //  ADD NEW FIELDS HERE ---> 
-        // THEN :
-        // add connection string > update-database > 
-        // THEN :
-        // add-migration customFields
-        // update-database
+        public DbSet<NutritionForm> NutritionForms { get; set; }
+        public DbSet<Week> Weeks { get; set; }
+        public DbSet<Day> Days { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,7 +35,6 @@ namespace RecipeHelperApp.Data
             modelBuilder.Entity<ApplicationUser>()
               .Property(e => e.Height)
               .HasPrecision(5, 2); 
-
 
             modelBuilder.Entity<ApplicationUser>()
               .Property(e => e.Weight)
@@ -58,10 +56,33 @@ namespace RecipeHelperApp.Data
             .Property(e => e.FitnessGoal)
             .HasMaxLength(250);
 
+            // These are our properties. 
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(u => u.NutritionForm)
+                .WithOne(n => n.User)
+                .HasForeignKey<NutritionForm>(n => n.UserId)
+                .IsRequired(); // Make UserId required
+
+            modelBuilder.Entity<ApplicationUser>()
+              .HasMany(w => w.Weeks)
+              .WithOne(d => d.User)
+              .HasForeignKey(d => d.UserId)
+              .IsRequired(); // Make UserId required
+
+            modelBuilder.Entity<Week>()
+              .HasMany(w => w.Days)
+              .WithOne(d => d.Week)
+              .HasForeignKey(d => d.WeekId)
+              .IsRequired(); // Make WeekId required
+
+            modelBuilder.Entity<Day>()
+                .HasMany(d => d.Recipes)
+                .WithOne(r => r.Day)
+                .HasForeignKey(r => r.DayId)
+                .IsRequired(); // Make DayId required
         }
-        public DbSet<RecipeHelperApp.Models.NutritionForm> NutritionForm { get; set; } = default!;
-        public DbSet<RecipeHelperApp.Models.Week> Week { get; set; } = default!;
-        public DbSet<RecipeHelperApp.Models.Day> Day { get; set; } = default!;
-        public DbSet<RecipeHelperApp.Models.Recipe> Recipe { get; set; } = default!;
+
+    
     }
 }

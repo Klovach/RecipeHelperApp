@@ -54,7 +54,7 @@
 
             <!-- Nutritional Settings -->
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                <a class="nav-link" asp-area="" asp-controller="NutritionForms" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Nutritional Settings</span>
                 </a>
@@ -68,6 +68,9 @@
                 </a>
             </li>
           
+            <!-- Temporary Calender -->
+
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -77,6 +80,15 @@
             </div>
 
             <!-- Nav Item - Weekdays Collapse Menu -->
+
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Weeks" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Meal Planner</span>
+                </a>
+            </li>
+
+     
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
@@ -141,6 +153,7 @@
             <!-- Main Content -->
             <div id="content">
 
+             
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 

@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RecipeHelperApp.Data;
 using RecipeHelperApp.Models;
+using RecipeHelperApp.ViewModels;
 
 namespace RecipeHelperApp
 {
+    [Authorize]
     public class WeeksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,28 +26,27 @@ namespace RecipeHelperApp
         // GET: Weeks
         public async Task<IActionResult> Index()
         {
-         //   return View(await _context.Week.ToListAsync());
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var weeks = await _context.Week
+            var weeks = await _context.Weeks
                           .Include(d => d.User)
                           .Where(d => d.User.Id == userId)
                           .ToListAsync();
 
-            return View(weeks); 
 
+            return View(weeks);
         }
 
         // GET: Weeks/Details/5
-        public async Task<IActionResult> Details(int? id)
+         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var week = await _context.Week
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var week = await _context.Weeks.FirstOrDefaultAsync(m => m.Id == id);
+
             if (week == null)
             {
                 return NotFound();
@@ -56,51 +58,62 @@ namespace RecipeHelperApp
         // GET: Weeks/Create
         public IActionResult Create()
         {
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: Weeks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] Week week, string userId)
-{
-    Console.WriteLine("Called create");
-
-    if (!ModelState.IsValid)
-    {
-        Console.WriteLine("Model State is not valid");
-        foreach (var modelStateEntry in ModelState.Values)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,UserId,WeekName,Description")] WeekDTO weekDTO)
         {
-            foreach (var error in modelStateEntry.Errors)
+            var week = new Week
             {
-                Console.WriteLine(error.ErrorMessage);
+                UserId = weekDTO.UserId,
+                WeekName = weekDTO.WeekName,
+                Description = weekDTO.Description
+            };
+
+            if (ModelState.IsValid)
+            {
+                // Retrieve the user based on UserId.
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == week.UserId);
+
+                // Check if the user exists
+                if (user != null)
+                {
+                    // Set the User property in the Week object
+                    week.User = user;
+
+                    week.InitializeDays();
+
+                    foreach (var day in week.Days)
+                    {
+                        Console.WriteLine(day.ToString());
+                        _context.Add(day);
+                    }
+
+
+                    // Add the week to the context and save changes
+                    _context.Add(week);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+
+                else
+                {
+                    // Handle case where user does not exist
+                    ModelState.AddModelError(string.Empty, "Invalid user selected.");
+                }
             }
-        }
-    }
 
-    week.InitializeDays();
-
-    if (ModelState.IsValid)
-    {
-        Console.WriteLine("Model State is valid");
-        // Retrieve user based on userId
-        var user = await _context.Users.FindAsync(userId);
-        if (user != null)
-        {
-            week.User = user;
-            _context.Add(week);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // If model state is not valid or user not found, return to the view with the model
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", week.UserId);
+            return View(week);
         }
-        else
-        {
-            ModelState.AddModelError(string.Empty, "User not found.");
-        }
-    }
-    return View(week);
-}
 
         // GET: Weeks/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -110,11 +123,12 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
                 return NotFound();
             }
 
-            var week = await _context.Week.FindAsync(id);
+            var week = await _context.Weeks.FindAsync(id);
             if (week == null)
             {
                 return NotFound();
             }
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", week.UserId);
             return View(week);
         }
 
@@ -123,32 +137,27 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WeekName,Description,Days")] Week week)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,WeekName,Description")] WeekDTO weekDTO)
         {
+
+            var week = new Week
+            {
+                Id = weekDTO.Id,
+                UserId = weekDTO.UserId,
+                WeekName = weekDTO.WeekName,
+                Description = weekDTO.Description
+            };
+
+
             if (id != week.Id)
             {
                 return NotFound();
             }
 
-
-            if (!ModelState.IsValid)
-            {
-                Console.WriteLine("Model State is not valid");
-                foreach (var modelStateEntry in ModelState.Values)
-                {
-                    foreach (var error in modelStateEntry.Errors)
-                    {
-                        Console.WriteLine(error.ErrorMessage);
-                    }
-                }
-            }
-
             if (ModelState.IsValid)
             {
-                Console.WriteLine("Model State is alid");
                 try
                 {
-                    Console.WriteLine("Updating week.");
                     _context.Update(week);
                     await _context.SaveChangesAsync();
                 }
@@ -156,7 +165,6 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
                 {
                     if (!WeekExists(week.Id))
                     {
-                        Console.WriteLine("Week doesn't exist.");
                         return NotFound();
                     }
                     else
@@ -166,6 +174,7 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", week.UserId);
             return View(week);
         }
 
@@ -177,7 +186,8 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
                 return NotFound();
             }
 
-            var week = await _context.Week
+            var week = await _context.Weeks
+                .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (week == null)
             {
@@ -192,10 +202,10 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var week = await _context.Week.FindAsync(id);
+            var week = await _context.Weeks.FindAsync(id);
             if (week != null)
             {
-                _context.Week.Remove(week);
+                _context.Weeks.Remove(week);
             }
 
             await _context.SaveChangesAsync();
@@ -204,7 +214,7 @@ public async Task<IActionResult> Create([Bind("Id,WeekName,Description,Days")] W
 
         private bool WeekExists(int id)
         {
-            return _context.Week.Any(e => e.Id == id);
+            return _context.Weeks.Any(e => e.Id == id);
         }
     }
 }

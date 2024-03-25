@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Server;
+using RecipeHelperApp.CustomAttributes;
 using RecipeHelperApp.Data;
 using RecipeHelperApp.Models;
 
@@ -99,7 +100,7 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             public string Sex{ get; set; }
 
             [Required(ErrorMessage = "Height is required")]
-            public decimal Height
+            public double Height
             {
                 get
                 {
@@ -122,14 +123,15 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
 
             [Required]
             [Range(65, 1000, ErrorMessage = "Weight must be between 65 and 1000 lbs.")]
-            public decimal Weight { get; set; }
+            public double Weight { get; set; }
 
             [Required]
             [Display(Name = "Target Weight")]
-            public decimal TargetWeight { get; set; }
+            public double TargetWeight { get; set; }
 
             [Required]
             [Display(Name = "Target Weight Date")]
+            [ValidateTargetDate(ErrorMessage = "The provided target date is too close to be safe. Pick another date or re-avaluate how much weight you want to gain or lose.")]
             public DateTime TargetWeightDate { get; set; }
 
             [Required]
@@ -138,9 +140,10 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Fitness Goal")]
+            [ValidateFitnessGoal]
             public string FitnessGoal { get; set; }
 
-           
+
 
             /// <summary>
             /// Returns values in cm. 
@@ -148,11 +151,11 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             /// <param name="inches"></param>
             /// <param name="feet"></param>
             /// <returns> centimiters </returns>
-            public decimal convertToCM(decimal inches, decimal feet)
+            public double convertToCM(double inches, double feet)
             {
-                decimal cm;
-                decimal totalInches = feet * 12 + inches;
-                cm = totalInches * 2.54m; 
+                double cm;
+                double totalInches = feet * 12 + inches;
+                cm = totalInches * 2.54;
                 return cm;
             }
         }
@@ -186,14 +189,19 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
                     FitnessGoal = Input.FitnessGoal
                 };
 
+
+                // Initialize user:
+
                 // Create WeekModel : Meal Plan Manager For User 
-                user.WeekModel = new List<Week>(); 
+                user.Weeks = new List<Week>(); 
                 Week week = new Week("My First Week");
-                user.WeekModel.Add(week); 
+                user.Weeks.Add(week); 
 
                 // Create Default Nutritional Form : Nutritional Settings For User 
                 Console.WriteLine("Called NutritionForm Create");
-                user.NutritionFormModel = new NutritionForm(user.BirthDate, user.Sex, user.Height, user.Weight, user.TargetWeight, user.TargetWeightDate, user.ActivityLevel, user.FitnessGoal);
+                user.NutritionForm = new NutritionForm(user); 
+                
+               
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
