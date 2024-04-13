@@ -9,11 +9,12 @@ namespace RecipeHelperApp.Services
     public class EmailSender : IEmailSender
     {
         private readonly ILogger _logger;
+        private readonly string _sendGridKey; 
 
-        public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor,
+        public EmailSender(IOptions<AuthMessageSenderOptions> config,
                            ILogger<EmailSender> logger)
         {
-            Options = optionsAccessor.Value;
+            _sendGridKey = config.Value.SendGridKey;
             _logger = logger;
         }
 
@@ -21,11 +22,11 @@ namespace RecipeHelperApp.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            if (string.IsNullOrEmpty(Options.SendGridKey))
+            if (string.IsNullOrEmpty(_sendGridKey))
             {
                 throw new Exception("Null SendGridKey");
             }
-            await Execute(Options.SendGridKey, subject, message, toEmail);
+            await Execute(_sendGridKey, subject, message, toEmail);
         }
 
         public async Task Execute(string apiKey, string subject, string message, string toEmail)
@@ -34,8 +35,8 @@ namespace RecipeHelperApp.Services
             // var sender = new SendSenderClient(sender); 
             var msg = new SendGridMessage()
             {
-                // Change this email address as needed. Email **must** be the same as sender. 
-                From = new EmailAddress("k.markus.mail@gmail.com", "Password Recovery"),
+                // Change this email address as needed. Email **must** be the same as sender in SendGrid. 
+                From = new EmailAddress("mealmaven@em8996.markusportfolio.pro", "Meal Maven : " + subject),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

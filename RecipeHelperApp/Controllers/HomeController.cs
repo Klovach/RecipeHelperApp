@@ -20,28 +20,6 @@ namespace RecipeHelperApp.Controllers
             return View();
         }
 
-        public IActionResult Landing()
-        {
-            return View();
-
-        }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult Weeks()
-        {
-            return View();
-        }
-        public IActionResult Days()
-        {
-            return View();
-        }
-        public IActionResult NutritionForm()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

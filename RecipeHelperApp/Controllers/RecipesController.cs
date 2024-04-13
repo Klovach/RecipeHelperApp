@@ -13,26 +13,30 @@ using RecipeHelperApp.Models;
 using RecipeHelperApp.Services;
 using RecipeHelperApp.ViewModels;
 
-namespace RecipeHelperApp
+namespace RecipeHelperApp.Controllers
 {
     /// <summary>
     /// Controller for managing recipes.
     /// </summary>
-    
+
     [Authorize]
     public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IPhotoService _photoService;
+        private readonly IRecipeGenerator _recipeService; 
+        private readonly ILogger<RecipesController> _logger;
 
 
         /// <summary>
         /// Constructor for RecipesController.
         /// </summary>
-        public RecipesController(ApplicationDbContext context, IPhotoService photoService)
+        public RecipesController(ApplicationDbContext context, IPhotoService photoService, IRecipeGenerator recipeService, ILogger<RecipesController> logger)
         {
             _context = context;
             _photoService = photoService;
+            _recipeService = recipeService;
+            _logger = logger;
         }
 
         // GET: Recipes
@@ -64,7 +68,7 @@ namespace RecipeHelperApp
                           where r.Day.Week.User.Id.Equals(userId)
                           select r;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 recipes = recipes.Where(r => r.Name.Contains(searchString));
             }
@@ -85,7 +89,7 @@ namespace RecipeHelperApp
                           where r.Day.Week.User.Id.Equals(userId)
                           select r;
 
-            if (!String.IsNullOrEmpty(mealType))
+            if (!string.IsNullOrEmpty(mealType))
             {
                 recipes = recipes.Where(r => r.MealType.Contains(mealType));
             }
@@ -263,10 +267,13 @@ namespace RecipeHelperApp
                 Console.WriteLine("Model State is valid");
                 try
                 {
-            
-                    // Call the CalculateNewValues method
-                    var genRecipe = await recipe.GenerateRecipe(nutritionForm);
-                    _context.Update(genRecipe);
+
+                    // Call GenerateRecipe asynchronously and await the result
+                    var genRecipe = await _recipeService.GenerateRecipe(nutritionForm, recipe);
+
+                    // Update the generated recipe in the database context
+                    _context.Entry(genRecipe).State = EntityState.Modified;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -289,6 +296,8 @@ namespace RecipeHelperApp
         }
 
 
+
+        /*
         public async Task<IActionResult> GenerateBackup(int? id)
         {
             if (id == null)
@@ -333,7 +342,7 @@ namespace RecipeHelperApp
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = recipe.Id });
-        }
+        } */
 
 
         // GET: Recipes/Edit/5
@@ -355,7 +364,7 @@ namespace RecipeHelperApp
             {
                 Id = recipe.Id,
                 DayId = recipe.DayId,
-                Image = recipe.Image, 
+                Image = recipe.Image,
                 MealType = recipe.MealType,
                 Name = recipe.Name,
                 Description = recipe.Description,
@@ -396,7 +405,7 @@ namespace RecipeHelperApp
 
             if (recipeDTO.ImageFile == null)
             {
-                recipe.Image = recipeDTO.Image; 
+                recipe.Image = recipeDTO.Image;
             }
 
             if (recipeDTO.ImageFile != null)
@@ -408,13 +417,19 @@ namespace RecipeHelperApp
                     ModelState.AddModelError("Image", "Photo upload failed: " + photoResult.Error.Message);
                     return View(recipeDTO);
                 }
+                if (!string.IsNullOrEmpty(recipe.Image))
+                {
+                    _ = _photoService.DeletePhotoAsync(recipe.Image);
+                }
                 else
                 {
-                    recipe.Image = photoResult.Url.ToString(); 
+                    recipe.Image = photoResult.Url.ToString();
                 }
             }
 
-        
+       
+
+
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("Model State is not valid");

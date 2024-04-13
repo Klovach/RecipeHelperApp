@@ -46,7 +46,7 @@
 
             <!-- Home Dashboard -->
               <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -180,9 +180,16 @@
                 <div>
                 <div class="container">
 
-                        <main role="main" class="pb-3">
+                        <main role="main" class="pb-3" id="page-contents">
                             @RenderBody()
                         </main>
+
+                        <div style="display: flex; flex-direction: column;">
+                            <div>
+                                <partial name="_LoadingPartial" />
+                            </div>
+                        </div>
+
                     </div>
 
 
@@ -252,6 +259,8 @@
     <!-- Page level custom scripts -->
     <script src="~/Theme/js/demo/chart-area-demo.js"></script>
     <script src="~/Theme/js/demo/chart-pie-demo.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

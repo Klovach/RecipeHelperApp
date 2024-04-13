@@ -1,0 +1,10 @@
+﻿@{
+    string message = ViewData["message"] as string ?? "Loading, please stand by...";
+}
+
+<div class="form-group" id="loading-button-group" style="display: none;">
+    <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        @message <!-- Display the loading message passed as a parameter from each view. -->
+    </button>
+</div>

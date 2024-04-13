@@ -132,19 +132,19 @@ namespace RecipeHelperApp.Services
             switch (nutritionalGoal)
             {
                 case "Lose Weight":
-                    carbPercentage = 0.4;
-                    proteinPercentage = 0.25;
-                    fatPercentage = 0.35;
+                    carbPercentage = 0.30;
+                    proteinPercentage = 0.50;
+                    fatPercentage = 0.20;
                     break;
                 case "Maintain Weight":
-                    carbPercentage = 0.5;
+                    carbPercentage = 0.55;
                     proteinPercentage = 0.25;
                     fatPercentage = 0.25;
                     break;
                 case "Gain Weight":
-                    carbPercentage = 0.6;
-                    proteinPercentage = 0.25;
-                    fatPercentage = 0.15;
+                    carbPercentage = 0.45;
+                    proteinPercentage = 0.35;
+                    fatPercentage = 0.20;
                     break;
                 default:
                     break;

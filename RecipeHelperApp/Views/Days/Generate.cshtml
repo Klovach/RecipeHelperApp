@@ -1,0 +1,20 @@
+﻿@model RecipeHelperApp.Models.Day
+
+@{
+    ViewData["Title"] = "Generate";
+}
+
+<h1>Generate</h1>
+
+<h4>Are you sure you want to generate this day? Bear in mind generating an entire day will remove all existing recipes in your day. This action cannot be undone.</h4>
+<div>
+
+    <form asp-action="GenerateConfirmed">
+        <input type="hidden" asp-for="Id" />
+    
+        <input type="submit" value="Generate" class="btn btn-success" id="submit-button-group"/>
+       
+        <partial name="_LoadingButtonPartial" message="Generating your day, please stand by..." />
+        <a href="@Url.Action("Index", "Days", new { weekId = Model.WeekId })">Back to List</a>
+    </form>
+</div>

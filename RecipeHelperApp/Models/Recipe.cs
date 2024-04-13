@@ -54,7 +54,7 @@ namespace RecipeHelperApp.Models
             return value;
         }
 
-        public async Task<Recipe> GenerateRecipe(NutritionForm nutritionForm)
+    /*    public async Task<Recipe> GenerateRecipe(NutritionForm nutritionForm)
         {
             Recipe generatedRecipe = new Recipe();
             generatedRecipe.Id = this.Id;
@@ -85,7 +85,7 @@ namespace RecipeHelperApp.Models
             }
 
             return await RecipeGenerator.GenerateRecipeAsync(nutritionForm, generatedRecipe);
-        }
+        } */
 
         public void ResetValues()
         {

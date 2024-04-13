@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using System.Net;
 
 namespace RecipeHelperApp.Services
 {
@@ -17,6 +18,52 @@ namespace RecipeHelperApp.Services
                 );
             _cloundinary = new Cloudinary(acc);
         }
+
+
+        // Take a URL and download the image as a IFile.
+        // It was easy to overthink this approach. DALL-E generates a unique URL,
+        // temporarily available for one hour. To  save the images DALL-E generates 
+        // to another service  such as CLoudinary, it was neccessary to downloa dthe
+        // image from the URL. Fortunately ASP.NET Core has a special method called
+        // "DownloadFileTaskAsync" which can be utilized to download the image to a temporary
+        // file. 
+        public async Task<ImageUploadResult> DownloadImageFromUrlAsync(string imageUrl)
+        {
+            // Download the image
+            using (var client = new WebClient())
+            {
+                // Generate a unique file name
+                string fileName = Path.GetTempFileName();
+
+                // Download the image to the temporary file
+                await client.DownloadFileTaskAsync(imageUrl, fileName);
+
+                // Convert the downloaded file to IFormFile.
+                // This is a custom method. 
+                IFormFile file = ConvertToIFormFile(fileName);
+
+                // Call the method to add the photo
+                return await AddPhotoAsync(file);
+            }
+        }
+
+        public IFormFile ConvertToIFormFile(string filePath)
+        {
+            // Open the file stream
+            var stream = new FileStream(filePath, FileMode.Open);
+
+            // Create an instance of FormFile
+            // Update content type accordingly. DALL-E's images are saved as .png by default.
+            // Therefore, we specify the content type as image/png. 
+            var formFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(filePath))
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "image/png" 
+            };
+
+            return formFile;
+        }
+
 
 
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)

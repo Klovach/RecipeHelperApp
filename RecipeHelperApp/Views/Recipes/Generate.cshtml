@@ -10,7 +10,7 @@
 <div>
     <h4>Recipe</h4>
     <hr />
-    <form asp-action="Generate">
+    <form asp-action="Generate" id="recipeForm">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="DayId" />
 
@@ -91,9 +91,13 @@
             </div>
         }
 
-        <div class="form-group">
+
+        <div class="form-group" id="submit-button-group">
             <input type="submit" value="Generate" class="btn btn-success" />
         </div>
+
+        <partial name="_LoadingButtonPartial" message="Generating your recipe, please stand by..." />
+
     </form>
 </div>
 

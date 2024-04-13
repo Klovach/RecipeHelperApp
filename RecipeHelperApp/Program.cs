@@ -21,7 +21,11 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<IRecipeGenerator, RecipeGenerator>();
+
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.Configure<OpenAISettings>(builder.Configuration.GetSection("OpenAISettings"));
+
 
 var app = builder.Build();
 

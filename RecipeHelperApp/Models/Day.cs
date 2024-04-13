@@ -14,7 +14,7 @@ namespace RecipeHelperApp.Models
     public class Day
     {
         public int Id { get; set; }
-        public int WeekId { get; set; } 
+        public int WeekId { get; set; }
         public Week Week { get; set; }
         public string? WeekDay { get; set; }
         public double TotalCalories { get; set; }
@@ -31,8 +31,8 @@ namespace RecipeHelperApp.Models
 
         public Day()
         {
-         Recipes = new List<Recipe>();
-         InitializeRecipes();
+            Recipes = new List<Recipe>();
+            InitializeRecipes();
         }
 
         public Day(string weekDay, int totalCalories, double totalProtein, double totalFat, int totalCarbs)
@@ -62,7 +62,7 @@ namespace RecipeHelperApp.Models
                 TotalFat += recipe.Fat;
                 TotalCarbs += recipe.Carbs;
             }
-        }   
+        }
 
         // Initialize a series of recipes. For each meal type name in the array ...
         private void InitializeRecipes()
@@ -78,7 +78,8 @@ namespace RecipeHelperApp.Models
 
         // To alter existing elements in the list, it is wise here to remove them and then add 
         // the newly generated recipes. 
-        public async Task GenerateRecipes(NutritionForm nutritionForm)
+
+        /* public async Task GenerateRecipes(NutritionForm nutritionForm)
         {
             string[] recipeList = { "Breakfast", "Lunch", "Dinner", "Snack" };
 
@@ -108,7 +109,8 @@ namespace RecipeHelperApp.Models
                 Recipe recipeTemplate = new Recipe(meal);
                 Recipes.Add(recipeTemplate);
             }
-        }
+        } 
+    } */
     }
 }
     

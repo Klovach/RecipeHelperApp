@@ -17,10 +17,12 @@ namespace RecipeHelperApp
     public class WeeksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<WeeksController> _logger;
 
-        public WeeksController(ApplicationDbContext context)
+        public WeeksController(ApplicationDbContext context, ILogger<WeeksController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Weeks

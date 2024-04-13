@@ -93,6 +93,7 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
+            [ValidateAge]
             [Display(Name = "Birth Date")]
             public DateTime BirthDate { get; set; }
 
@@ -131,6 +132,7 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Target Weight Date")]
+            [ValidateDates]
             [ValidateTargetDate(ErrorMessage = "The provided target date is too close to be safe. Pick another date or re-avaluate how much weight you want to gain or lose.")]
             public DateTime TargetWeightDate { get; set; }
 

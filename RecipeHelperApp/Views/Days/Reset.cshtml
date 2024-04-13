@@ -1,6 +1,58 @@
-﻿namespace RecipeHelperApp.Views.Days
-{
-    public class Reset
-    {
-    }
+﻿@model RecipeHelperApp.Models.Day
+
+@{
+    ViewData["Title"] = "Reset";
 }
+
+<h1>Reset</h1>
+
+<h3>Are you sure you want to reset this day?</h3>
+<div>
+    <h4>Day</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Week)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Week.UserId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WeekDay)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WeekDay)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalCalories)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalCalories)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalProtein)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalProtein)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalFat)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalFat)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalCarbs)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalCarbs)
+        </dd>
+    </dl>
+
+    <form asp-action="ResetConfirmed">
+        <input type="hidden" asp-for="Id" />
+        <partial name="_LoadingButtonPartial" message="Resetting your weekday and clearing your recipe slots, please stand by..." />
+        <input type="submit" value="Reset" class="btn btn-danger" id="submit-button-group" /> |
+        <a href="@Url.Action("Index", "Days", new { weekId = Model.WeekId })">Back to List</a>
+    </form>
+</div>

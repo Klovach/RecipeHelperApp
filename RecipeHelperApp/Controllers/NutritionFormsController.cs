@@ -13,16 +13,18 @@ using RecipeHelperApp.Data.Migrations;
 using RecipeHelperApp.Models;
 using RecipeHelperApp.ViewModels;
 
-namespace RecipeHelperApp
+namespace RecipeHelperApp.Controllers
 {
     [Authorize]
     public class NutritionFormsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<NutritionFormsController> _logger;
 
-        public NutritionFormsController(ApplicationDbContext context)
+        public NutritionFormsController(ApplicationDbContext context, ILogger<NutritionFormsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: NutritionForms
@@ -60,7 +62,7 @@ namespace RecipeHelperApp
                 ActivityLevel = user.ActivityLevel,
                 FitnessGoal = user.FitnessGoal,
                 TargetWeight = user.TargetWeight,
-                TargetWeightDate = (DateTime)user.TargetWeightDate
+                TargetWeightDate = user.TargetWeightDate
             };
 
             return View(nutritionFormDTO);
@@ -104,7 +106,7 @@ namespace RecipeHelperApp
                 ActivityLevel = user.ActivityLevel,
                 FitnessGoal = user.FitnessGoal,
                 TargetWeight = user.TargetWeight,
-                TargetWeightDate = (DateTime)user.TargetWeightDate
+                TargetWeightDate = user.TargetWeightDate
             };
 
             return View(nutritionFormDTO);
@@ -170,7 +172,7 @@ namespace RecipeHelperApp
                 ActivityLevel = user.ActivityLevel,
                 FitnessGoal = user.FitnessGoal,
                 TargetWeight = user.TargetWeight,
-                TargetWeightDate = (DateTime)user.TargetWeightDate
+                TargetWeightDate = user.TargetWeightDate
             };
 
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", nutritionForm.UserId);
@@ -225,7 +227,7 @@ namespace RecipeHelperApp
                 await _context.SaveChangesAsync();
 
 
-                return RedirectToAction("Index"); 
+                return RedirectToAction("Index");
                 //  return RedirectToAction("Edit", new { id = nutritionForm.Id });
 
             }
@@ -265,8 +267,8 @@ namespace RecipeHelperApp
             // Save changes to the database
             await _context.SaveChangesAsync();
 
-         
-            return RedirectToAction("Index"); 
+
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Restart(int? id)

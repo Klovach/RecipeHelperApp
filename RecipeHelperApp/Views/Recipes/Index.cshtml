@@ -10,8 +10,8 @@
     @foreach (var item in Model)
     {
         <div class="col-md-6 mb-4">
-            <div class="card flex-md-row">
-                <div class="card-body">
+            <div class="flex-md-row">
+            <div class="card">
 
                     @if (!string.IsNullOrEmpty(item.Image))
                     {
@@ -19,9 +19,10 @@
                     }
                     else
                     {
-                        <img src="~/img/login.jpg" class="card-img-top" alt="Recipe Image">
+                        <img src="~/img/login.jpg" class="img-fluid" alt="Recipe Image">
                     }
-
+                    <p class="card-header">@Html.DisplayFor(modelItem => item.MealType)</p>
+                <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
                     <div class="btn-group">
@@ -29,6 +30,7 @@
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
                         <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-danger">Reset</a>
                         <a asp-action="Generate" asp-route-id="@item.Id" class="btn btn-success">Generate</a>
+                    </div>
                     </div>
                 </div>
             </div>
