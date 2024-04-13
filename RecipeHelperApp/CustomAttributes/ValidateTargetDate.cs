@@ -10,7 +10,7 @@ namespace RecipeHelperApp.CustomAttributes
             // Check if the value is a valid DateTime. Thn use the borrowed logic from the controller. 
             if (value is DateTime)
             {
-                // Get Properties. Searches for public properties with the specified name. 
+                // Get Properties.. Searches for public properties with the specified name. 
                 var targetWeightDateProperty = validationContext.ObjectType.GetProperty("TargetWeightDate");
                 var weightProperty = validationContext.ObjectType.GetProperty("Weight");
                 var targetWeightProperty = validationContext.ObjectType.GetProperty("TargetWeight");

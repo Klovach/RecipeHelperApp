@@ -2,6 +2,7 @@
 
 namespace RecipeHelperApp.Services
 {
+    // IRecipeGenerator 
     public interface IRecipeGenerator
     {
         string CompilePrompt(NutritionForm nutritionForm);

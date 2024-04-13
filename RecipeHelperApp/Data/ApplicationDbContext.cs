@@ -68,7 +68,7 @@ namespace RecipeHelperApp.Data
               .HasMany(w => w.Weeks)
               .WithOne(d => d.User)
               .HasForeignKey(d => d.UserId)
-              .IsRequired(); // Make UserId required
+              .IsRequired(); // Make UserId required.
 
             modelBuilder.Entity<Week>()
               .HasMany(w => w.Days)

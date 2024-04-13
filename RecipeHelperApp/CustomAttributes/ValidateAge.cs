@@ -2,6 +2,7 @@
 
 namespace RecipeHelperApp.CustomAttributes
 {
+    // Age validator 
     public class ValidateAge : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

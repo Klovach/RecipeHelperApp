@@ -2,6 +2,7 @@
 
 namespace RecipeHelperApp.Services
 {
+    // Cloudinary Setting 
     public class CloudinarySettings
     {
         public string? CloudName { get; set; }

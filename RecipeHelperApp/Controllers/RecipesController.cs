@@ -16,7 +16,7 @@ using RecipeHelperApp.ViewModels;
 namespace RecipeHelperApp.Controllers
 {
     /// <summary>
-    /// Controller for managing recipes.
+    /// Controller for managing recipes in the app.
     /// </summary>
 
     [Authorize]

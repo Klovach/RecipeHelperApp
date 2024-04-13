@@ -5,6 +5,7 @@ using System.Net;
 
 namespace RecipeHelperApp.Services
 {
+    // This class 
     public class PhotoService : IPhotoService 
     {
         private readonly Cloudinary _cloundinary;
@@ -19,7 +20,7 @@ namespace RecipeHelperApp.Services
             _cloundinary = new Cloudinary(acc);
         }
 
-
+        // test. 
         // Take a URL and download the image as a IFile.
         // It was easy to overthink this approach. DALL-E generates a unique URL,
         // temporarily available for one hour. To  save the images DALL-E generates 

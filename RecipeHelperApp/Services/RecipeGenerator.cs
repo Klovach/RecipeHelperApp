@@ -19,6 +19,7 @@ namespace RecipeHelperApp.Services
     using System.Security.Claims;
     using System.Text;
 
+    //Implements IRecipeGenerator
     public class RecipeGenerator : IRecipeGenerator
     {
 
@@ -26,6 +27,8 @@ namespace RecipeHelperApp.Services
         private readonly APIAuthentication _apiAuthentication;
         private readonly OpenAIAPI _openAiApi;
         private readonly IPhotoService _photoService;
+
+        // Recipegen
         public RecipeGenerator(IOptions<OpenAISettings> config, IPhotoService photoService)
         {
             _openAIApiKey = config.Value.OpenAIKey;

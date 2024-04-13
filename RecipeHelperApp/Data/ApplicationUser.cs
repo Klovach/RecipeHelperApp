@@ -9,7 +9,7 @@ namespace RecipeHelperApp.Data
 {
     public class ApplicationUser : IdentityUser
     {
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } //
         public string Sex { get; set; }
 
         [RegularExpression(@"^(4'0""|[4-7]'(?:1[0-2]|[0-9])""|8'0"")$")]

@@ -11,6 +11,7 @@ namespace RecipeHelperApp.Services
         private readonly ILogger _logger;
         private readonly string _sendGridKey; 
 
+        // Email Sender
         public EmailSender(IOptions<AuthMessageSenderOptions> config,
                            ILogger<EmailSender> logger)
         {

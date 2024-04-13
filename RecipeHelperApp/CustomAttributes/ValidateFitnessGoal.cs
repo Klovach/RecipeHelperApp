@@ -8,7 +8,7 @@ namespace RecipeHelperApp.CustomAttributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            // Get the values of weight and targetWeight from the object instance
+            // Get the values of weight and targetWeight from the object instance.
             var nutritionalGoalProperty = validationContext.ObjectType.GetProperty("FitnessGoal");
             var weightProperty = validationContext.ObjectType.GetProperty("Weight");
             var targetWeightProperty = validationContext.ObjectType.GetProperty("TargetWeight");

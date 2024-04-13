@@ -12,6 +12,7 @@ namespace RecipeHelperApp.Services
         {
         }
 
+        // NutritionFormService 
         public Nutrients CalculateNeeds(ApplicationUser user)
         {
             int userAge = CalculateAge(user.BirthDate);

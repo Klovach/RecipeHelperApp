@@ -2,6 +2,7 @@
 
 namespace RecipeHelperApp.Services
 {
+    //IPhotoService 
     public interface IPhotoService
     {
         Task<ImageUploadResult> AddPhotoAsync(IFormFile file);

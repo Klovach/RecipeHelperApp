@@ -95,6 +95,7 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             [Required]
             [ValidateAge]
             [Display(Name = "Birth Date")]
+            // Added birthdate. 
             public DateTime BirthDate { get; set; }
 
             [Required]
