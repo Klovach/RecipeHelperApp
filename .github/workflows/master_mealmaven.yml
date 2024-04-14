@@ -22,6 +22,15 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
+      - name: Replace placeholders in appsettings.json
+        run: |
+          sed -i "s|<ProdConnection>|${{ secrets.ProdConnection }}|" appsettings.json
+          sed -i "s|<CloudName>|${{ secrets.CloudName }}|" appsettings.json
+          sed -i "s|<CloudinaryApiKey>|${{ secrets.CloudinaryApiKey }}|" appsettings.json
+          sed -i "s|<CloudinaryApiSecret>|${{ secrets.CloudinaryApiSecret }}|" appsettings.json
+          sed -i "s|<OpenAIKey>|${{ secrets.OpenAIKey }}|" appsettings.json
+          sed -i "s|<SendGridKey>|${{ secrets.SendGridKey }}|" appsettings.json
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
