@@ -39,11 +39,11 @@ $(document).ready(function () {
             }, 500);
         }
     });
-});
+}); 
 
+// PROGRESS BAR:
 
-
-
+// LOADING LOGIC--------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
     // This code executes when the DOM content is loaded
     document.getElementById('loader').style.display = 'block';
@@ -65,4 +65,54 @@ window.onload = function () {
     document.getElementById('submit-button-group').style.display = 'block';
     document.getElementById('loading-button-group').style.display = 'none';
 };
+
+// -----------------------------------------------------------------------------------
+
+// MODAL LOGIC
+
+// Weeks : Create, Delete
+$('#createButton').click(function () {
+    $.get('@Url.Action("Create", "Weeks")', function (data) {
+        $('#modalContainer').html(data);
+        $('#createWeekModal').modal('show');
+    });
+});
+
+$('#deleteWeekButton').click(function () {
+    $.get('@Url.Action("Delete", "Weeks")', function (data) {
+        $('#modalContainer').html(data);
+        $('#deleteWeekModal').modal('show');
+    });
+});
+
+// Days : Reset, Generate
+$('#resetDaysButton').click(function () {
+    $.get('@Url.Action("Reset", "Days")', function (data) {
+        $('#modalContainer').html(data);
+        $('#resetDaysModal').modal('show');
+    });
+});
+
+$('#generateDaysButton').click(function () {
+    $.get('@Url.Action("Generate", "Days")', function (data) {
+        $('#modalContainer').html(data);
+        $('#generateDaysModal').modal('show');
+    });
+});
+
+// Recipes : Reset, Generate
+$('#resetRecipesButton').click(function () {
+    $.get('@Url.Action("Reset", "Recipes")', function (data) {
+        $('#modalContainer').html(data);
+        $('#resetRecipesModal').modal('show');
+    });
+});
+
+$('#generateRecipesButton').click(function () {
+    $.get('@Url.Action("Generate", "Recipes")', function (data) {
+        $('#modalContainer').html(data);
+        $('#generateRecipesModal').modal('show');
+    });
+});
+
 

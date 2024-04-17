@@ -19,23 +19,19 @@ namespace RecipeHelperApp.Services
     using System.Security.Claims;
     using System.Text;
 
-    //Implements IRecipeGenerator
     public class RecipeGenerator : IRecipeGenerator
     {
-
-        private readonly string _openAIApiKey;
         private readonly APIAuthentication _apiAuthentication;
         private readonly OpenAIAPI _openAiApi;
         private readonly IPhotoService _photoService;
-
-        // Recipegen
-        public RecipeGenerator(IOptions<OpenAISettings> config, IPhotoService photoService)
+        public RecipeGenerator(IOptions<OpenAISettings> optionsAccessor, IPhotoService photoService)
         {
-            _openAIApiKey = config.Value.OpenAIKey;
-            _apiAuthentication = new APIAuthentication(_openAIApiKey);
+            Options = optionsAccessor.Value;
+            _apiAuthentication = new APIAuthentication(Options.OpenAIKey);
             _openAiApi = new OpenAIAPI(_apiAuthentication);
             _photoService = photoService;
         }
+        OpenAISettings Options { get; }
 
         public string CompilePrompt(NutritionForm nutritionForm)
         {
@@ -63,10 +59,10 @@ namespace RecipeHelperApp.Services
             {
                 prompt += $"\nThe user's recipe needs at least {nutritionForm.Nutrients.Calories / 4} calories, {nutritionForm.Nutrients.Protein} grams of protein: ," +
                     $"{nutritionForm.Nutrients.Fat} grams of fat, and {nutritionForm.Nutrients.Carbs} grams of carbohydrates.";
-              //  $"\nCalories: {nutritionForm.Nutrients.Calories / 4} ";
-             //   $"\nProtein: {nutritionForm.Nutrients.Protein}, " +
-              //  $"\nFat: {nutritionForm.Nutrients.Fat}, " +
-             //   $"\nCarbohydrates: {nutritionForm.Nutrients.Carbs}.";
+                //  $"\nCalories: {nutritionForm.Nutrients.Calories / 4} ";
+                //   $"\nProtein: {nutritionForm.Nutrients.Protein}, " +
+                //  $"\nFat: {nutritionForm.Nutrients.Fat}, " +
+                //   $"\nCarbohydrates: {nutritionForm.Nutrients.Carbs}.";
             }
 
             Console.WriteLine(prompt);
@@ -98,7 +94,7 @@ namespace RecipeHelperApp.Services
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _openAIApiKey);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Options.OpenAIKey);
 
                 var Message = await client.PostAsync(apiUrl, new StringContent(jsonData, null, "application/json"));
 
@@ -132,7 +128,7 @@ namespace RecipeHelperApp.Services
         }
 
 
-       
+
         public async Task<Recipe> GenerateRecipeAsync(NutritionForm nutritionForm, Recipe recipe)
         {
             Console.WriteLine("Entered generateRecipeasync");
@@ -269,8 +265,8 @@ namespace RecipeHelperApp.Services
                 day.Recipes.Add(recipeTemplate);
             }
         }
-    
-    public void ParseGeneratedRecipe(Recipe recipe, string generatedRecipe)
+
+        public void ParseGeneratedRecipe(Recipe recipe, string generatedRecipe)
         {
 
             Console.WriteLine(generatedRecipe);

@@ -2,56 +2,137 @@
 
 @{
     ViewData["Title"] = "Index";
+    string parentName = Model.FirstOrDefault()?.Week.WeekName;
 }
 
-<h1>Days Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@foreach (var item in Model)
-{
-    <div class="card mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4 d-flex align-items-center justify-content-center">
-                <div class="card-body text-center">
-                    <div class="chart-container">
-                        <canvas id="chart-@item.Id"></canvas>
+<div class="container-fluid">
+    <h3 mb-0 text-gray-800>@parentName</h3>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    @if (item.WeekDay == "Monday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> <!-- Font Awesome icon for Monday -->
+                                    }
+                                    else if (item.WeekDay == "Tuesday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> <!-- Font Awesome icon for Tuesday -->
+                                    }
+                                    else if (item.WeekDay == "Wednesday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Wednesday -->
+                                    }
+                                    else if (item.WeekDay == "Thursday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Thursday -->
+                                    }
+                                    else if (item.WeekDay == "Friday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> <!-- Font Awesome icon for Friday -->
+                                    }
+                                    else if (item.WeekDay == "Saturday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Saturday -->
+                                    }
+                                    else if (item.WeekDay == "Sunday")
+                                    {
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Sunday -->
+                                    }
+                                    @item.WeekDay
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td><i class="fas fa-fire text-secondary"></i> Calories</td>
+                                            <td>@item.TotalCalories</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-bread-slice text-secondary"></i> Carbohydrates</td>
+                                            <td>@item.TotalCarbs g</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-drumstick-bite text-secondary"></i> Protein</td>
+                                            <td>@item.TotalProtein g</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fas fa-cheese text-secondary"></i> Fat</td>
+                                            <td>@item.TotalFat g</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <div class="btn-group">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm mr-2"><i class="fas fa-eye"></i> See Recipes</a>
+                                    <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-danger btn-sm mr-2"><i class="fas fa-sync-alt"></i> Reset</a>
+                                    <a asp-action="Generate" asp-route-id="@item.Id" class="btn btn-success btn-sm"><i class="fas fa-magic"></i> Generate</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Protein
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-info"></i> Carbohydrates
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> Fat
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-               
-                <div class="card-body">
-                    <h1> @item.WeekDay </h1>
-                    <p> @item.TotalCalories g</p>
-                    <p> @item.TotalProtein g</p>
-                    <p> @item.TotalCarbs g</p>
-                    <p> @item.TotalFat g</p>
-                    <!-- Add other day information here -->
-                    <div class="btn-group">
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">See Recipes</a>
-                        <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-warning">Reset</a>
-                        <a asp-action="Generate" asp-route-id="@item.Id" class="btn btn-success">Generate</a>
-                    </div>
-                </div>
-            
+                }
             </div>
         </div>
-    </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Menu</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="~/theme/img/undraw_profile_1.svg" class="img-fluid mb-3" alt="Menu Image">
+                        <p class="mb-3">Manage your days from here.</p>
+                    </div>
+                    <div class="btn-group-vertical d-flex justify-content-center">
+                        <a asp-controller="Weeks" asp-action="Index" class="btn btn-secondary mb-2"><i class="bi bi-calendar-check"></i> Go Back To Mealplanner</a>
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-primary mb-2"><i class="bi bi-house-door"></i> Go Back To Dashboard Home</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+</div>
+
+
+
+@functions {
+    string GetColor(string weekday)
+    {
+        switch (weekday)
+        {
+            case "Monday":
+                return "secondary";
+            case "Tuesday":
+                return "secondary";
+            case "Wednesday":
+                return "secondary";
+            case "Thursday":
+                return "secondary";
+            case "Friday":
+                return "secondary";
+            case "Saturday":
+                return "secondary";
+            case "Sunday":
+                return "secondary";
+            default:
+                return "secondary";
+        }
+    }
 }
 
+    
+
+    
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>

@@ -4,49 +4,114 @@
     ViewData["Title"] = "Index";
 }
 
-
-<div class="container">
-   
-        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-        <div class="col-10 col-sm-8 col-lg-6">
-            <img src="~/theme/img/undraw_eating_together_re_ux62.svg" class="img-fluid" alt="Week Image" width="500" height="500" loading="lazy">
-            </div>
-            <div class="col-lg-6">
-                <h1 class="display-5 fw-bold lh-1 mb-3">Manage Weeks</h1>
-            <p class="lead mb-4">Welcome to the "Manage Weeks" page! This is where you're in control of your weeks. Need to make changes? No problem! You can edit, delete, and read your existing weeks right from here. </p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <a class="btn btn-primary btn-lg px-4 me-md-2"  asp-action="Create">Create Week</a>
-                <a class="btn btn-outline-secondary btn-lg px-4" asp-controller="Home" asp-action="Index"> Back To Home </a>
+    
+    <!-- Dashboard Header -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="fas fa-calendar-alt"></i> Weeks Dashboard</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Brief About -->
+                    <div class="mb-4">
+                        <p><i class="fas fa-info-circle"></i>Welcome to the Weeks Dashboard! This dashboard provides you with an overview of your meal plans, allowing you to manage your meal plans with ease. Have a look around and enjoy the dummy text!</p>
+                    </div>
+                    <hr />
+                    <!-- Banner Image with Menu Shortcuts -->
+                    <div class="row align-items-center">
+                        <!-- Banner Image -->https://localhost:44370/Identity/Account/logout.html
+                        <div class="col-md-6 mb-4">
+                            <img src="~/theme/img/undraw_term_sheet_re_ju7s.svg" class="img-fluid" alt="Banner Image">
+                        </div>
+                        <!-- Menu Shortcuts -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h6><i class="fas fa-calendar-plus"></i> Create New Week</h6>
+                                <p>Add a new week to your schedule.</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6><i class="fas fa-search"></i> Search Recipes</h6>
+                                <p>Find specific recipes in your schedule.</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6><i class="fas fa-user-edit"></i> Edit Profile</h6>
+                                <p>Not happy with your results? Edit your nutritional profile by clicking the <a href="#"> <i class="fas fa-external-link-alt"></i> link</a> below.</p>
+                            </div>
+                            <div class="btn-group">
+                                    <a class="btn btn-primary btn-sm md-2" asp-action="Create"><i class="fas fa-plus"></i> Create Week</a>
+                                    <a class="btn btn-outline-secondary btn-sm" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i> Back To Home</a>                            
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-    <hr />
-
-<div class="container mt-5">
-    @foreach (var item in Model)
-    {
-        <div class="card">
-            <div class="row">
-                  
-                        <div class="col-md-4">
-                        <img src="~/img/login.jpg" class="img-fluid" alt="Recipe Image">
-                        </div>
-
-                        <div class="col-md-8">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="fas fa-calendar-week"></i> Weeks</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Weeks Listing -->
+                    @foreach (var item in Model)
+                    {
+                        <div class="card mb-3">
                             <div class="card-body">
-                    <h3 class="card-title">@Html.DisplayFor(modelItem => item.WeekName)</h3>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                    <div class="btn-group">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.WeekName)</h5>
+                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                <div class="d-flex justify-content-end">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mx-2"><i class="fas fa-info-circle"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
-     
+                    }
                 </div>
             </div>
-    }
-</div>
-</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="fas fa-search"></i> Recipe Finder</h5>
+                    <div class="card-text">Need help finding a particular recipe? Try our recipe finder!</div>
+                </div>
+                <div class="card-body">
+                    <!-- SEARCH BAR -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form asp-controller="Recipes" asp-action="Search" method="get">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Search recipes" name="searchString">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form asp-controller="Recipes" asp-action="Filter" method="get">
+                                <div class="input-group mb-3">
+                                    <select class="custom-select" name="mealType">
+                                        <option selected disabled>Filter by Category</option>
+                                        <option value="Breakfast">Breakfast</option>
+                                        <option value="Lunch">Lunch</option>
+                                        <option value="Dinner">Dinner</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Apply Filter</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

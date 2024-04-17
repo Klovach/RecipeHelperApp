@@ -73,6 +73,9 @@ namespace RecipeHelperApp.Controllers
                 recipes = recipes.Where(r => r.Name.Contains(searchString));
             }
 
+            // Include days in the search results
+            recipes = recipes.Include(r => r.Day);
+
             return View(await recipes.ToListAsync());
         }
 
@@ -86,13 +89,18 @@ namespace RecipeHelperApp.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             var recipes = from r in _context.Recipes
-                          where r.Day.Week.User.Id.Equals(userId)
+                          where r.Day.Week.User.Id.Equals(userId) &&
+                                !string.IsNullOrEmpty(r.Name) &&
+                                !string.IsNullOrEmpty(r.Description)
                           select r;
 
             if (!string.IsNullOrEmpty(mealType))
             {
                 recipes = recipes.Where(r => r.MealType.Contains(mealType));
             }
+
+            // Include days in the search results
+            recipes = recipes.Include(r => r.Day);
 
             return View(await recipes.ToListAsync());
         }

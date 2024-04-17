@@ -28,26 +28,67 @@ namespace RecipeHelperApp.Controllers
 
 
         // GET: Days
-        public async Task<IActionResult> Index(int weekId)
+        public async Task<IActionResult> Index(int? weekId, int? dayId)
         {
-            // Retrieve days associated with the weeks of the current user
-            var days = await _context.Days
-                                    // Filter day by week id & include recipes. 
-                                    .Include(d => d.Week)
-                                    .Include(d => d.Recipes)
-                                    .Where(d => d.Week.Id == weekId)
-                                    .ToListAsync();
-
-            foreach (var day in days)
+            if (weekId != null)
             {
-                await Task.Run(() => day.CalculateRecipeTotals());
+                // Retrieve days associated with the provided weekId
+                var days = await _context.Days
+                                         .Include(d => d.Week)
+                                         .Include(d => d.Recipes)
+                                         .Where(d => d.Week.Id == weekId)
+                                         .ToListAsync();
+
+                foreach (var day in days)
+                {
+                    await Task.Run(() => day.CalculateRecipeTotals());
+                }
+
+                return View("Index", days);
             }
-            return View(days);
+            else if (dayId != null)
+            {
+                // Get week id from day:
+                var dayModel = await _context.Days
+                             .Include(d => d.Week)
+                             .Include(d => d.Recipes)
+                             .FirstOrDefaultAsync(d => d.Id == dayId);
+
+                if (dayModel == null)
+                {
+                    return NotFound();
+                }
+
+                var weekFromDayId = dayModel.WeekId;
+
+                var days = await _context.Days
+                                        .Include(d => d.Week)
+                                        .Include(d => d.Recipes)
+                                        .Where(d => d.Week.Id == weekFromDayId)
+                                        .ToListAsync();
+                if (days == null)
+                {
+                    return NotFound();
+                }
+
+                // Calculate recipe totals for the retrieved day
+                foreach (var day in days)
+                {
+                    await Task.Run(() => day.CalculateRecipeTotals());
+                }
+
+               
+                return View("Index", days); 
+            }
+            else
+            {
+                return BadRequest("Please provide either weekId or dayId.");
+            }
         }
 
 
-        // GET: Days/Details/5
-        public async Task<IActionResult> Details(int? id)
+            // GET: Days/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

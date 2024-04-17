@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@ViewData["Title"] - Recipe Helper</title>
+    <title>@ViewData["Title"] - MealMaven</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/Theme/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,17 +35,11 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-seedling"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">RecipeHelper</div>
+                <div class="sidebar-brand-text mx-3">MealMaven</div>
             </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item: MAIN NAV - Dashboard -->
-
-
             <!-- Home Dashboard -->
-              <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
@@ -55,7 +49,7 @@
             <!-- Nutritional Settings -->
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="NutritionForms" asp-action="Index">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-cogs"></i>
                     <span>Nutritional Settings</span>
                 </a>
             </li>
@@ -63,82 +57,29 @@
             <!-- User Profile -->
             <li class="nav-item">
                 <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-user"></i>
                     <span>User Profile</span>
                 </a>
             </li>
-          
-            <!-- Temporary Calender -->
 
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Meal Planning Menu 
-            </div>
-
-            <!-- Nav Item - Weekdays Collapse Menu -->
-
+            <!-- Meal Planner -->
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Weeks" asp-action="Index">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-calendar-alt"></i>
                     <span>Meal Planner</span>
                 </a>
-            </li>
-
-     
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                   aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Meal Planner</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Weekdays</h6>
-                        <a class="collapse-item" href="#">Monday</a>
-                        <a class="collapse-item" href="#">Tuesday</a>
-                        <a class="collapse-item" href="#">Wednesday</a>
-                        <a class="collapse-item" href="#">Thursday</a>
-                        <a class="collapse-item" href="#">Friday</a>
-                         <a class="collapse-item" href="#">Saturday</a>
-                        <a class="collapse-item" href="#">Sunday</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Testing Pages
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                   aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Test Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Error & Template Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item active" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Signout Button -->
+            <li class="nav-item">
+                <a class="nav-link" href="logout.html">
+                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </a>
+            </li>
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -180,6 +121,7 @@
                 <div>
                 <div class="container">
 
+
                         <main role="main" class="pb-3" id="page-contents">
                             @RenderBody()
                         </main>
@@ -202,7 +144,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; RecipeHelper 2024</span>
+                    <span>Copyright &copy; MealMaven 2024</span>
                 </div>
             </div>
         </footer>
@@ -221,7 +163,7 @@
     <!-- Logout Modal-->
     <div class="modal fade align-items-center" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>

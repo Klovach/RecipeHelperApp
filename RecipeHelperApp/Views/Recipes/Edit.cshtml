@@ -130,14 +130,17 @@
             reader.readAsDataURL(input.files[0]);
         }
 
-        function resetImage() { 
+        function resetImage() {
             var img = document.getElementById('image-preview');
-            img.src = @Model.Image;
+            img.src = '@Model.Image';
             img.style.display = 'block';
 
             // Show the current image.
             document.getElementById('current-image').style.display = 'block';
-            // Update the label with the file name
+            // Update the label with the file name. I'm not entirely certain a
+            // intiailizing filename to an empty name works here but I am a
+            //it is because JS doesn't acknowledge fileName exists outside of the method. 
+            var fileName = '';
             document.querySelector('.custom-file-label').textContent = fileName;
         }
 

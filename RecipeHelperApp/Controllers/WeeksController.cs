@@ -64,31 +64,28 @@ namespace RecipeHelperApp
             return View();
         }
 
+
         // POST: Weeks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,WeekName,Description")] WeekDTO weekDTO)
+        public async Task<IActionResult> Create([Bind("UserId,WeekName,Description")] WeekDTO weekDTO)
         {
-            var week = new Week
-            {
-                UserId = weekDTO.UserId,
-                WeekName = weekDTO.WeekName,
-                Description = weekDTO.Description
-            };
-
             if (ModelState.IsValid)
             {
-                // Retrieve the user based on UserId.
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == week.UserId);
-
                 // Check if the user exists
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == weekDTO.UserId);
                 if (user != null)
                 {
-                    // Set the User property in the Week object
-                    week.User = user;
+                    var week = new Week
+                    {
+                        UserId = weekDTO.UserId,
+                        WeekName = weekDTO.WeekName,
+                        Description = weekDTO.Description
+                    };
 
+                    week.User = user;
                     week.InitializeDays();
 
                     foreach (var day in week.Days)
@@ -97,14 +94,12 @@ namespace RecipeHelperApp
                         _context.Add(day);
                     }
 
-
                     // Add the week to the context and save changes
                     _context.Add(week);
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
                 }
-
                 else
                 {
                     // Handle case where user does not exist
@@ -113,8 +108,8 @@ namespace RecipeHelperApp
             }
 
             // If model state is not valid or user not found, return to the view with the model
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", week.UserId);
-            return View(week);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", weekDTO.UserId);
+            return View(weekDTO);
         }
 
         // GET: Weeks/Edit/5

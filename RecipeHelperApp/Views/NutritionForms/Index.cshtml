@@ -4,71 +4,168 @@
     ViewData["Title"] = "Details";
 }
 
-
-   <div class="card shadow mb-4">
-
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+<div class="row d-flex flex-wrap">
+    <div class="col-md-6 d-flex align-items-stretch">
+        <div class="card shadow mb-4">
+            <div class="m-3">
+            <img class="card-img-top" img src="~/theme/img/undraw_projections_re_ulc6.svg" style="height:300px" />
             </div>
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Health Information</h6>
+            </div>
+            <div class="card-body">
+                <p>Here's a breakdown of your health information on file! Click recalculate to 
+                    calculate your macronutrients based on your profile! 
+                </p>
+                <div class="row">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-weight"></i> Weight</td>
+                                <td>@Html.DisplayFor(model => model.Weight)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-bullseye"></i> Target Weight</td>
+                                <td>@Html.DisplayFor(model => model.TargetWeight)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="far fa-calendar-alt"></i> Target Weight Date</td>
+                                <td>@Html.DisplayFor(model => model.TargetWeightDate)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-running"></i> Activity Level</td>
+                                <td>@Html.DisplayFor(model => model.ActivityLevel)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-dumbbell"></i> Fitness Goal</td>
+                                <td>@Html.DisplayFor(model => model.FitnessGoal)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="card-body">
-    <h4>NutritionForm</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IncludeNutrition)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IncludeNutrition)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IncludeIngredients)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IncludeIngredients)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ExcludeIngredients)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ExcludeIngredients)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IncludedIngredients)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IncludedIngredients)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ExcludedIngredients)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ExcludedIngredients)
-        </dd>
-        <dt class="col-sm-2">Calories</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Calories)</dd>
-        <dt class="col-sm-2">Carbs</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Carbs)</dd>
-        <dt class="col-sm-2">Protein</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Protein)</dd>
-        <dt class="col-sm-2">Fat</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nutrients.Fat)</dd>
-        <dt class="col-sm-2">Weight</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Weight)</dd>
-        <dt class="col-sm-2">Target Weight</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.TargetWeight)</dd>
-        <dt class="col-sm-2">Target Weight Date</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.TargetWeightDate)</dd>
-        <dt class="col-sm-2">Activity Level</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.ActivityLevel)</dd>
-        <dt class="col-sm-2">Fitness Goal</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.FitnessGoal)</dd>
-    </dl>
-</div>
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">My Pantry</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><i class="fas fa-plus-circle"></i> Include My Ingredients</td>
+                            <td>@Html.DisplayFor(model => model.IncludeIngredients)</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-minus-circle"></i> Exclude My Ingredients</td>
+                            <td>@Html.DisplayFor(model => model.ExcludeIngredients)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <dl class="row">
+                    <div class="col-sm-6">
+                        <dt>Included Ingredients List:</dt>
+                        <dd>@Html.DisplayFor(model => model.IncludedIngredients)</dd>
+                    </div>
+                    <div class="col-sm-6">
+                        <dt>Excluded Ingredients List:</dt>
+                        <dd>@Html.DisplayFor(model => model.ExcludedIngredients)</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Macronutrient Ratios</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="macroChart"></canvas>
+                </div>
+                <dl class="row m-3">
+                   
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Daily Calories</th>
+                                <th><i class="fas fa-circle text-primary"></i> Carbs</th>
+                                <th><i class="fas fa-circle text-success"></i> Protein</th>
+                                <th><i class="fas fa-circle text-info"></i> Fat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Html.DisplayFor(model => model.Nutrients.Calories)</td>
+                                <td>@Html.DisplayFor(model => model.Nutrients.Carbs)</td>
+                                <td>@Html.DisplayFor(model => model.Nutrients.Protein)</td>
+                                <td>@Html.DisplayFor(model => model.Nutrients.Fat)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </dl>
+            </div>
+        </div>
+    </div>
 </div>
 
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Details" asp-route-id="@Model?.Id">Details</a> |
-    <a asp-action="Restart" asp-route-id="@Model?.Id">Reset</a> |
-    <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>  |
-    <a asp-action="Recalculate" asp-route-id="@Model?.Id">Recalculate</a>
+<a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success">
+    <i class="fas fa-edit"></i> Edit
+</a>
+
+<a asp-action="Restart" asp-route-id="@Model?.Id" class="btn btn-danger">
+    <i class="fas fa-sync-alt"></i> Reset
+</a>
+
+<a asp-action="Recalculate" asp-route-id="@Model?.Id" class="btn btn-info">
+    <i class="fas fa-calculator"></i> Recalculate
+</a>
+
+
+  <!-- Page level plugins -->
+    <script src="~/Theme/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/Theme/js/demo/chart-area-demo.js"></script>
+    <script src="~/Theme/js/demo/chart-pie-demo.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+    
+// Pie Chart Example
+var ctx = document.getElementById("macroChart");
+var myPieChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ["Carbs", "Protein", "Fat"],
+    datasets: [{
+      data: [@Model.Nutrients.Carbs, @Model.Nutrients.Protein, @Model.Nutrients.Fat],
+      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      hoverBorderColor: "rgba(234, 236, 244, 1)",
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+    },
+    legend: {
+      display: false
+    },
+    cutoutPercentage: 80,
+  },
+});
+</script>

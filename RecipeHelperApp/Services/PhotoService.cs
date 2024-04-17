@@ -5,20 +5,24 @@ using System.Net;
 
 namespace RecipeHelperApp.Services
 {
-    // This class 
     public class PhotoService : IPhotoService 
     {
-        private readonly Cloudinary _cloundinary;
+        private readonly Cloudinary _cloudinary;
 
-        public PhotoService(IOptions<CloudinarySettings> config)
+        public PhotoService(IOptions<CloudinarySettings> options)
         {
+            var settings = options.Value;
+
             var acc = new Account(
-                config.Value.CloudName,
-                config.Value.ApiKey,
-                config.Value.ApiSecret
-                );
-            _cloundinary = new Cloudinary(acc);
+                settings.CloudName,
+                settings.CloudinaryApiKey,
+                settings.CloudinaryApiSecret
+            );
+
+            _cloudinary = new Cloudinary(acc);
         }
+
+        public CloudinarySettings Options { get; } //Set with Secret Manager.
 
         // test. 
         // Take a URL and download the image as a IFile.
@@ -87,7 +91,7 @@ namespace RecipeHelperApp.Services
                     };
 
                     // Uploads an image file to Cloudinary asynchronously. 
-                    uploadResult = await _cloundinary.UploadAsync(uploadParams);
+                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
                 }
             }
 
@@ -104,7 +108,7 @@ namespace RecipeHelperApp.Services
             var deleteParams = new DeletionParams(publicId);
 
             // Deletes the file from Cloudinary. 
-            return await _cloundinary.DestroyAsync(deleteParams);
+            return await _cloudinary.DestroyAsync(deleteParams);
         }
     }
 }
