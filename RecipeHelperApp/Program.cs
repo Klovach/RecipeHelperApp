@@ -30,6 +30,8 @@ if (builder.Environment.IsProduction())
     
     var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
 
+    var connectionString = builder.Configuration.GetConnectionString("ProductionConnection") ?? throw new InvalidOperationException("Connection string 'ProductionConnection' not found.");
+
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         options.UseSqlServer(client.GetSecret("ProductionConnection").Value.Value.ToString());
@@ -41,9 +43,10 @@ if (builder.Environment.IsDevelopment())
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-} 
-
+}
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// ---- BUILD SECTIONS FROM --- /// 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -51,18 +54,31 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
+
+builder.Services.Configure<AuthMessageSenderOptions>(options =>
+{
+    options.SendGridKey = builder.Configuration["SendGridKey"];
+});
 
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+builder.Services.Configure<CloudinarySettings>(options =>
+{
+    options.CloudName = builder.Configuration["CloudName"];
+    options.CloudinaryApiKey = builder.Configuration["CloudinaryApiKey"];
+    options.CloudinaryApiSecret = builder.Configuration["CloudinaryApiSecret"]; 
+});
+
 builder.Services.AddScoped<IRecipeGenerator, RecipeGenerator>();
 
-builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
-builder.Services.Configure<OpenAISettings>(builder.Configuration.GetSection("OpenAISettings"));
+builder.Services.Configure<OpenAISettings>(options =>
+{
+    options.OpenAIKey = builder.Configuration["OpenAIKey"];
+});
 
-
+// -----------------------------------------------------------
 var app = builder.Build();
 
-//  @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Test;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 // Configure the HTTP request pipeline. 
 if (app.Environment.IsDevelopment())
 {

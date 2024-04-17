@@ -3,6 +3,6 @@
     //OpenAiSettings 
     public class OpenAISettings
     {
-        public string OpenAIKey { get; set; }
+        public string? OpenAIKey { get; set; }
     }
 }
