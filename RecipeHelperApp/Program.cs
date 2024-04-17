@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // AZURE KEYVAULT: 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsDevelopment())
 {
     var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
 
@@ -30,20 +30,21 @@ if (builder.Environment.IsProduction())
     
     var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
 
-    var connectionString = builder.Configuration.GetConnectionString("ProductionConnection") ?? throw new InvalidOperationException("Connection string 'ProductionConnection' not found.");
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        options.UseSqlServer(client.GetSecret("ProductionConnection").Value.Value.ToString());
-    }); 
+   //   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+     options.UseSqlServer(client.GetSecret("ProductionConnection").Value.Value.ToString());
+}); 
 }
 
-if (builder.Environment.IsDevelopment())
+if (builder.Environment.IsProduction())
 {
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // ---- BUILD SECTIONS FROM --- /// 
