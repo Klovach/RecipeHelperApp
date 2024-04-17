@@ -38,9 +38,9 @@ if (builder.Environment.IsProduction())
 
 if (builder.Environment.IsDevelopment())
 {
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("TestConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TestConnection")));
 } 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -51,7 +51,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
 
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IRecipeGenerator, RecipeGenerator>();
