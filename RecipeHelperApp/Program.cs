@@ -32,15 +32,15 @@ if (builder.Environment.IsProduction())
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        options.UseSqlServer(client.GetSecret("ProdConnection").Value.Value.ToString());
+        options.UseSqlServer(client.GetSecret("ProductionConnection").Value.Value.ToString());
     }); 
 }
 
 if (builder.Environment.IsDevelopment())
 {
-var connectionString = builder.Configuration.GetConnectionString("TestConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TestConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 } 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
