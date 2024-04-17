@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // AZURE KEYVAULT: 
-if (builder.Environment.IsDevelopment())
+if (builder.Environment.IsProduction())
 {
     var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
 
@@ -38,7 +38,7 @@ if (builder.Environment.IsDevelopment())
 }); 
 }
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsDevelopment())
 {
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
