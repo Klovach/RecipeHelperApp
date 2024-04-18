@@ -15,12 +15,12 @@
                 <div class="card-body">
                     <!-- Brief About -->
                     <div class="mb-4">
-                        <p><i class="fas fa-info-circle"></i>Welcome to the Weeks Dashboard! This dashboard provides you with an overview of your meal plans, allowing you to manage your meal plans with ease. Have a look around and enjoy the dummy text!</p>
+                        <p>Welcome to the Weeks Dashboard! This dashboard provides you with an overview of your meal plans, allowing you to manage your meal plans with ease. Have a look around and enjoy the dummy text!</p>
                     </div>
                     <hr />
                     <!-- Banner Image with Menu Shortcuts -->
                     <div class="row align-items-center">
-                        <!-- Banner Image -->https://localhost:44370/Identity/Account/logout.html
+                        <!-- Banner Image -->
                         <div class="col-md-6 mb-4">
                             <img src="~/theme/img/undraw_term_sheet_re_ju7s.svg" class="img-fluid" alt="Banner Image">
                         </div>
@@ -31,12 +31,12 @@
                                 <p>Add a new week to your schedule.</p>
                             </div>
                             <div class="mb-3">
-                                <h6><i class="fas fa-search"></i> Search Recipes</h6>
-                                <p>Find specific recipes in your schedule.</p>
+                                <h6><i class="fas fa-eye"></i> See Recipes</h6>
+                                <p>See the recipes in your meal plan for each weekday!</p>
                             </div>
                             <div class="mb-3">
                                 <h6><i class="fas fa-user-edit"></i> Edit Profile</h6>
-                                <p>Not happy with your results? Edit your nutritional profile by clicking the <a href="#"> <i class="fas fa-external-link-alt"></i> link</a> below.</p>
+                                <p>Not happy with your results? Edit your nutritional form by clicking the <a asp-controller="NutritionForms" asp-action="Index"> <i class="fas fa-external-link-alt"></i> link</a> below.</p>
                             </div>
                             <div class="btn-group">
                                     <a class="btn btn-primary btn-sm md-2" asp-action="Create"><i class="fas fa-plus"></i> Create Week</a>
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+    <div class="col-md-4 align-items-stretch">
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="card-title"><i class="fas fa-calendar-week"></i> Weeks</h5>
@@ -61,55 +61,13 @@
                                 <h5 class="card-title">@Html.DisplayFor(modelItem => item.WeekName)</h5>
                                 <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
                                 <div class="d-flex justify-content-end">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mx-2"><i class="fas fa-info-circle"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm mx-2"><i class="fas fa-eye"></i></a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                                 </div>
                             </div>
                         </div>
                     }
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title"><i class="fas fa-search"></i> Recipe Finder</h5>
-                    <div class="card-text">Need help finding a particular recipe? Try our recipe finder!</div>
-                </div>
-                <div class="card-body">
-                    <!-- SEARCH BAR -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <form asp-controller="Recipes" asp-action="Search" method="get">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Search recipes" name="searchString">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit">Search</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-6">
-                            <form asp-controller="Recipes" asp-action="Filter" method="get">
-                                <div class="input-group mb-3">
-                                    <select class="custom-select" name="mealType">
-                                        <option selected disabled>Filter by Category</option>
-                                        <option value="Breakfast">Breakfast</option>
-                                        <option value="Lunch">Lunch</option>
-                                        <option value="Dinner">Dinner</option>
-                                    </select>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit">Apply Filter</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

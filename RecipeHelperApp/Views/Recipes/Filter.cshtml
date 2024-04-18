@@ -4,64 +4,110 @@
     ViewData["Title"] = "Search Results";
 }
 
-<h1>Filter Results</h1>
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h3>@Html.DisplayFor(modelItem => item.MealType)</h3>
-                </div>
-                <div class="row no-gutters">
-                    <div class="col-md-5 d-flex align-items-center">
-                        @if (!string.IsNullOrEmpty(item.Image))
-                        {
-                            <img src="@Url.Content(item.Image)" class="img-fluid h-100" alt="Recipe Image">
-                        }
-                        else
-                        {
-                            <img src="~/img/login.jpg" class="img-fluid h-100" alt="Recipe Image">
-                        }
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <h5 class="card-title mb-0">
-                                    <i class="fas fa-utensils" style="font-size: 1.5rem;"></i> @Html.DisplayFor(modelItem => item.Name)
-                                </h5>
-                                <hr />
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                            </div>
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title"><i class="fas fa-search"></i> Recipe Finder</h5>
+                <div class="card-text">Need help finding a particular recipe? <a asp-controller="Weeks" asp-action="Index">Return to weeks manager!</a></div>
+            </div>
+            <div class="card-body">
+                <!-- SEARCH BAR -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <form asp-controller="Recipes" asp-action="Search" method="get">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Search recipes" name="searchString">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form asp-controller="Recipes" asp-action="Filter" method="get">
+                            <div class="input-group mb-3">
+                                <select class="custom-select" name="mealType">
+                                    <option selected disabled>Filter by Category</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Dinner">Dinner</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Apply Filter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-warning">Sorry, there wasn't any recipes in your filter!</div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>@Html.DisplayFor(modelItem => item.MealType)</h3>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-5 d-flex align-items-center">
+                            @if (!string.IsNullOrEmpty(item.Image))
+                            {
+                                <img src="@Url.Content(item.Image)" class="img-fluid h-100" alt="Recipe Image">
+                            }
+                            else
+                            {
+                                <img src="~/img/login.jpg" class="img-fluid h-100" alt="Recipe Image">
+                            }
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-utensils" style="font-size: 1.5rem;"></i> @Html.DisplayFor(modelItem => item.Name)
+                                    </h5>
+                                    <hr />
+                                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-footer">
-                    <div class="btn-group">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm mr-2">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mr-2">
-                            <i class="fas fa-info-circle"></i> Details
-                        </a>
-                        <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-danger btn-sm mr-2">
-                            <i class="fas fa-redo-alt"></i> Reset
-                        </a>
-                        <a asp-action="Generate" asp-route-id="@item.Id" class="btn btn-success btn-sm mr-2">
-                            <i class="fas fa-bolt"></i> Generate
-                        </a>
-                        <a asp-controller="Day" asp-action="Index" asp-route-dayId="@item.Day.Id" class="btn btn-secondary btn-sm mr-2">
-                            <i class="fas fa-calendar-week"></i> Back to Day
-                        </a>
+                    <div class="card-footer">
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm mr-2">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mr-2">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                            <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-danger btn-sm mr-2">
+                                <i class="fas fa-redo-alt"></i> Reset
+                            </a>
+                            <a asp-action="Generate" asp-route-id="@item.Id" class="btn btn-success btn-sm mr-2">
+                                <i class="fas fa-bolt"></i> Generate
+                            </a>
+                            <a asp-controller="Day" asp-action="Index" asp-route-dayId="@item.Day.Id" class="btn btn-secondary btn-sm mr-2">
+                                <i class="fas fa-calendar-week"></i> Back to Day
+                            </a>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
-
-
-
-        </div>
-    }
-</div>
+            }
+        }

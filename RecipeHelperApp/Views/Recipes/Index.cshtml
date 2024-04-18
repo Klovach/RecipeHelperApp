@@ -9,10 +9,13 @@
 <div class="row">
     @foreach (var item in Model)
     {
+        bool isEmptyRecipe = string.IsNullOrEmpty(item.Name) && string.IsNullOrEmpty(item.Description) && string.IsNullOrEmpty(item.Instructions) && string.IsNullOrEmpty(item.Ingredients) && item.Calories == 0 && item.Protein == 0 && item.Fat == 0 && item.Carbs == 0;
+      
+
         <div class="col-md-6 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h3>@Html.DisplayFor(modelItem => item.MealType)</h3>
+                    <h5>@Html.DisplayFor(modelItem => item.MealType)</h5>
                 </div>
                 <div class="row no-gutters">
                     <div class="col-md-5 d-flex align-items-center">
@@ -22,17 +25,35 @@
                         }
                         else
                         {
-                            <img src="~/img/login.jpg" class="img-fluid h-100" alt="Recipe Image">
+
+                            <img src="~/theme/img/istockphoto-1147544807-612x612.jpg" class="img-fluid h-100" alt="Recipe Image">
                         }
                     </div>
                     <div class="col-md-7">
                         <div class="card-body d-flex flex-column justify-content-between">
                             <div>
-                                <h5 class="card-title mb-0">
-                                    <i class="fas fa-utensils" style="font-size: 1.5rem;"></i> @Html.DisplayFor(modelItem => item.Name)
-                                </h5>
+          
+                                    @if (isEmptyRecipe){
+                                        <h5 class="card-title mb-0">
+                                        Recipe Slot
+                                        </h5>
+                                    }
+                                    else
+                                    {
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-utensils" style="font-size: 1.5rem;"></i> @Html.DisplayFor(modelItem => item.Name)
+                                    </h5>
+                                    }
+                              
                                 <hr />
-                                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                @if (isEmptyRecipe)
+                                {
+                                    <div class="alert alert-secondary"> <p class="card-text">You have an empty recipe slot here! Click generate or edit to fill this slot.</p> </div>
+                                }
+                                else
+                                {
+                                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                }
                             </div>
                            
                         </div>
@@ -44,9 +65,19 @@
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm mr-2">
                             <i class="fas fa-edit"></i> Edit
                         </a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mr-2">
-                            <i class="fas fa-info-circle"></i> Details
-                        </a>
+                        @if (isEmptyRecipe)
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary btn-sm mr-2 disabled" aria-disabled="true">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mr-2">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                        }
                         <a asp-action="Reset" asp-route-id="@item.Id" class="btn btn-danger btn-sm mr-2">
                             <i class="fas fa-redo-alt"></i> Reset
                         </a>
@@ -65,4 +96,7 @@
             
         </div>
     }
+    }
 </div>
+
+

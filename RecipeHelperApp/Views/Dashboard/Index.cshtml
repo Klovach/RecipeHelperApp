@@ -3,114 +3,121 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<!-- Begin Page Content -->
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h3 class="h3 mb-0 text-gray-800">Dashboard</h3>
-</div>
 
-<div class="row">
+<!-- Use semantics where possible. During development the importance of
+    commenting sections becomes evident and using 'div' for each section makes it
+    more difficult to identify sections of the page as pages grow.
+-->
 
-    <!-- START ME TO MEAL MAVEN -->
-    <div class="col-md-8">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Welcome to MealMaven</h6>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="text-center">
-                            <h3>Welcome To MealMaven</h3>
+
+
+<main class="container-fluid">
+
+    <!-- Main Content Area -->
+    <section class="row d-flex flex-wrap">
+
+        <!-- Welcome to MealMaven -->
+        <article class="col-md-8">
+            <div class="card shadow mb-4">
+                <header class="card-header py-3">
+                    <h3>Welcome to MealMaven</h3>
+                </header>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- User Profile Section -->
+                        <div class="col-md-6">
+                            <br />
+                            <br />
+                            <div class="text-center">
+                                <img class="img-fluid rounded-circle" src="~/theme/img/undraw_profile.svg" alt="User Profile Image" style="width: 100px; height: 100px;">
+                                <h5>@User.FindFirst(ClaimTypes.Name)?.Value</h5>
+                                <hr>
+                                <a asp-area="Identity" asp-page="/Account/Login" class="d-block text-center">Sign in with another account <i class="fas fa-sign-in-alt"></i></a>
+                            </div>
                         </div>
-                        <div class="card p-3 mb-3">
-                           
-                        <div class="d-flex justify-content-center mb-3">
-                            <img class="img-fluid rounded-circle" src="~/theme/img/undraw_profile.svg" style="width: 100px; height: 100px;" />
-                        </div>
-                        <div class="text-center">
-                            <h5>@User.FindFirst(ClaimTypes.Name)?.Value</h5>
-                            <hr />
-                            <a href="#" class="d-block text-center">Sign in with another account <i class="fas fa-sign-in-alt"></i></a>
-                        </div>
+                        <!-- Features Section -->
+                        <div class="col-md-6">
+                            <br>
+                            <h6 class="m-0 font-weight-bold text-primary">Features</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-fw fa-calendar-alt text-success"></i> Personalized Meal Planning</li>
+                                <li><i class="fas fa-utensils text-success"></i> Recipe Suggestions</li>
+                                <li><i class="fas fa-image text-success"></i> Recipe Image Generation</li>
+                                <li><i class="fas fa-fire text-success"></i> Caloric Portion Control</li>
+                            </ul>
+                            <div class="alert alert-warning" role="alert">
+                                <p>
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Disclaimer: Please note that the recipes provided by MealMaven are generated for educational purposes.
+                                </p>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </article>
 
-                    <div class="col-md-6">
-                        <p>
-                            Welcome to MealMaven @User.FindFirst(ClaimTypes.Name)?.Value. Here is a quick rundown of what this application can do.  
-                        </p>
-                        <h6 class="m-0 font-weight-bold text-primary">Features</h6>
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-fw fa-calendar-alt text-success"></i> Personalized Meal Planning</li>
-                            <li><i class="fas fa-utensils text-success"></i> Recipe Suggestions</li>
-                            <li><i class="fas fa-image text-success"></i> Recipe Image Generation</li>
-                            <li><i class="fas fa-fire text-success"></i> Caloric Portion Control</li>
-                        </ul>
+        <!-- Quick Access Menu -->
+        <aside class="col-md-4">
+            <div class="card shadow mb-4">
+                <header class="card-header py-3">
+                    <h3>Quick Access Menu</h3>
+                </header>
+                <div class="card-body">
+                    <div class="btn-group-vertical btn-block" role="group">
+                        <a asp-controller="Weeks" asp-action="Index" class="btn btn-outline-success mb-2"><i class="fas fa-utensils"></i> Meal Planner</a>
+                        <a asp-controller="NutritionForms" asp-action="Index" class="btn btn-outline-success mb-2"><i class="fas fa-apple-alt"></i> Nutrition Form</a>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-outline-success mb-2"><i class="fas fa-cog"></i> Account Settings</a>
+                        <a href="https://github.com/Klovach/RecipeHelperApp" target="_blank" class="btn btn-outline-success"><i class="fab fa-github"></i>View On GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-                        <div class="alert alert-warning" role="alert">
-                            <p>
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Disclaimer: Please note that the recipes provided by MealMaven are generated for educational purposes.
-                            </p>
+    </section>
+
+        <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="fas fa-search"></i> Recipe Finder</h5>
+                    <div class="card-text">Need help finding a particular recipe you made? Try our recipe finder!</div>
+                </div>
+                <div class="card-body">
+                    <!-- SEARCH BAR -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form asp-controller="Recipes" asp-action="Search" method="get">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Search recipes" name="searchString">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-
+                        <div class="col-md-6">
+                            <form asp-controller="Recipes" asp-action="Filter" method="get">
+                                <div class="input-group mb-3">
+                                    <select class="custom-select" name="mealType">
+                                        <option selected disabled>Filter by Category</option>
+                                        <option value="Breakfast">Breakfast</option>
+                                        <option value="Lunch">Lunch</option>
+                                        <option value="Dinner">Dinner</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">Apply Filter</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- END OF WELCOME TO MEALMAVEN CARD -->
+    </>
 
-    <div class="col-md-4">
-        <!-- QUICK ACCESS MENU START -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Quick Access Menu</h6>
-            </div>
-            <div class="card-body">
-                <div class="btn-group-vertical btn-block" role="group">
-                    <a href="#" class="btn btn-success mb-2"><i class="fas fa-utensils"></i> Meal Planner</a>
-                    <a href="#" class="btn btn-success mb-2"><i class="fas fa-cog"></i> Account Settings</a>
-                    <a href="#" class="btn btn-success mb-2"><i class="fas fa-apple-alt"></i> Nutrition Form</a>
-                    <a href="#" class="btn btn-success"><i class="fab fa-github"></i> GitHub</a>
-                </div>
-            </div>
-        </div>
-     <!-- QUICK ACCESS MENU END -->
-
-     <!-- SEARCH MENU START -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-search"></i> Recipe Finder</h6>
-            </div>
-            <div class="card-body">
-                <form>
-                    <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                            <label for="searchInput">Search</label>
-                            <input type="text" class="form-control" id="searchInput" placeholder="Enter keywords">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="filterInput">Filter</label>
-                            <select class="form-control" id="filterInput">
-                                <option selected>All</option>
-                                <option>Decor</option>
-                                <option>Decor</option>
-                                <option>Decor</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" type="submit">Search <i class="fas fa-magic"></i></button>
-                </form>
-               
-            </div>
-        </div>
-        <!-- SEARCH MENU END -->
-    </div>
-
-  
-</div>
+</main>
 
 
         <!-- Shortcuts Section -->

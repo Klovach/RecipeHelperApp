@@ -19,31 +19,31 @@
                                 <h5 class="card-title">
                                     @if (item.WeekDay == "Monday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> <!-- Font Awesome icon for Monday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> 
                                     }
                                     else if (item.WeekDay == "Tuesday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> <!-- Font Awesome icon for Tuesday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> 
                                     }
                                     else if (item.WeekDay == "Wednesday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Wednesday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> 
                                     }
                                     else if (item.WeekDay == "Thursday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Thursday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  
                                     }
                                     else if (item.WeekDay == "Friday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> <!-- Font Awesome icon for Friday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i> 
                                     }
                                     else if (item.WeekDay == "Saturday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Saturday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  
                                     }
                                     else if (item.WeekDay == "Sunday")
                                     {
-                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  <!-- Font Awesome icon for Sunday -->
+                                        <i class="fas fa-calendar-day text-@GetColor(item.WeekDay)"></i>  
                                     }
                                     @item.WeekDay
                                 </h5>
@@ -89,12 +89,12 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img src="~/theme/img/undraw_profile_1.svg" class="img-fluid mb-3" alt="Menu Image">
-                        <p class="mb-3">Manage your days from here.</p>
+                        <img src="~/theme/img/undraw_profile.svg" class="img-fluid mb-3" alt="Menu Image">
+                        <p class="mb-3">Manage your days from here. When you're done, feel free to return to the dashboard or meal planner.</p>
                     </div>
                     <div class="btn-group-vertical d-flex justify-content-center">
-                        <a asp-controller="Weeks" asp-action="Index" class="btn btn-secondary mb-2"><i class="bi bi-calendar-check"></i> Go Back To Mealplanner</a>
-                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-primary mb-2"><i class="bi bi-house-door"></i> Go Back To Dashboard Home</a>
+                        <a asp-controller="Weeks" asp-action="Index" class="btn btn-success mb-2"><i class="bi bi-calendar-check"></i> Go Back To Mealplanner</a>
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success mb-2"><i class="bi bi-house-door"></i> Go Back To Dashboard Home</a>
                     </div>
                 </div>
 

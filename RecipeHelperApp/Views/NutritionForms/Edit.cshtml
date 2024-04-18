@@ -4,67 +4,99 @@
     ViewData["Title"] = "View";
 }
 
-<h1>View</h1>
 
-<h4>NutritionForm</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit" method="post">
+            <!-- User ID -->
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
+            <input type="hidden" asp-for="UserId" />
+    
+            <!-- NUTRITIONAL CHECKS -->
+            <div class="col-md-6">
+                <h3 class="h3 mb-4 text-gray-800">Edit Your Nutritional Form</h3>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        My Pantry
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group form-check">
+                            <input class="form-check-input" type="checkbox" asp-for="IncludeNutrition" id="includeNutritionCheckbox">
+                            <label class="form-check-label" for="includeNutritionCheckbox">
+                                Include Nutrition
+                            </label>
+                            <br />
+                            <i>By checking "include nutrition", you are using your nutritional data when generating your meals.</i>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" asp-for="IncludeIngredients" id="includeIngredientsCheckbox">
+                            <label asp-for="IncludedIngredients" class="control-label" for="includeIngredientsCheckbox">
+                                Include Ingredients
+                                <span class="checkmark"></span>
+                            </label>
+                            <input asp-for="IncludedIngredients" class="form-control" />
+                            <span asp-validation-for="IncludedIngredients" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" asp-for="ExcludeIngredients" id="excludeIngredientsCheckbox">
+                            <label asp-for="ExcludedIngredients" class="control-label" for="excludeIngredientsCheckbox">
+                                Exclude Ingredients
+                                <span class="checkmark"></span>
+                            </label>
+                            <input asp-for="ExcludedIngredients" class="form-control" />
+                            <span asp-validation-for="ExcludedIngredients" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeNutrition" /> @Html.DisplayNameFor(model => model.IncludeNutrition)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeIngredients" /> @Html.DisplayNameFor(model => model.IncludeIngredients)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ExcludeIngredients" /> @Html.DisplayNameFor(model => model.ExcludeIngredients)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="IncludedIngredients" class="control-label"></label>
-                <input asp-for="IncludedIngredients" class="form-control" />
-                <span asp-validation-for="IncludedIngredients" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExcludedIngredients" class="control-label"></label>
-                <input asp-for="ExcludedIngredients" class="form-control" />
-                <span asp-validation-for="ExcludedIngredients" class="text-danger"></span>
-            </div>
-            <!-- ALL ATTRIBUTES -->
+
+
+
+
+            
+            <!-- NUTRIENTS TABLE -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Macronutrients Table
+                    </div>
+                    <div class="card-body">
             <div class="form-group">
                 <label asp-for="Nutrients.Calories" class="control-label"></label>
-                <input asp-for="Nutrients.Calories" class="form-control" />
+                <input type="number" asp-for="Nutrients.Calories" class="form-control" />
                 <span asp-validation-for="Nutrients.Calories" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nutrients.Protein" class="control-label"></label>
-                <input asp-for="Nutrients.Protein" class="form-control" />
+                <input type="number" asp-for="Nutrients.Protein" class="form-control" />
                 <span asp-validation-for="Nutrients.Protein" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nutrients.Carbs" class="control-label"></label>
-                <input asp-for="Nutrients.Carbs" class="form-control" />
+                 <input type="number" asp-for="Nutrients.Carbs" class="form-control" />
                 <span asp-validation-for="Nutrients.Carbs" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nutrients.Fat" class="control-label"></label>
-                <input asp-for="Nutrients.Fat" class="form-control" />
+                <input type="number" asp-for="Nutrients.Fat" class="form-control" />
                 <span asp-validation-for="Nutrients.Fat" class="text-danger"></span>
             </div>
+            </div>
+                </div>
+            </div>
+
+     
             <!-- PARENT OBJECT: USER -->
+            <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    My Health
+                </div>
+                <div class="card-body">
             <div class="form-floating mb-3">
                 <p>Test</p>
                 <label asp-for="Weight">Weight (Lbs)</label>
@@ -98,7 +130,7 @@
 
             <div class="form-floating mb-3">
                 <label asp-for="TargetWeight">Target Weight (lbs)</label>
-                <input type="decimal" asp-for="TargetWeight" class="form-control" autocomplete="off" />
+                <input type="number" asp-for="TargetWeight" class="form-control" autocomplete="off" />
                 <span asp-validation-for="TargetWeight" class="text-danger"></span>
             </div>
 
@@ -107,33 +139,24 @@
                 <input type="date" asp-for="TargetWeightDate" class="form-control" autocomplete="off" />
                 <span asp-validation-for="TargetWeightDate" class="text-danger"></span>
             </div>
-
-
-            
-              @if (ViewData.ModelState.IsValid == false)
-            {
-                <div class="alert alert-danger" role="alert">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
-                    {
-                        <span>@error.ErrorMessage</span>
-
-                        <br />
-                    }
-                </div>
-            }
-
-
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+                    </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
         </form>
+            </div>
+            
+
+
+
+
+         
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

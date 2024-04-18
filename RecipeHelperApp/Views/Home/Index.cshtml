@@ -1,11 +1,45 @@
 ﻿@{
+    Layout = "~/Views/Shared/_AccountRecoveryLayout.cshtml";
     ViewData["Title"] = "Home Page";
 }
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid px-4 py-5 my-5 text-center">
     <div class="row">
-
-        <p>Test</p>
+        <div class="col-lg-6">
+            <h1>MealMaven <i class="fas fa-robot icon"></i></h1>
+            <p class="lead">AI Generated MealPlans Based On Nutritional Needs</p>
+            <hr class="my-4">
+            @if (@User.FindFirst(ClaimTypes.Name)?.Value != null)
+            {
+                <p>
+                    Welcome @User.FindFirst(ClaimTypes.Name)?.Value! Click the dashboard button to get to your dashboard!
+               </p>
+            }
+            else
+            {
+            <p>
+                To get a glimpse at what MealMaven can do, signin or register
+                using the buttons below!
+            </p>
+            }
+            <p class="lead">
+                 @if (@User.FindFirst(ClaimTypes.Name)?.Value != null)
+                {
+                   <a asp-controller="Dashboard" asp-action="Index" class="btn btn-success btn-lg">Go to Dashboard</a>
+                }
+                else
+                {
+                    <a class="btn btn-success btn-lg" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    <a class="btn btn-outline-success btn-lg" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                }
+            </p>
+        </div>
+        <div class="col-lg-6">
+            <div>
+                <img class="img-fluid" src="~/theme/img/undraw_chef_cu-0-r.svg" alt="" style="max-height: 783px;">
+            </div>
+        </div>
     </div>
-    </div>
+</div>

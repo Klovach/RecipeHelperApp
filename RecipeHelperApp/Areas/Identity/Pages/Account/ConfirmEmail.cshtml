@@ -1,9 +1,23 @@
 ﻿@page
+@using System.Security.Claims
 @model ConfirmEmailModel
 @{
-    Layout = "~/Views/Shared/_AccountLayout.cshtml";
-    ViewData["Title"] = "Confirm email";
+    Layout = "~/Views/Shared/_AccountRecoveryLayout.cshtml";
+    ViewData["Title"] = "Confirm Email";
 }
 
-<h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+            <h1>Email Confirmed</h1>
+            <img src="~/theme/img/undraw_posting_photo.svg" class="img-fluid" alt="Posting Photo">
+        </div>
+        <div class="col-md-6">
+            <p>Welcome to MealMaven @User.FindFirst(ClaimTypes.Name)?.Value! Looks like you're ready to start customizing your meal plan! Click here to get started!</p>
+            <a href="@Url.Action("Index", "Dashboard")" class="btn btn-success">
+                Go To Dashboard <i class="fas fa-dashboard"></i>
+            </a>
+        </div>
+    </div>
+</div>
