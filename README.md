@@ -6,9 +6,30 @@
 ### Overview & Abstract 
 MealMaven is a meal planning application that generates recipes and images with the power of AI, with nutritional data and requirements estimated based upon a user’s dietary needs and preferences. This application is hosted in a cloud computing platform known as Azure, which means you can access and use this application from anywhere. The project’s objective is to provide users with a means to easily generate ideas for meals that fit within their tastes and needs and demonstrate technical skill. 
 
-## Functional Overview - What Can MealMaven Do? 
+## Table of Contents
+1. [Functional Overview](#FunctionalOverview)
+2. [Prerequisites](#Prerequisites)
+3. [Access](#Access)
+4. [TechnicalDesign](#technicaldesign)
+5. [Physical Design](#physicaldesign)
+
+## Functional Overview
 Here's a rundown of everything MealMaven can do. In a recipe management application that includes and utilizes nutritional data, content should be easily generated and edited without the necessitation of a multitude of menus. MealMaven aims to excel where other applications fail in their user interface by ensuring users can begin generating recipes in as few as possible clicks unless they specify that they would like greater control over the content generated. Users will sign up and disclose their sex, current weight and height, and nutritional goal, and the information will be utilized to generate the recommended macronutrients for that user so they can proceed to adding recipes that align with their goals to their meal plans immediately. 
 
+### Prerequisites
+
+1. **Install .NET Core SDK**: Ensure that you have [.NET Core SDK 8.0](https://dotnet.microsoft.com/download) installed on your machine. You can verify the installation by running `dotnet --version` in your terminal or command prompt. It is advised that you use Visual Studio 2022 when working with MealMaven and other ASP.NET Core applications. 
+
+2. **Clone the Repository**: Clone the project repository from GitHub to your local machine using the following command. Bear in mind that MealMaven will be changing its repository name from RecipeHelperApp to MealMaven. You may follow this repository to see this change. For now, to clone the repository, use the current repository name:
+   ```bash
+   git clone https://github.com/Klovach/RecipeHelperApp.git
+
+### Accessing the Application
+
+Once the application is running, you can access it using a web browser:
+
+- **Local Access**: Open your web browser and navigate to [http://localhost:44370](http://localhost:44370) or click IIS Express within Visual Studio 2022 to view the application.
+- **Access Online**: You may visit the application online in Azure by going to the application URL in Azure App Service.
 
 | Summary of Features       | Description                                                                       |
 |---------------|-------------------------------------------|
@@ -38,20 +59,6 @@ Here's a rundown of everything MealMaven can do. In a recipe management applicat
 
 To run and access the ASP.NET Core project locally, follow the steps outlined below: 
 
-### Prerequisites
-
-1. **Install .NET Core SDK**: Ensure that you have [.NET Core SDK 8.0](https://dotnet.microsoft.com/download) installed on your machine. You can verify the installation by running `dotnet --version` in your terminal or command prompt. It is advised that you use Visual Studio 2022 when working with MealMaven and other ASP.NET Core applications. 
-
-2. **Clone the Repository**: Clone the project repository from GitHub to your local machine using the following command. Bear in mind that MealMaven will be changing its repository name from RecipeHelperApp to MealMaven. You may follow this repository to see this change. For now, to clone the repository, use the current repository name:
-   ```bash
-   git clone https://github.com/Klovach/RecipeHelperApp.git
-
-### Accessing the Application
-
-Once the application is running, you can access it using a web browser:
-
-- **Local Access**: Open your web browser and navigate to [http://localhost:44370](http://localhost:44370) or click IIS Express within Visual Studio 2022 to view the application.
-- **Access Online**: You may visit the application online in Azure by going to the application URL in Azure App Service. 
 
 ## Logical Solution & Design Objectives 
 This application uses a code-first approach. A code-first approach is a technique in ASP.NET Core which focuses upon developing models and their relationships first, and then migrate and mantain the database and tables based upon those models. Other architectural design patterns and techniques utilized in this application include MVC (Model-View-Controller) and Dependency Injection. This application uses a no-repository design pattern, meaning there is no abstraction between the controller and the database context. However, a repository pattern or unit of work pattern is intended to be implemented in the future to more easily facilitate automated unit testing or test-driven development (TDD).  This application also utilizes Entity Framework as an ORM (Object Relational Mapper) to simplify queries to the database. ORM is a programming technique that eases the process of mapping data between a relational database and objects within a program. In the current solution, the application's controllers focus upon how data is stored and accessed while using services to perform calculations as neccessary.
