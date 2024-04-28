@@ -9,8 +9,8 @@ MealMaven is a meal planning application that generates recipes and images with 
 ## Table of Contents
 1. [Functional Overview](#functional-overview)
 2. [Running and Accessing the ASP.NET Core Project](#running-and-accessing-the-aspnet-core-project)
-3. [Technical Design](#technical-design-decisions)
-4. [Physical Design](#physical-design)
+3. [Technical Design Overview](#technical-design-decisions)
+4. [Physical Design Overview](#physical-design)
 5. [User Experience & Interface Design](#user-experience-design)
 
 ## Functional Overview
