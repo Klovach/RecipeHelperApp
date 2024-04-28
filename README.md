@@ -42,18 +42,16 @@ Once the application is running, you can access it using a web browser:
 
 
 ## Technical Design Decisions
-| Category    | Technology/Tool      | Name/Version | Justification                                                                                                   |
-|-------------|-----------------------|--------------|-----------------------------------------------------------------------------------------------------------------|
-| Language    | C#, JavaScript, HTML, CSS, SQL | 8.0, ES6, 5, 4.15, 16.0 | Core languages and markup for application development and interactivity.                                       |
-| Framework           | ASP.NET Core | 8.0   | Core framework for cross-platform development |
-| Styling Frameworks & Libraries | Bootstrap, Chart.js | 4.1, -| CSS framework for styling, and JavaScript library for charts. |
-| Object-Relational Mapper | Entity Framework Core      | 6.0          | Facilitates object-oriented data handling, reducing reliance on raw SQL queries.                       |
-| IDE         | Microsoft Visual Studio | Platform 2022 | Primary integrated development environment for comprehensive .NET development.                                   |
-| Cloud Computing Platform       | Microsoft Azure       | -            | Hosting, deployment, and scaling for MySQL database and web application, secure key storage.                   |
-| Data Storage| MySQL                 | -            | Primary relational database for storing application data.                                                        |
-| APIs | OpenAI API, Nutrition Ninja, Cloudinary, Sendgrid | GPT-3 & Dall-E,- ,- , -| For content generation, acquiring nutritional data from ingredients, storing and retrieving images, and sending emails to users |
+| API           | Model/Version (IF Applicable)           | Justification                                                          |
+|---------------|-----------------|-------------------------------------------------------------------------|
+| OpenAI API    |         GPT-3, DALL-E       | Content generation                                                     |
+| Nutrition Ninja |     -          | Acquiring nutritional data from ingredients                            |
+| Cloudinary    |        -        | Storing and retrieving images                                           |
+| Sendgrid      |         -       | Sending emails to users                                                 |
+| Twilio        |          -      | Sending text messages to users                                           |
 
-
+## List of APIs 
+| APIs | OpenAI API, Nutrition Ninja, Cloudinary, Sendgrid, Twilio | GPT-3 & Dall-E,- ,- , -| For content generation, acquiring nutritional data from ingredients, storing and retrieving images, sending emails to users, and sending text messages to users |
 
 ## Running and Accessing the ASP.NET Core Project
 
