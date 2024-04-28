@@ -1,4 +1,5 @@
 ## MealMaven
+![image](https://github.com/Klovach/RecipeHelperApp/assets/113477921/7a7a6d57-3bd8-44b3-89cc-95ce20e6b5b2)
 ### Overview & Abstract 
 MealMaven is a meal planning application that generates recipes and images with the power of AI, with nutritional data and requirements estimated based upon a user’s dietary needs and preferences. This application is hosted in a cloud computing platform known as Azure, which means you can access and use this application from anywhere. The project’s objective is to provide users with a means to easily generate ideas for meals that fit within their tastes and needs and demonstrate technical skill. 
 
@@ -49,16 +50,13 @@ Once the application is running, you can access it using a web browser:
 - **Local Access**: Open your web browser and navigate to [http://localhost:4437](http://localhost:4437) or click IIS Express within Visual Studio 2022 to view the application.
 - **Access Online**: You may visit the application online in Azure by going to the application URL in Azure App Service. 
 
-## Logical Design
+## Logical Solution & Design Objectives 
 This application uses a code-first approach. A code-first approach is a technique in ASP.NET Core which focuses upon developing models and their relationships first, and then migrate and mantain the database and tables based upon those models. Other architectural design patterns and techniques utilized in this application include MVC (Model-View-Controller) and Dependency Injection. This application uses a no-repository design pattern, meaning there is no abstraction between the controller and the database context. However, a repository pattern or unit of work pattern is intended to be implemented in the future to more easily facilitate automated unit testing or test-driven development (TDD).  This application also utilizes Entity Framework as an ORM (Object Relational Mapper) to simplify queries to the database. ORM is a programming technique that eases the process of mapping data between a relational database and objects within a program. In the current solution, the application's controllers focus upon how data is stored and accessed while using services to perform calculations as neccessary.
 
-```mermaid
-graph TD
-IIS --> Controller
-Controller --> DbContext
-DbContext --> Data[Entity Framework & Database]
-```
+![logicaldiagram](https://github.com/Klovach/RecipeHelperApp/assets/113477921/9c54d6cb-8eaf-46f8-b3b0-82cac01236dc)
+
 Apart from ensuring a sustainable and modular architecture, the logical solution design has the following objectives: to route the user to necessary views, update presentations as required, perform calculations on data behind the scenes, and retrieve and update data from a database to fulfill the basic requirements of the application. As a meal planning application with generative capabilities, because users must be able to navigate their planner, generate new recipes according to their nutritional needs, and be able to have their needs calculated for them based upon their data. To achieve these objectives, it is essential to store and create models that can represent the various components in the application. These models server as both blueprints for what should be displayed to the view and what fields should be manipulated in the database.  
+
 
 In summary:
 - The model is responsible for storing and managing the application's data. 
@@ -92,3 +90,39 @@ graph TD;
 
 ## Monitoring & Logging
 Monitoring and logging is achieved by implementing an interface called ILogger. If desired, it is possible to set up alerts and notifications to be informed about pipeline failures or other issues. To monitor the uptime of the application, UpTime robot, a free uptime monitoring service is utilized for this application. Azure Monitor can be activated at an additional price and logs can be views as is in Azure's 'Logs' under Azure App Service as the application is running. Logs should never record users' passwords or other information that might be used to commit identity fraud. Monitoring occurs during the operation of the system that is deployed, and is designed to be recorded close to real-time to ensure that issues may be responded to as soon as they arise. 
+
+
+## User Experience Design
+ASP.NET Core uses Razor pages for MVC applications, blending C# and HTML. Effective frontend development involves mastering form data passing and page navigation. In MealMaven, days and recipes are contained within weeks, and this is communicated in the following map:
+
+```mermaid
+graph TD
+    LandingPage[Landing Page] --> Login
+    LandingPage --> Register
+    Login --> Dashboard
+    Register --> Login
+    Dashboard <--> Weeks
+    Weeks -->|Create| WeeksCreate[Create Week]
+    Weeks -->|Edit| WeeksEdit[Edit Week]
+    Weeks -->|Delete| WeeksDelete[Delete Week]
+    Weeks <---->Days 
+    Days -->|Create| DaysCreate[Create Day]
+    Days -->|Edit| DaysEdit[Edit Day]
+    Days -->|Delete| DaysDelete[Delete Day]
+    Days --> DayReset[Reset Day]
+    Days --> DayGenerate[Generate Day]
+    Days <-----> Recipes
+    Recipes -->|Create| RecipeCreate[Create Recipe]
+    Recipes -->|Edit| RecipeEdit[Edit Recipe]
+    Recipes -->|Delete| RecipeDelete[Delete Recipe]
+    Recipes --> RecipeReset[Reset Recipe]
+    Recipes --> RecipeGenerate[Generate Recipe]
+```
+
+This project uses the following approach:
+- Begin with HTML to establish the app's structure, ensure functionality before design.
+- Develop key elements such as Recipe Cards, Modals, and alerts using CSS and HTML.
+- Organize components using flexbox and grid.
+- Employ libraries like Chart.js and Auth.js for QR code generation and displaying data with pie charts and graphs.
+- Utilize JavaScript for interactivity as needed. 
+
