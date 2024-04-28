@@ -41,9 +41,9 @@
                             <tr>
                                 <td><i class="fas fa-ruler-vertical"></i> Height</td>
                                 @{
-                                    double Centimeters = @Model.Height;
+                                    double Centimeters = 167.64; 
                                     double Inches = Centimeters / 2.54; 
-                                    double Feet = Math.Floor(Inches / 12);
+                                    double Feet = Math.Floor(Inches / 12); 
                                     Inches = Math.Floor(Inches % 12);
                                 }
                                 <td>@Feet' @Inches" </td>
