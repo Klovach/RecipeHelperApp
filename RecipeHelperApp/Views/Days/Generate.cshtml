@@ -12,7 +12,7 @@
                 <h4>Generate</h4>
                 <hr />
                 <p>Are you sure you want to generate a new day and delete all the data in your @Model.WeekDay slots?</p>
-                <form asp-action="Generate" id="recipeForm">
+                <form asp-action="GenerateConfirmed" id="recipeForm">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
 
