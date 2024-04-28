@@ -1,6 +1,5 @@
-﻿namespace RecipeHelperApp.Services
+﻿namespace RecipeHelperApp.Settings
 {
-    //
     public class AuthMessageSenderOptions
     {
         public string? SendGridKey { get; set; }

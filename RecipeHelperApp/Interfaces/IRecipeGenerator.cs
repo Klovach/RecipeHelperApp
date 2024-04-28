@@ -1,13 +1,16 @@
 ﻿using RecipeHelperApp.Models;
 
-namespace RecipeHelperApp.Services
+namespace RecipeHelperApp.Interfaces
 {
     // IRecipeGenerator 
     public interface IRecipeGenerator
     {
-        string CompilePrompt(NutritionForm nutritionForm);
+        string CompilePrompt(NutritionForm nutritionForm, string mealType);
 
         Task<string> GenerateImage(string prompt);
+
+        Task<Recipe> GenerateRecipeData(NutritionForm nutritionForm, Recipe recipe);
+        Task<string> GenerateRecipeImage(string name);
 
         Task<Recipe> GenerateRecipeAsync(NutritionForm nutritionForm, Recipe recipe);
 

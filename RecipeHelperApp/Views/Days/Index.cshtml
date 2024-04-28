@@ -53,19 +53,19 @@
                                     <tbody>
                                         <tr>
                                             <td><i class="fas fa-fire text-secondary"></i> Calories</td>
-                                            <td>@item.TotalCalories</td>
+                                            <td>@Html.Raw(@item.TotalCalories)g</td>
                                         </tr>
                                         <tr>
                                             <td><i class="fas fa-bread-slice text-secondary"></i> Carbohydrates</td>
-                                            <td>@item.TotalCarbs g</td>
+                                            <td>@Html.Raw(@item.TotalCarbs)g</td>
                                         </tr>
                                         <tr>
                                             <td><i class="fas fa-drumstick-bite text-secondary"></i> Protein</td>
-                                            <td>@item.TotalProtein g</td>
+                                            <td>@Html.Raw(@item.TotalProtein)g</td>
                                         </tr>
                                         <tr>
                                             <td><i class="fas fa-cheese text-secondary"></i> Fat</td>
-                                            <td>@item.TotalFat g</td>
+                                            <td>@Html.Raw(@item.TotalFat)g</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -89,12 +89,12 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img src="~/theme/img/undraw_profile.svg" class="img-fluid mb-3" alt="Menu Image">
+                        <img src="~/theme/img/undraw_workout_gcgu.svg" class="img-fluid mb-3" alt="Menu Image">
                         <p class="mb-3">Manage your days from here. When you're done, feel free to return to the dashboard or meal planner.</p>
                     </div>
                     <div class="btn-group-vertical d-flex justify-content-center">
-                        <a asp-controller="Weeks" asp-action="Index" class="btn btn-success mb-2"><i class="bi bi-calendar-check"></i> Go Back To Mealplanner</a>
-                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success mb-2"><i class="bi bi-house-door"></i> Go Back To Dashboard Home</a>
+                        <a asp-controller="Weeks" asp-action="Index" class="btn btn-success mb-2"><i class="bi bi-calendar-check"></i> Go Back To Meal Planner</a>
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-success mb-2"><i class="bi bi-house-door"></i> Go Back To Dashboard</a>
                     </div>
                 </div>
 

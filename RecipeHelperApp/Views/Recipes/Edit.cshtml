@@ -4,23 +4,35 @@
     ViewData["Title"] = "Edit";
 }
 
-
-<h1>Edit</h1>
-
-<h4>Recipe</h4>
+<h4>Edit @Model.Name</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form method="post" asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="DayId" />
-
+            <input type="hidden" asp-for="Image" />
+            <input type="hidden" id="DeleteFlag" asp-for="DeleteFlag" />
 
             <div class="form-group">
-            <img id="image-preview" src="@Model.Image" alt="Current Image" style="max-width: 500px; max-height: 500px;" />
-            </div>
 
+                @if (Model.ImageFile == null && Model.Image == null)
+                {
+                    <img id="image-preview" src="~/theme/img/istockphoto-1147544807-612x612.jpg" alt="Current Image" class="img-fluid" style="width:100%" />
+                }
+                else if (Model.ImageFile == null)
+                {
+                    <img id="image-preview" src="@Model.Image" alt="Current Image" class="img-fluid" style="width:100%" />
+                }
+                else
+                {
+                    <img id="image-preview" src="@Model.ImageFile" alt="Current Image" class="img-fluid" />
+                }
+
+
+            </div>
+           
             <div class="form-group">
                 <label for="new-image-input">Choose Image:</label>
                 <div class="custom-file">
@@ -67,29 +79,81 @@
                 <span asp-validation-for="Ingredients" class="text-danger"></span>
             </div>
 
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td><label for="calories" class="control-label">Calories</label></td>
-                        <td><input asp-for="Calories" type="number" class="form-control" /></td>
-                        <td><span asp-validation-for="Calories" class="text-danger"></span></td>
-                    </tr>
-                    <tr>
-                        <td><label for="protein" class="control-label">Protein</label></td>
-                        <td><input asp-for="Protein" type="number" class="form-control" /></td>
-                        <td><span asp-validation-for="Protein" class="text-danger"></span></td>
-                    </tr>
-                    <tr>
-                        <td><label for="fat" class="control-label">Fat</label></td>
-                        <td><input asp-for="Fat" type="number" class="form-control" /></td>
-                        <td><span asp-validation-for="Fat" class="text-danger"></span></td>
-                    </tr>
-                    <tr>
-                        <td><label for="carbs" class="control-label">Carbs</label></td>
-                        <td><input asp-for="Carbs" type="number" class="form-control" /></td>
-                        <td><span asp-validation-for="Carbs" class="text-danger"></span></td>
-                    </tr>
-                </table>
+        
+
+
+                <div class="card mb-4">
+                    <h5 class="card-header">
+                        <a data-toggle="collapse" class="card-text" href="#collapse-example" aria-expanded="true" aria-controls="collapse-example" id="heading-example" class="d-block">
+                            <i class="fa fa-chevron-down pull-right"></i>
+                             Nutritional Facts
+                        </a>
+                    </h5>
+                    <div id="collapse-example" class="collapse show" aria-labelledby="heading-example">
+                        <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <td><label for="servings" class="control-label">Servings</label></td>
+                                    <td><input asp-for="Servings" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Servings" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="servingSize" class="control-label">Serving Size</label></td>
+                                    <td><input asp-for="ServingSize" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="ServingSize" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="calories" class="control-label">Calories</label></td>
+                                    <td><input asp-for="Calories" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Calories" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="protein" class="control-label">Protein</label></td>
+                                    <td><input asp-for="Protein" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Protein" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="fat" class="control-label">Fat</label></td>
+                                    <td><input asp-for="Fat" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Fat" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="carbs" class="control-label">Carbohydrates</label></td>
+                                    <td><input asp-for="Carbohydrates" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Carbohydrates" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="sodium" class="control-label">Sodium</label></td>
+                                    <td><input asp-for="Sodium" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Sodium" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="potassium" class="control-label">Potassium</label></td>
+                                    <td><input asp-for="Potassium" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Potassium" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="cholesterol" class="control-label">Cholesterol</label></td>
+                                    <td><input asp-for="Cholesterol" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Cholesterol" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="fiber" class="control-label">Fiber</label></td>
+                                    <td><input asp-for="Fiber" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Fiber" class="text-danger"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="sugar" class="control-label">Sugar</label></td>
+                                    <td><input asp-for="Sugar" type="number" class="form-control" /></td>
+                                    <td><span asp-validation-for="Sugar" class="text-danger"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
 
@@ -142,7 +206,8 @@
             var img = document.getElementById('image-preview');
             img.src = '@Model.Image';
             img.style.display = 'block';
-            
+            document.getElementById('new-image-input').value = null;
+            document.getElementById('DeleteFlag').value = 'False';
 
             // Show the current image.
             document.getElementById('current-image').style.display = 'block';
@@ -154,14 +219,14 @@
         }
 
         function deleteImage() {
+            document.getElementById('DeleteFlag').value = 'True';
             var img = document.getElementById('image-preview');
-            img.src = '';
-            img.style.display = 'none';
-       
-            // Hide the current image
-            document.getElementById('current-image').style.display = 'none';
+            img.src = 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=';
+            img.style.display = 'block';
             // Update the label with the file name
-            document.querySelector('.custom-file-label').textContent = fileName;
+            document.querySelector('.custom-file-label').textContent = 'Choose file...';
+            // Reset the value of the file input
+            document.getElementById('new-image-input').value = null;
         }
     </script>
 }

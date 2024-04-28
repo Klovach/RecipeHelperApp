@@ -11,7 +11,7 @@
                 Nutritional Form
             </h5>
             <div class="m-3">
-            <img class="card-img-top" img src="~/theme/img/undraw_projections_re_ulc6.svg" style="height:300px" />
+                <img class="card-img-top" img src="~/theme/img/undraw_indoor_bike_pwa4.svg" style="height:300px" />
             </div>
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Health Information</h6>
@@ -24,17 +24,39 @@
                     <table class="table">
                         <tbody>
                             <tr>
+                                @if (Model.Sex.Equals("Male"))
+                                {
+                                    <td><i class="fas fa-male"></i> Sex</td>
+                                }
+                                else
+                                {
+                                    <td><i class="fas fa-female"></i> Sex</td>
+                                }
+                                <td>@Html.DisplayFor(model => model.Sex)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-weight"></i> Age</td>
+                                <td>@Html.DisplayFor(model => model.Age)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-ruler-vertical"></i> Height</td>
+                                @{
+                                    double Centimeters = @Model.Height;
+                                    double Inches = Centimeters / 2.54; 
+                                    double Feet = Math.Floor(Inches / 12);
+                                    Inches = Math.Floor(Inches % 12);
+                                }
+                                <td>@Feet' @Inches" </td>
+                            </tr>
+                            <tr>
                                 <td><i class="fas fa-weight"></i> Weight</td>
                                 <td>@Html.DisplayFor(model => model.Weight)</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-bullseye"></i> Target Weight</td>
-                                <td>@Html.DisplayFor(model => model.TargetWeight)</td>
+                                <td><i class="fas fa-bullseye"></i> Pounds Per Week</td>
+                                <td>@Html.DisplayFor(model => model.PoundsPerWeek)</td>
                             </tr>
-                            <tr>
-                                <td><i class="far fa-calendar-alt"></i> Target Weight Date</td>
-                                <td>@Html.DisplayFor(model => model.TargetWeightDate)</td>
-                            </tr>
+                        
                             <tr>
                                 <td><i class="fas fa-running"></i> Activity Level</td>
                                 <td>@Html.DisplayFor(model => model.ActivityLevel)</td>
@@ -58,6 +80,18 @@
             <div class="card-body">
                 <table class="table">
                     <tbody>
+                        <tr>
+                            <td><i class="fas fa-apple-alt"></i> Use My Nutritional Profile In Recipe Generation</td>
+                            <td>@Html.DisplayFor(model => model.IncludeNutrition)</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-utensils"></i> Specify My Servings</td>
+                            <td>@Html.DisplayFor(model => model.IncludeServings)</td>                        
+                        </tr>
+                            @if (Model.IncludeServings)
+                            {
+                               <td> <i>Your Number of Servings Per Meal is @Model.Servings</i></td>
+                            }
                         <tr>
                             <td><i class="fas fa-plus-circle"></i> Include My Ingredients</td>
                             <td>@Html.DisplayFor(model => model.IncludeIngredients)</td>
@@ -95,15 +129,15 @@
                         <thead>
                             <tr>
                                 <th>Daily Calories</th>
-                                <th><i class="fas fa-circle text-primary"></i> Carbs</th>
-                                <th><i class="fas fa-circle text-success"></i> Protein</th>
-                                <th><i class="fas fa-circle text-info"></i> Fat</th>
+                                <th><i class="fas fa-circle text-success"></i> Carbohydrates</th>
+                                <th><i class="fas fa-circle text-danger"></i> Protein</th>
+                                <th><i class="fas fa-circle text-warning"></i> Fat</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>@Html.DisplayFor(model => model.Nutrients.Calories)</td>
-                                <td>@Html.DisplayFor(model => model.Nutrients.Carbs)</td>
+                                <td>@Html.DisplayFor(model => model.Nutrients.Carbohydrates)</td>
                                 <td>@Html.DisplayFor(model => model.Nutrients.Protein)</td>
                                 <td>@Html.DisplayFor(model => model.Nutrients.Fat)</td>
                             </tr>
@@ -147,9 +181,9 @@ var myPieChart = new Chart(ctx, {
   data: {
     labels: ["Carbs", "Protein", "Fat"],
     datasets: [{
-      data: [@Model.Nutrients.Carbs, @Model.Nutrients.Protein, @Model.Nutrients.Fat],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      data: [@Model.Nutrients.Carbohydrates, @Model.Nutrients.Protein, @Model.Nutrients.Fat],
+                backgroundColor: ['#1cc88a', '#e74a3b', '#E4A11B'],
+                hoverBackgroundColor: ['#1cc88a', '#e74a3b', '#E4A11B'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },

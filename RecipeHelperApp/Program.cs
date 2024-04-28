@@ -7,7 +7,10 @@ using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using RecipeHelperApp.Data;
+using RecipeHelperApp.Interfaces;
 using RecipeHelperApp.Services;
+using RecipeHelperApp.Settings;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,12 +57,34 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 builder.Services.AddControllersWithViews();
 
+
+// Protect against brute force attacks. 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Lockout.MaxFailedAccessAttempts = 10;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+});
+
+
+
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<ISmsSender, SmsSender>();
 
 builder.Services.Configure<AuthMessageSenderOptions>(options =>
 {
     options.SendGridKey = builder.Configuration["SendGridKey"];
 });
+
+builder.Services.Configure<SMSoptions>(options =>
+{
+    options.SMSAccountIdentification = builder.Configuration["SMSAccountIdentification"];
+    options.SMSAccountPassword = builder.Configuration["SMSAccountPassword"];
+    options.SMSAccountFrom = builder.Configuration["SMSAccountFrom"];
+});
+
+
+
 
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 
@@ -75,6 +100,13 @@ builder.Services.AddScoped<IRecipeGenerator, RecipeGenerator>();
 builder.Services.Configure<OpenAISettings>(options =>
 {
     options.OpenAIKey = builder.Configuration["OpenAIKey"];
+});
+
+builder.Services.AddScoped<INutritionService, NutritionService>();
+
+builder.Services.Configure<NutritionServiceSettings>(options =>
+{
+    options.NutritionAPIKey = builder.Configuration["NutritionAPIKey"];
 });
 
 // -----------------------------------------------------------

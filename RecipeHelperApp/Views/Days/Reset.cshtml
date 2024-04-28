@@ -4,55 +4,44 @@
     ViewData["Title"] = "Reset";
 }
 
-<h1>Reset</h1>
+<div class="row justify-content-center">
+    <div class="card shadow p-5 text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <img src="~/theme/img/undraw_diet_ghvw.svg" class="img-fluid" />
+                <h4>Reset</h4>
+                <hr />
+                <p>Are you sure you want to reset your day and delete the data in your day: @Model.WeekDay?</p>
+                <form asp-action="ResetConfirmed">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
 
-<h3>Are you sure you want to reset this day?</h3>
-<div>
-    <h4>Day</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Week)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Week.UserId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WeekDay)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WeekDay)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalCalories)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalCalories)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalProtein)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalProtein)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalFat)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalFat)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalCarbs)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalCarbs)
-        </dd>
-    </dl>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                            {
+                                <span>@error.ErrorMessage</span>
+                                <br />
+                            }
+                        </div>
+                    }
 
-    <form asp-action="ResetConfirmed">
-        <input type="hidden" asp-for="Id" />
-        <partial name="_LoadingButtonPartial" message="Resetting your weekday and clearing your recipe slots, please stand by..." />
-        <input type="submit" value="Reset" class="btn btn-danger" id="submit-button-group" /> |
-        <a href="@Url.Action("Index", "Days", new { weekId = Model.WeekId })">Back to List</a>
-    </form>
+                    <div class="form-group">
+                        <div id="submit-button-group" class="form-group">
+                            <input type="submit" value="Reset" class="btn btn-danger" />
+                        </div>
+                        <a class="btn btn-secondary" href="@Url.Action("Index", "Days", new { weekId = Model.WeekId })">Back to List</a>
+                    </div>
+
+                    <partial name="_LoadingButtonPartial" message="Resetting your weekday and clearing your recipe slots, please stand by..." />
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+

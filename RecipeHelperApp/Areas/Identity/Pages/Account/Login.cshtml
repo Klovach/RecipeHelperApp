@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Security.Claims
 @model LoginModel
 
 @{
@@ -6,10 +7,16 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-@* <div class="row">
-    <div class="col-md-4"> *@
+@if (@User.FindFirst(ClaimTypes.Name)?.Value != null)
+            {
+    <h1>Switch Accounts</h1>
+}
+else
+{
+    <h1>Log In</h1>
+}
+
 
         <section>
 
@@ -17,7 +24,9 @@
 
 
     <form id="account" method="post">
-        <h2>Sign into your account!</h2>
+
+        <p>
+            <i>Sign into the account you want to use!</i><p>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
         <div class="form-floating mb-3">
@@ -42,15 +51,28 @@
         <hr>
 
         <div class="text-left">
-            <p>
-                <a id="forgot-password" asp-page="./ForgotPassword"><i class="fas fa-lock"></i> Forgot your password?</a>
-            </p>
-            <p>
-                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-user-plus"></i> Register as a new user</a>
-            </p>
-            <p>
-                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation"><i class="fas fa-envelope"></i> Resend email confirmation</a>
-            </p>
+                    @if (@User.FindFirst(ClaimTypes.Name)?.Value != null)
+                    {
+                        <p>
+                        <a asp-controller="Dashboard" asp-action="Index"><i class="fas fa-user-plus"></i> Return to dashboard</a>
+                        </p>
+                         <p>
+                            <a id="forgot-password" asp-page="./ForgotPassword"><i class="fas fa-lock"></i> Forgot your password?</a>
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <a id="forgot-password" asp-page="./ForgotPassword"><i class="fas fa-lock"></i> Forgot your password?</a>
+                        </p>
+                        <p>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-user-plus"></i> Register as a new user</a>
+                        </p>
+                        <p>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation"><i class="fas fa-envelope"></i> Resend email confirmation</a>
+                        </p>
+            }
+           
         </div>
     </form>
 

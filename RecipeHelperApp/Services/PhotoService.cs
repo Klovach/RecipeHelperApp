@@ -2,6 +2,8 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using System.Net;
+using RecipeHelperApp.Interfaces;
+using RecipeHelperApp.Settings;
 
 namespace RecipeHelperApp.Services
 {
@@ -103,9 +105,15 @@ namespace RecipeHelperApp.Services
         {
             // Extracts the name of the file (without the extension) from a URL. '/' splits the string into an array of substrings. 
             // For instance: https://websitename.com/images/photo.jpg would become "photo" 
-            var publicId = publicUrl.Split('/').Last().Split('.')[0];
+            string publicId = publicUrl.Split('/').Last().Split('.')[0];
+            Console.WriteLine("public id was " + publicId);
             // Passes the publicId into the deletion parameters.
-            var deleteParams = new DeletionParams(publicId);
+            var deleteParams = new DeletionParams(publicId)
+            {
+                ResourceType = ResourceType.Image,
+                Invalidate = true
+
+            };
 
             // Deletes the file from Cloudinary. 
             return await _cloudinary.DestroyAsync(deleteParams);

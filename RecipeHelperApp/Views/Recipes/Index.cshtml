@@ -9,7 +9,7 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        bool isEmptyRecipe = string.IsNullOrEmpty(item.Name) && string.IsNullOrEmpty(item.Description) && string.IsNullOrEmpty(item.Instructions) && string.IsNullOrEmpty(item.Ingredients) && item.Calories == 0 && item.Protein == 0 && item.Fat == 0 && item.Carbs == 0;
+        bool isEmptyRecipe = string.IsNullOrEmpty(item.Image) && string.IsNullOrEmpty(item.Name) && string.IsNullOrEmpty(item.Description) && string.IsNullOrEmpty(item.Instructions) && string.IsNullOrEmpty(item.Ingredients) && item.Calories == 0 && item.Protein == 0 && item.Fat == 0 && item.Carbohydrates == 0;
       
 
         <div class="col-md-6 mb-4">

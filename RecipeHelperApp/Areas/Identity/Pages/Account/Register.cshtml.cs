@@ -128,14 +128,8 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             public double Weight { get; set; }
 
             [Required]
-            [Display(Name = "Target Weight")]
-            public double TargetWeight { get; set; }
-
-            [Required]
-            [Display(Name = "Target Weight Date")]
-            [ValidateDates]
-            [ValidateTargetDate(ErrorMessage = "The provided target date is too close to be safe. Pick another date or re-avaluate how much weight you want to gain or lose.")]
-            public DateTime TargetWeightDate { get; set; }
+            [Display(Name = "Pounds Per Week")]
+            public double PoundsPerWeek { get; set; }
 
             [Required]
             [Display(Name = "Activity Level")]
@@ -143,7 +137,6 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Fitness Goal")]
-            [ValidateFitnessGoal]
             public string FitnessGoal { get; set; }
 
 
@@ -154,11 +147,12 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
             /// <param name="inches"></param>
             /// <param name="feet"></param>
             /// <returns> centimiters </returns>
-            public double convertToCM(double inches, double feet)
+            public double convertToCM(double feet, double inches)
             {
                 double cm;
                 double totalInches = feet * 12 + inches;
                 cm = totalInches * 2.54;
+                Console.WriteLine(cm); 
                 return cm;
             }
         }
@@ -181,13 +175,12 @@ namespace RecipeHelperApp.Areas.Identity.Pages.Account
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                   
+
                     BirthDate = Input.BirthDate,
                     Sex = Input.Sex,
                     Height = Input.Height,
                     Weight = Input.Weight,
-                    TargetWeight = Input.TargetWeight,
-                    TargetWeightDate = Input.TargetWeightDate,
+                    PoundsPerWeek = Input.PoundsPerWeek, 
                     ActivityLevel = Input.ActivityLevel,
                     FitnessGoal = Input.FitnessGoal
                 };

@@ -1,8 +1,7 @@
 ﻿using CloudinaryDotNet.Actions;
 
-namespace RecipeHelperApp.Services
+namespace RecipeHelperApp.Settings
 {
-    // Cloudinary Setting 
     public class CloudinarySettings
     {
         public string? CloudName { get; set; }

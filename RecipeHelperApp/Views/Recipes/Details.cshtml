@@ -52,6 +52,14 @@
                                 <td>@Model.Name</td>
                             </tr>
                             <tr>
+                                <td><i class="fas fa-chart-pie"></i> </td>
+                                <td>@Model.Servings Serving(s)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-fire"></i> </td>
+                                <td>Serving Size @Html.Raw(Model.GetNutrientAsString("Serving Size", Model.ServingSize))</td>
+                            </tr>
+                            <tr>
                                 <td class="text-no-wrap"><i class="fas fa-list-ul"></i> </td>
                                 <td>@Html.Raw(Model.Instructions != null ? Model.Instructions.Replace("\n", "<br/>") : "")</td>
                             </tr>
@@ -86,19 +94,39 @@
                         <tbody>
                             <tr>
                                 <td><i class="fas fa-fire"></i> Calories</td>
-                                <td>@Html.Raw(Model.GetNutrientAsString(Model.Calories))</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Calories", Model.Calories))</td>
                             </tr>
                             <tr>
                                 <td><i class="fas fa-drumstick-bite"></i> Protein</td>
-                                <td>@Html.Raw(Model.GetNutrientAsString(Model.Protein))</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Protein", Model.Protein))</td>
                             </tr>
                             <tr>
                                 <td><i class="fas fa-oil-can"></i> Fat</td>
-                                <td>@Html.Raw(Model.GetNutrientAsString(Model.Fat))</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Fat", Model.Fat))</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-bread-slice"></i> Carbs</td>
-                                <td>@Html.Raw(Model.GetNutrientAsString(Model.Carbs))</td>
+                                <td><i class="fas fa-bread-slice"></i> Carbohydrates</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Carbohydrates", Model.Carbohydrates))</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-water"></i> Sodium</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Sodium", Model.Sodium))</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-dna"></i> Potassium</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Potassium", Model.Potassium))</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-heartbeat"></i> Cholesterol</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Cholesterol", Model.Cholesterol))</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-tree"></i> Fiber</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Fiber", Model.Fiber))</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-cube"></i> Sugar</td>
+                                <td>@Html.Raw(Model.GetNutrientAsString("Sugar", Model.Sugar))</td>
                             </tr>
                         </tbody>
                     </table>

@@ -4,17 +4,40 @@
     ViewData["Title"] = "Generate";
 }
 
-<h1>Generate</h1>
+<div class="row justify-content-center">
+    <div class="card shadow p-5 text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <img src="~/theme/img/undraw_tasting_re_3k5a.svg" class="img-fluid" />
+                <h4>Generate</h4>
+                <hr />
+                <p>Are you sure you want to generate a new day and delete all the data in your @Model.WeekDay slots?</p>
+                <form asp-action="Generate" id="recipeForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
 
-<h4>Are you sure you want to generate this day? Bear in mind generating an entire day will remove all existing recipes in your day. This action cannot be undone.</h4>
-<div>
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                            {
+                                <span>@error.ErrorMessage</span>
+                                <br />
+                            }
+                        </div>
+                    }
 
-    <form asp-action="GenerateConfirmed">
-        <input type="hidden" asp-for="Id" />
-    
-        <input type="submit" value="Generate" class="btn btn-success" id="submit-button-group"/>
-       
-        <partial name="_LoadingButtonPartial" message="Generating your day, please stand by..." />
-        <a href="@Url.Action("Index", "Days", new { weekId = Model.WeekId })">Back to List</a>
-    </form>
+                    <div class="form-group">
+                        <div class="form-group" id="submit-button-group">
+                            <input type="submit" value="Generate" class="btn btn-success" />
+                        </div>
+                        <a class="btn btn-secondary" href="@Url.Action("Index", "Days", new { weekId = Model.WeekId })">Back to List</a>
+                    </div>
+
+                    <partial name="_LoadingButtonPartial" message="Resetting your recipe, please stand by..." />
+
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

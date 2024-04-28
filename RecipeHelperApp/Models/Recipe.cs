@@ -24,12 +24,21 @@ namespace RecipeHelperApp.Models
 
         //Ingredients
         public string? Ingredients { get; set; }
+        
+        // Servings 
+        public int Servings { get; set; }
 
+        public double ServingSize { get; set; }
         // Nutritional Facts
         public double Calories { get; set; }
         public double Protein { get; set; }
         public double Fat { get; set; }
-        public double Carbs { get; set; }
+        public double Carbohydrates { get; set; }
+        public double Sodium { get; set; }
+        public double Potassium { get; set; }
+        public double Cholesterol { get; set; }
+        public double Fiber { get; set; }
+        public double Sugar { get; set; }
 
         public Recipe(string MealType)
         {
@@ -45,50 +54,32 @@ namespace RecipeHelperApp.Models
 
         }
 
-
-
-        public string GetNutrientAsString(double nutrient)
+        public string GetNutrientAsString(string nutrient, double count)
         {
             string value;
-            value = nutrient.ToString() + "g";
-            return value;
-        }
 
-    /*    public async Task<Recipe> GenerateRecipe(NutritionForm nutritionForm)
-        {
-            Recipe generatedRecipe = new Recipe();
-            generatedRecipe.Id = this.Id;
-            generatedRecipe.DayId = this.DayId;
-            generatedRecipe.MealType = this.MealType;
-
-            if (generatedRecipe != null)
+            if (nutrient.Equals("Sodium") || nutrient.Equals("Potassium") || nutrient.Equals("Cholesterol"))
             {
-                // The recipe was generated successfully, do something with it
-                Console.WriteLine("Generated recipe:");
-                Console.WriteLine($"Id: {generatedRecipe.Id}");
-                Console.WriteLine($"Day: {generatedRecipe.Day}");
-                Console.WriteLine($"DayId: {generatedRecipe.DayId}");
-                Console.WriteLine($"MealType: {generatedRecipe.MealType}");
-                Console.WriteLine($"Name: {generatedRecipe.Name}");
-                Console.WriteLine($"Description: {generatedRecipe.Description}");
-                Console.WriteLine($"Instructions: {generatedRecipe.Instructions}");
-                Console.WriteLine($"Ingredients: {generatedRecipe.Ingredients}");
-                Console.WriteLine($"Calories: {generatedRecipe.Calories}");
-                Console.WriteLine($"Protein: {generatedRecipe.Protein}");
-                Console.WriteLine($"Fat: {generatedRecipe.Fat}");
-                Console.WriteLine($"Carbs: {generatedRecipe.Carbs}");
+                if (count <= 0)
+                    value = count.ToString("0") + "mg"; 
+                else
+                    value = count.ToString("#.#") + "mg";
             }
             else
             {
-                // Handle the case where the recipe could not be generated
-                Console.WriteLine("Error: Failed to generate recipe.");
+                if (count <= 0)
+                    value = count.ToString("0") + "g";
+                else
+                    value = count.ToString("#.#") + "g";
             }
 
-            return await RecipeGenerator.GenerateRecipeAsync(nutritionForm, generatedRecipe);
-        } */
+            return value;
+        }
+
 
         public void ResetValues()
         {
+            Image = null;
             Name = "";
             Description = "";
             Instructions = "";
@@ -96,125 +87,10 @@ namespace RecipeHelperApp.Models
             Calories = 0;
             Protein = 0;
             Fat = 0;
-            Carbs = 0;
+            Carbohydrates = 0;
 
         }
 
-        public void ParseGeneratedRecipe(string generatedRecipe)
-        {
-
-            Console.WriteLine(generatedRecipe);
-
-            Name = "";
-            Description = "";
-            Instructions = "";
-            Ingredients = "";
-            Calories = 0.0;
-            Protein = 0.0;
-            Fat = 0.0;
-            Carbs = 0.0;
-
-            // Split the generated recipe string into lines using \n.
-            var lines = generatedRecipe.Split("\n");
-
-            // Define regex patterns for numerical values
-            Regex numericRegex = new Regex(@"\d+(\.\d+)?");
-
-            // Iterate through each line to identify and extract relevant information,
-            foreach (var line in lines)
-            {
-                // Identify and extract recipe name.
-                if (line.StartsWith("Name:"))
-                {
-                    Name = line.Substring("Name:".Length).Trim();
-                }
-                else if (line.StartsWith("Description:"))
-                {
-                    var descriptionBuilder = new StringBuilder();
-                    int index = Array.IndexOf(lines, line);
-                    while (index < lines.Length && !lines[index].StartsWith("Instructions:"))
-                    {
-                        descriptionBuilder.AppendLine(lines[index].Trim());
-                        index++;
-                    }
-                    Description = descriptionBuilder.ToString().Trim();
-                }
-                // Identify and extract recipe instructions.
-                else if (line.StartsWith("Instructions:"))
-                {
-                    var instructionsBuilder = new StringBuilder();
-                    int index = Array.IndexOf(lines, line);
-                    while (index < lines.Length && !lines[index].StartsWith("Ingredients:"))
-                    {
-                        instructionsBuilder.AppendLine(lines[index].Trim());
-                        index++;
-                    }
-                    Instructions = instructionsBuilder.ToString().Trim();
-                }
-                // Identify and extract recipe ingredients.
-                else if (line.StartsWith("Ingredients:"))
-                {
-                    var ingredientsBuilder = new StringBuilder();
-                    int index = Array.IndexOf(lines, line);
-                    while (index < lines.Length && !lines[index].StartsWith("Calories:"))
-                    {
-                        ingredientsBuilder.AppendLine(lines[index].Trim());
-                        index++;
-                    }
-                    Ingredients = ingredientsBuilder.ToString().Trim();
-                }
-
-                // Identify and extract the nutritional facts using regex.
-                else if (line.StartsWith("Calories:"))
-                {
-                    string valueString = numericRegex.Match(line).Value;
-                    if (double.TryParse(valueString, out double value))
-                    {
-                        Calories = value;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Failed to parse calories value: " + valueString);
-                    }
-                }
-                else if (line.StartsWith("Protein:"))
-                {
-                    string valueString = numericRegex.Match(line).Value;
-                    if (double.TryParse(valueString, out double value))
-                    {
-                        Protein = value;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Failed to parse protein value: " + valueString);
-                    }
-                }
-                else if (line.StartsWith("Fat:"))
-                {
-                    string valueString = numericRegex.Match(line).Value;
-                    if (double.TryParse(valueString, out double value))
-                    {
-                        Fat = value;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Failed to parse fat value: " + valueString);
-                    }
-                }
-                else if (line.StartsWith("Carbohydrates:"))
-                {
-                    string valueString = numericRegex.Match(line).Value;
-                    if (double.TryParse(valueString, out double value))
-                    {
-                        Carbs = value;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Failed to parse carbohydrates value: " + valueString);
-                    }
-                }
-            }
-
-        }
+      
     }
 }

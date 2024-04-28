@@ -17,7 +17,7 @@ namespace RecipeHelperApp.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -218,6 +218,10 @@ namespace RecipeHelperApp.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<double>("PoundsPerWeek")
+                        .HasPrecision(7, 2)
+                        .HasColumnType("float(7)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -225,13 +229,6 @@ namespace RecipeHelperApp.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<double>("TargetWeight")
-                        .HasPrecision(7, 2)
-                        .HasColumnType("float(7)");
-
-                    b.Property<DateTime>("TargetWeightDate")
-                        .HasColumnType("date");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -310,12 +307,18 @@ namespace RecipeHelperApp.Data.Migrations
                     b.Property<bool>("IncludeNutrition")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IncludeServings")
+                        .HasColumnType("bit");
+
                     b.Property<string>("IncludedIngredients")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NutrientsJson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Servings")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -340,7 +343,10 @@ namespace RecipeHelperApp.Data.Migrations
                     b.Property<double>("Calories")
                         .HasColumnType("float");
 
-                    b.Property<double>("Carbs")
+                    b.Property<double>("Carbohydrates")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Cholesterol")
                         .HasColumnType("float");
 
                     b.Property<int>("DayId")
@@ -350,6 +356,9 @@ namespace RecipeHelperApp.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Fat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Fiber")
                         .HasColumnType("float");
 
                     b.Property<string>("Image")
@@ -368,7 +377,22 @@ namespace RecipeHelperApp.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Potassium")
+                        .HasColumnType("float");
+
                     b.Property<double>("Protein")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ServingSize")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Servings")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Sodium")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Sugar")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

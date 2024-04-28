@@ -1,6 +1,5 @@
-﻿namespace RecipeHelperApp.Services
+﻿namespace RecipeHelperApp.Settings
 {
-    //OpenAiSettings 
     public class OpenAISettings
     {
         public string? OpenAIKey { get; set; }

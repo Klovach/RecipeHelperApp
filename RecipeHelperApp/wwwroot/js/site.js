@@ -68,51 +68,41 @@ window.onload = function () {
 
 // -----------------------------------------------------------------------------------
 
-// MODAL LOGIC
+// MODAL LOGIC.
+// Impementing later, AJAX not working. 
 
-// Weeks : Create, Delete
-$('#createButton').click(function () {
-    $.get('@Url.Action("Create", "Weeks")', function (data) {
-        $('#modalContainer').html(data);
-        $('#createWeekModal').modal('show');
+// Function to handle AJAX call and modal display
+function showModal(url) {
+    $.get(url, function (data) {
+        console.log(data);
+        $('#myModal .modal-body').html(data);
+        $('#myModal').modal('show');
     });
+}
+
+// Weeks -- Create, Delete
+$('#createButton').click(function () {
+    showModal('@Url.Action("Create", "Weeks")');
 });
 
 $('#deleteWeekButton').click(function () {
-    $.get('@Url.Action("Delete", "Weeks")', function (data) {
-        $('#modalContainer').html(data);
-        $('#deleteWeekModal').modal('show');
-    });
+    showModal('@Url.Action("Delete", "Weeks")');
 });
 
-// Days : Reset, Generate
+// Days -- Reset, Generate
 $('#resetDaysButton').click(function () {
-    $.get('@Url.Action("Reset", "Days")', function (data) {
-        $('#modalContainer').html(data);
-        $('#resetDaysModal').modal('show');
-    });
+    showModal('@Url.Action("Reset", "Days")');
 });
 
 $('#generateDaysButton').click(function () {
-    $.get('@Url.Action("Generate", "Days")', function (data) {
-        $('#modalContainer').html(data);
-        $('#generateDaysModal').modal('show');
-    });
+    showModal('@Url.Action("Generate", "Days")');
 });
 
-// Recipes : Reset, Generate
-$('#resetRecipesButton').click(function () {
-    $.get('@Url.Action("Reset", "Recipes")', function (data) {
-        $('#modalContainer').html(data);
-        $('#resetRecipesModal').modal('show');
-    });
+// Recipes -- Reset, Generate
+$('#resetRecipeButton').click(function () {
+    $('#myModal .modal-body').load('@Url.Action("Reset", "Recipes")');
 });
 
-$('#generateRecipesButton').click(function () {
-    $.get('@Url.Action("Generate", "Recipes")', function (data) {
-        $('#modalContainer').html(data);
-        $('#generateRecipesModal').modal('show');
-    });
+$('#generateRecipeButton').click(function () {
+    showModal('@Url.Action("Generate", "Recipes")');
 });
-
-

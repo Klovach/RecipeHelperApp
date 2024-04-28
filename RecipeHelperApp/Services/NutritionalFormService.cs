@@ -5,7 +5,6 @@ using static RecipeHelperApp.Models.NutritionForm;
 
 namespace RecipeHelperApp.Services
 {
-    [Keyless]
     public class NutritionalFormService
     {
         public NutritionalFormService()
@@ -15,46 +14,39 @@ namespace RecipeHelperApp.Services
         // NutritionFormService 
         public Nutrients CalculateNeeds(ApplicationUser user)
         {
-            int userAge = CalculateAge(user.BirthDate);
+            int userAge = user.GetAge(); 
             double BMR = GetBaseMetabolicRate(user.Sex, user.Weight, user.Height, userAge);
             double TDEE = GetTotalDailyExpenditure(user.ActivityLevel, BMR);
-            double poundsPerWeek = GetPoundsPerWeek(user.Weight, user.TargetWeight, user.TargetWeightDate);
-            double dailyCalories = GetDailyCalories(user.FitnessGoal, user.Weight, poundsPerWeek, TDEE);
+            double dailyCalories = GetDailyCalories(user.FitnessGoal, user.PoundsPerWeek, TDEE);
             Nutrients nutrients = GetMacroRatios(user.FitnessGoal, dailyCalories);
 
             return nutrients;
         }
 
-        // Calculate a user's age from birth date.
-        public int CalculateAge(DateTime birthDate)
-        {
-            DateTime currentDate = DateTime.Now;
-            int age = currentDate.Year - birthDate.Year;
-
-            if (birthDate > currentDate.AddYears(-age))
-            {
-                age--;
-            }
-
-            return age;
-        }
-
         // Calculate Base Metabolic Rate Using Miffin-St Jeor Equation:
         public double GetBaseMetabolicRate(string sex, double weight, double height, int age)
         {
+            Console.WriteLine("Weight was:" + weight);
+            Console.WriteLine("Height was:" + height);
+            Console.WriteLine("Sex was: " + sex);
+
             double BMR;
+            // Convert weight to KG
+            weight = weight / 2.20462;
+
 
             // If Male:
             if (sex == "Male")
             {
-                BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+                BMR = (10 * weight) + (6.25 * height) - (5 * age) + 5;
             }
             // If Female:
             else
             {
-                BMR = 10 * weight + 6.25 * height - 5 * age - 161;
+                BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161;
             }
 
+            Console.WriteLine("BMR was: " + BMR);
             return BMR;
         }
 
@@ -70,7 +62,7 @@ namespace RecipeHelperApp.Services
                     TDEE = BMR * activityMultiplier;
                     break;
                 case "Minimally Active":
-                    activityMultiplier = 3.755;
+                    activityMultiplier = 1.375;
                     TDEE = BMR * activityMultiplier;
                     break;
                 case "Moderately Active":
@@ -89,23 +81,17 @@ namespace RecipeHelperApp.Services
                     break;
             }
 
+            Console.WriteLine("TDEE was: " + TDEE);
+
             return TDEE;
         }
 
-        public double GetPoundsPerWeek(double userWeight, double userGoalWeight, DateTime goalDate)
-        {
-            TimeSpan timeRemaining = goalDate - DateTime.Now;
-            int weeksRemaining = (int)Math.Ceiling(timeRemaining.TotalDays / 7);
-            double poundsPerWeek = (userWeight - userGoalWeight) / weeksRemaining;
-            return poundsPerWeek;
-        }
-
-        public double GetDailyCalories(string nutritionalGoal, double userWeight, double poundsPerWeek, double TDEE)
+        public double GetDailyCalories(string nutritionalGoal,double poundsPerWeek, double TDEE)
         {
             if (string.IsNullOrEmpty(nutritionalGoal)) return 0;
 
             double dailyCalories = 0;
-            double caloricDifference = poundsPerWeek * (3500 / userWeight) / 7;
+            double caloricDifference = (poundsPerWeek * 3500) / 7;
 
             switch (nutritionalGoal)
             {
@@ -113,15 +99,19 @@ namespace RecipeHelperApp.Services
                     dailyCalories = TDEE - caloricDifference;
                     break;
 
-                case "Mantain Weight":
+                case "Maintain Weight":
                     dailyCalories = TDEE;
                     break;
 
                 case "Gain Weight":
                     dailyCalories = TDEE + caloricDifference;
                     break;
+                default:
+                    Console.Write("Something went wrong");
+                    break; 
             }
 
+            Console.WriteLine("daily Calories" + dailyCalories);
             return dailyCalories;
         }
 
@@ -133,19 +123,19 @@ namespace RecipeHelperApp.Services
             switch (nutritionalGoal)
             {
                 case "Lose Weight":
-                    carbPercentage = 0.30;
-                    proteinPercentage = 0.50;
-                    fatPercentage = 0.20;
+                    carbPercentage = 0.35;
+                    proteinPercentage = 0.30;
+                    fatPercentage = 0.35;
                     break;
                 case "Maintain Weight":
-                    carbPercentage = 0.55;
-                    proteinPercentage = 0.25;
-                    fatPercentage = 0.25;
+                    carbPercentage = 0.35;
+                    proteinPercentage = 0.30;
+                    fatPercentage = 0.35;
                     break;
                 case "Gain Weight":
-                    carbPercentage = 0.45;
-                    proteinPercentage = 0.35;
-                    fatPercentage = 0.20;
+                    carbPercentage = 0.35;
+                    proteinPercentage = 0.30;
+                    fatPercentage = 0.35;
                     break;
                 default:
                     break;
@@ -160,7 +150,7 @@ namespace RecipeHelperApp.Services
             double fatGrams = fatCalories / 9;
 
 
-            Nutrients macroRatios = new Nutrients(Math.Round(dailyCalories), Math.Round(carbGrams), Math.Round(proteinGrams), Math.Round(fatGrams));
+            Nutrients macroRatios = new Nutrients(Math.Round(dailyCalories, 1), Math.Round(carbGrams, 1), Math.Round(proteinGrams, 1), Math.Round(fatGrams, 1));
 
             return macroRatios;
         }

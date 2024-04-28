@@ -125,19 +125,15 @@
                 <span asp-validation-for="Input.FitnessGoal" class="text-danger"></span>
             </div>
 
-            <div class="form-floating mb-3 weightFields">
-        <label asp-for="Input.TargetWeight">Target Weight (lbs)</label>
-                <input type="decimal" asp-for="Input.TargetWeight" class="form-control" autocomplete="off" />
-             
-                <span asp-validation-for="Input.TargetWeight" class="text-danger"></span>
-            </div>
-
-            <div class="form-floating mb-3 weightFields">
-        <label asp-for="Input.TargetWeightDate">Target Weight Date</label>
-                <input type="date" asp-for="Input.TargetWeightDate" class="form-control" autocomplete="off" />
-               
-                <span asp-validation-for="Input.TargetWeightDate" class="text-danger"></span>
-            </div>
+        <div class="form-floating mb-3">
+            <label asp-for="Input.PoundsPerWeek">Pounds Per Week</label>
+            <select id="poundsPerWeek" asp-for="Input.PoundsPerWeek" class="form-control" aria-required="true">
+                <option value="0.5">Relaxed (0.5 lbs per week)</option>
+                <option value="1">Moderate (1 lbs per week)</option>
+                <option value="2">Intense (2 lbs per week)</option>
+            </select>
+            <span asp-validation-for="Input.PoundsPerWeek" class="text-danger"></span>
+        </div>
 
 
     <!-- Section 2: Personal Information : End About Your Goals -->

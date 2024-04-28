@@ -41,12 +41,8 @@ namespace RecipeHelperApp.Data
               .HasPrecision(7, 2);
 
             modelBuilder.Entity<ApplicationUser>()
-              .Property(e => e.TargetWeight)
+              .Property(e => e.PoundsPerWeek)
               .HasPrecision(7, 2);
-
-            modelBuilder.Entity<ApplicationUser>()
-              .Property(e => e.TargetWeightDate)
-             .HasColumnType("date");
 
             modelBuilder.Entity<ApplicationUser>()
               .Property(e => e.ActivityLevel)

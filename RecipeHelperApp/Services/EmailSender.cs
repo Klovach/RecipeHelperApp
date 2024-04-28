@@ -2,6 +2,7 @@
 using SendGrid.Helpers.Mail;
 using SendGrid;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using RecipeHelperApp.Settings;
 
 
 namespace RecipeHelperApp.Services

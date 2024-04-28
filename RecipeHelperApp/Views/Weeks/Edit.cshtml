@@ -4,49 +4,45 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Week</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="UserId" />
-            <span asp-validation-for="UserId" class="text-danger"></span>
-            <div class="form-group">
-                <label asp-for="WeekName" class="control-label"></label>
-                <input asp-for="WeekName" class="form-control" />
-                <span asp-validation-for="WeekName" class="text-danger"></span>
+    <div class="card p-5 shadow">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="~/theme/img/undraw_stability_ball_b-4-ia.svg" class="img-fluid" />
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            
-         
-                @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
-                {
-                <div class="alert alert-danger" role="alert">
-                    <span>@error.ErrorMessage</span>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h4>Edit Week</h4>
+                    <hr />
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="UserId" />
+                        <span asp-validation-for="UserId" class="text-danger"></span>
 
-                    <br />
+                        <div class="form-group">
+                            <label asp-for="WeekName" class="control-label"></label>
+                            <input asp-for="WeekName" class="form-control" />
+                            <span asp-validation-for="WeekName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-success" />
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
                 </div>
-                }
-         
-            
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

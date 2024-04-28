@@ -9,13 +9,13 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-
-            <h1>Email Confirmed</h1>
-            <img src="~/theme/img/undraw_posting_photo.svg" class="img-fluid" alt="Posting Photo">
+            <img src="~/theme/img/undraw_team_up_re_84ok.svg" class="img-fluid" alt="Posting Photo">
         </div>
         <div class="col-md-6">
+            <h1>Email Confirmed</h1>
+            <hr />
             <p>Welcome to MealMaven @User.FindFirst(ClaimTypes.Name)?.Value! Looks like you're ready to start customizing your meal plan! Click here to get started!</p>
-            <a href="@Url.Action("Index", "Dashboard")" class="btn btn-success">
+            <a asp-page="./Login" class="btn btn-success">
                 Go To Dashboard <i class="fas fa-dashboard"></i>
             </a>
         </div>

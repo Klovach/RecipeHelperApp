@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using RecipeHelperApp.Data;
+using RecipeHelperApp.Interfaces;
 using RecipeHelperApp.Models;
-using RecipeHelperApp.Services;
 using RecipeHelperApp.ViewModels;
 
 namespace RecipeHelperApp.Controllers
@@ -139,7 +140,7 @@ namespace RecipeHelperApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DayId,Image,MealType,Name,Description,Instructions,Ingredients,Calories,Protein,Fat,Carbs")] RecipeDTO recipeDTO)
+        public async Task<IActionResult> Create([Bind("Id,DayId,Image,MealType,Name,Description,Instructions,Ingredients,Calories,Protein,Fat,Carbohydrates")] RecipeDTO recipeDTO)
         {
             var recipe = new Recipe
             {
@@ -152,7 +153,7 @@ namespace RecipeHelperApp.Controllers
                 Calories = recipeDTO.Calories,
                 Protein = recipeDTO.Protein,
                 Fat = recipeDTO.Fat,
-                Carbs = recipeDTO.Carbs
+                Carbohydrates = recipeDTO.Carbohydrates
             };
 
             if (recipeDTO.ImageFile != null && recipeDTO.Image != null)
@@ -197,19 +198,29 @@ namespace RecipeHelperApp.Controllers
             }
 
             // Convert Recipe to RecipeDTO
+            // Convert Recipe to RecipeDTO
             var recipeDTO = new RecipeDTO
             {
                 Id = recipe.Id,
                 DayId = recipe.DayId,
+                DeleteFlag = false,
+                Image = recipe.Image,
                 MealType = recipe.MealType,
                 Name = recipe.Name,
+                Servings = recipe.Servings,
                 Description = recipe.Description,
                 Instructions = recipe.Instructions,
                 Ingredients = recipe.Ingredients,
                 Calories = recipe.Calories,
                 Protein = recipe.Protein,
                 Fat = recipe.Fat,
-                Carbs = recipe.Carbs
+                Carbohydrates = recipe.Carbohydrates,
+                ServingSize = recipe.ServingSize,
+                Sodium = recipe.Sodium,
+                Potassium = recipe.Potassium,
+                Cholesterol = recipe.Cholesterol,
+                Fiber = recipe.Fiber,
+                Sugar = recipe.Sugar
             };
 
             ViewData["DayId"] = new SelectList(_context.Days, "Id", "Id", recipe.DayId);
@@ -218,21 +229,29 @@ namespace RecipeHelperApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Generate(int id, [Bind("Id, DayId, MealType,Name,Description,Instructions,Ingredients,Calories,Protein,Fat,Carbs")] RecipeDTO recipeDTO)
+        public async Task<IActionResult> Generate(int id, [Bind("Id, DayId, DeleteFlag, Image, ImageFile, MealType, Name, Description, Instructions, Ingredients, Calories, Protein, Fat, Carbohydrates, Servings, ServingSize, Sodium, Potassium, Cholesterol, Fiber, Sugar")] RecipeDTO recipeDTO)
         {
             var recipe = new Recipe
             {
                 Id = recipeDTO.Id,
                 DayId = recipeDTO.DayId,
                 MealType = recipeDTO.MealType,
+                Image = recipeDTO.Image,
                 Name = recipeDTO.Name,
+                Servings = recipeDTO.Servings,
+                ServingSize = recipeDTO.ServingSize,
                 Description = recipeDTO.Description,
                 Instructions = recipeDTO.Instructions,
                 Ingredients = recipeDTO.Ingredients,
                 Calories = recipeDTO.Calories,
                 Protein = recipeDTO.Protein,
                 Fat = recipeDTO.Fat,
-                Carbs = recipeDTO.Carbs
+                Carbohydrates = recipeDTO.Carbohydrates,
+                Sodium = recipeDTO.Sodium,
+                Potassium = recipeDTO.Potassium,
+                Cholesterol = recipeDTO.Cholesterol,
+                Fiber = recipeDTO.Fiber,
+                Sugar = recipeDTO.Sugar
             };
 
             if (!ModelState.IsValid)
@@ -280,9 +299,12 @@ namespace RecipeHelperApp.Controllers
                     var genRecipe = await _recipeService.GenerateRecipe(nutritionForm, recipe);
 
                     // Update the generated recipe in the database context
-                    _context.Entry(genRecipe).State = EntityState.Modified;
+                    if (genRecipe != null)
+                    {
+                        _context.Entry(genRecipe).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
 
-                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -300,57 +322,8 @@ namespace RecipeHelperApp.Controllers
             }
             // Write a return view to redirect to details page.
 
-            return View(recipe);
+            return View(recipeDTO);
         }
-
-
-
-        /*
-        public async Task<IActionResult> GenerateBackup(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var recipe = await _context.Recipes.FindAsync(id);
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _context.Users.FindAsync(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var nutritionForm = await _context.NutritionForms.FirstOrDefaultAsync(nf => nf.UserId == userId);
-            if (nutritionForm == null)
-            {
-                return NotFound();
-            }
-
-            // Call the CalculateNewValues method
-            await recipe.GenerateRecipe(nutritionForm);
-
-            var day = await _context.Days.FindAsync(recipe.DayId);
-            if (day == null)
-            {
-                return NotFound(); // Return NotFound result if day is not found
-            }
-
-            // Assign the retrieved Day to the recipe result
-            recipe.Day = day;
-
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = recipe.Id });
-        } */
 
 
         // GET: Recipes/Edit/5
@@ -372,16 +345,24 @@ namespace RecipeHelperApp.Controllers
             {
                 Id = recipe.Id,
                 DayId = recipe.DayId,
+                DeleteFlag = false, 
                 Image = recipe.Image,
                 MealType = recipe.MealType,
                 Name = recipe.Name,
+                Servings = recipe.Servings, 
                 Description = recipe.Description,
                 Instructions = recipe.Instructions,
                 Ingredients = recipe.Ingredients,
                 Calories = recipe.Calories,
                 Protein = recipe.Protein,
                 Fat = recipe.Fat,
-                Carbs = recipe.Carbs
+                Carbohydrates = recipe.Carbohydrates,
+                ServingSize = recipe.ServingSize,
+                Sodium = recipe.Sodium,
+                Potassium = recipe.Potassium,
+                Cholesterol = recipe.Cholesterol,
+                Fiber = recipe.Fiber,
+                Sugar = recipe.Sugar
             };
 
             ViewData["DayId"] = new SelectList(_context.Days, "Id", "Id", recipe.DayId);
@@ -394,40 +375,51 @@ namespace RecipeHelperApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, DayId, Image, ImageFile, MealType,Name,Description,Instructions,Ingredients,Calories,Protein,Fat,Carbs")] RecipeDTO recipeDTO)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, DayId, DeleteFlag, Image, ImageFile, MealType, Name, Description, Instructions, Ingredients, Calories, Protein, Fat, Carbohydrates, Servings, ServingSize, Sodium, Potassium, Cholesterol, Fiber, Sugar")] RecipeDTO recipeDTO)
         {
             var recipe = new Recipe
             {
                 Id = recipeDTO.Id,
                 DayId = recipeDTO.DayId,
                 MealType = recipeDTO.MealType,
+                Image = recipeDTO.Image,
                 Name = recipeDTO.Name,
+                Servings = recipeDTO.Servings,
+                ServingSize = recipeDTO.ServingSize,
                 Description = recipeDTO.Description,
                 Instructions = recipeDTO.Instructions,
                 Ingredients = recipeDTO.Ingredients,
                 Calories = recipeDTO.Calories,
                 Protein = recipeDTO.Protein,
                 Fat = recipeDTO.Fat,
-                Carbs = recipeDTO.Carbs
+                Carbohydrates = recipeDTO.Carbohydrates,
+                Sodium = recipeDTO.Sodium,
+                Potassium = recipeDTO.Potassium,
+                Cholesterol = recipeDTO.Cholesterol,
+                Fiber = recipeDTO.Fiber,
+                Sugar = recipeDTO.Sugar
             };
 
-            if (recipeDTO.ImageFile == null)
+            Console.WriteLine("Delete flag was: " + recipeDTO.DeleteFlag);
+            Console.WriteLine("Imagefile was: " + recipeDTO.ImageFile);
+            Console.WriteLine("Image was: " + recipe.Image);
+            if ((recipeDTO.ImageFile == null || recipeDTO.ImageFile.Length == 0) && recipe.Image != null && recipeDTO.DeleteFlag == true)
             {
-                recipe.Image = recipeDTO.Image;
+                Console.WriteLine("Emtered delete");
+                _ = _photoService.DeletePhotoAsync(recipe.Image);    
+                    recipe.Image = null;
+             
             }
 
             if (recipeDTO.ImageFile != null)
             {
+                Console.WriteLine("Image file was not null");
                 var photoResult = await _photoService.AddPhotoAsync(recipeDTO.ImageFile);
 
                 if (photoResult.Error != null)
                 {
                     ModelState.AddModelError("Image", "Photo upload failed: " + photoResult.Error.Message);
                     return View(recipeDTO);
-                }
-                if (!string.IsNullOrEmpty(recipe.Image))
-                {
-                    _ = _photoService.DeletePhotoAsync(recipe.Image);
                 }
                 else
                 {
@@ -506,15 +498,24 @@ namespace RecipeHelperApp.Controllers
             {
                 Id = recipe.Id,
                 DayId = recipe.DayId,
+                DeleteFlag = false,
+                Image = recipe.Image,
                 MealType = recipe.MealType,
                 Name = recipe.Name,
+                Servings = recipe.Servings,
                 Description = recipe.Description,
                 Instructions = recipe.Instructions,
                 Ingredients = recipe.Ingredients,
                 Calories = recipe.Calories,
                 Protein = recipe.Protein,
                 Fat = recipe.Fat,
-                Carbs = recipe.Carbs
+                Carbohydrates = recipe.Carbohydrates,
+                ServingSize = recipe.ServingSize,
+                Sodium = recipe.Sodium,
+                Potassium = recipe.Potassium,
+                Cholesterol = recipe.Cholesterol,
+                Fiber = recipe.Fiber,
+                Sugar = recipe.Sugar
             };
 
             ViewData["DayId"] = new SelectList(_context.Days, "Id", "Id", recipe.DayId);
@@ -524,7 +525,7 @@ namespace RecipeHelperApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reset(int id, [Bind("Id, DayId, MealType,Name,Description,Instructions,Ingredients,Calories,Protein,Fat,Carbs")] RecipeDTO recipeDTO)
+        public async Task<IActionResult> Reset(int id, [Bind("Id, DayId, MealType,Name,Description,Instructions,Ingredients,Calories,Protein,Fat,Carbohydrates")] RecipeDTO recipeDTO)
         {
             var recipe = new Recipe
             {
@@ -538,7 +539,7 @@ namespace RecipeHelperApp.Controllers
                 Calories = 0,
                 Protein = 0,
                 Fat = 0,
-                Carbs = 0
+                Carbohydrates = 0
             };
 
             if (!ModelState.IsValid)

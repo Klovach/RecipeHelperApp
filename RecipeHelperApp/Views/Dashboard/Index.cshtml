@@ -26,13 +26,8 @@
                     <div class="row">
                         <!-- User Profile Section -->
                         <div class="col-md-6">
-                            <br />
-                            <br />
-                            <div class="text-center">
-                                <img class="img-fluid rounded-circle" src="~/theme/img/undraw_profile.svg" alt="User Profile Image" style="width: 100px; height: 100px;">
-                                <h5>@User.FindFirst(ClaimTypes.Name)?.Value</h5>
-                                <hr>
-                                <a asp-area="Identity" asp-page="/Account/Login" class="d-block text-center">Sign in with another account <i class="fas fa-sign-in-alt"></i></a>
+                            <div>
+                                <img src="~/theme/img/undraw_chef_cu-0-r.svg" class="img-fluid" style="width:100%" />
                             </div>
                         </div>
                         <!-- Features Section -->
@@ -64,6 +59,11 @@
                     <h3>Quick Access Menu</h3>
                 </header>
                 <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid rounded-circle" src="~/theme/img/undraw_profile.svg" alt="User Profile Image" style="width: 100px; height: 100px;">
+                        <h5>@User.FindFirst(ClaimTypes.Name)?.Value</h5>
+                        <hr />         
+                    </div>
                     <div class="btn-group-vertical btn-block" role="group">
                         <a asp-controller="Weeks" asp-action="Index" class="btn btn-outline-success mb-2"><i class="fas fa-utensils"></i> Meal Planner</a>
                         <a asp-controller="NutritionForms" asp-action="Index" class="btn btn-outline-success mb-2"><i class="fas fa-apple-alt"></i> Nutrition Form</a>

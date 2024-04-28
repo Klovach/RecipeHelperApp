@@ -10,6 +10,8 @@ namespace RecipeHelperApp.ViewModels
         public int Id { get; set; }
         public int DayId { get; set; }
         public IFormFile? ImageFile { get; set; }
+        public bool DeleteFlag { get; set; }
+
         public string? Image { get; set; }
         public string MealType { get; set; }
         public string? Name { get; set; }
@@ -18,13 +20,18 @@ namespace RecipeHelperApp.ViewModels
         public string? Ingredients { get; set; }
 
         // Nutritional Facts
+        public int Servings { get; set; }
         public double Calories { get; set; }
         public double Protein { get; set; }
         public double Fat { get; set; }
-        public double Carbs { get; set; }
+        public double Carbohydrates { get; set; }
 
-        // Userr
-
+        public double ServingSize { get; set; }
+        public double Sodium { get; set; }
+        public double Potassium { get; set; }
+        public double Cholesterol { get; set; }
+        public double Fiber { get; set; }
+        public double Sugar { get; set; }
 
     }
 }

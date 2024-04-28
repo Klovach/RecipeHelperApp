@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using RecipeHelperApp.Data;
 using RecipeHelperApp.Data.Migrations;
+using RecipeHelperApp.Interfaces;
 using RecipeHelperApp.Models;
 using RecipeHelperApp.Services;
 
@@ -18,21 +20,21 @@ namespace RecipeHelperApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IRecipeGenerator _recipeService;
         private readonly ILogger<DaysController> _logger;
+        private readonly IPhotoService _photoService;
 
-        public DaysController(ApplicationDbContext context, IRecipeGenerator recipeService, ILogger<DaysController> logger)
+        public DaysController(ApplicationDbContext context, IPhotoService photoService, IRecipeGenerator recipeService, ILogger<DaysController> logger)
         {
+            _photoService = photoService; 
             _context = context;
             _recipeService = recipeService;
             _logger = logger;
         }
 
 
-        // GET: Days
         public async Task<IActionResult> Index(int? weekId, int? dayId)
         {
             if (weekId != null)
             {
-                // Retrieve days associated with the provided weekId
                 var days = await _context.Days
                                          .Include(d => d.Week)
                                          .Include(d => d.Recipes)
@@ -48,7 +50,6 @@ namespace RecipeHelperApp.Controllers
             }
             else if (dayId != null)
             {
-                // Get week id from day:
                 var dayModel = await _context.Days
                              .Include(d => d.Week)
                              .Include(d => d.Recipes)
@@ -86,8 +87,6 @@ namespace RecipeHelperApp.Controllers
             }
         }
 
-
-            // GET: Days/Details/5
             public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -105,16 +104,14 @@ namespace RecipeHelperApp.Controllers
             return RedirectToAction("Index", "Recipes", new { dayId = day.Id });
         }
 
-        // GET: Days/Create
+
         public IActionResult Create()
         {
             ViewData["WeekId"] = new SelectList(_context.Weeks, "Id", "UserId");
             return View();
         }
 
-        // POST: Days/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,WeekId,WeekDay,TotalCalories,TotalProtein,TotalFat,TotalCarbs")] Day day)
@@ -289,7 +286,10 @@ namespace RecipeHelperApp.Controllers
 
             foreach (var recipe in recipes)
             {
-
+                if (recipe.Image != null)
+                {
+                    _ = _photoService.DeletePhotoAsync(recipe.Image);
+                }
                 recipe.ResetValues();
             }
 
@@ -321,6 +321,7 @@ namespace RecipeHelperApp.Controllers
 
             return View(day);
         }
+
 
 
         // POST: Days/Delete/5

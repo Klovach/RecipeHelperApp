@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.DotNet.Scaffolding.Shared.Project;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
@@ -15,9 +16,11 @@ namespace RecipeHelperApp.Models
         public int Id { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
+        public bool IncludeServings {  get; set; }
         public bool IncludeNutrition { get; set; }
         public bool IncludeIngredients { get; set; }
         public bool ExcludeIngredients { get; set; }
+        public int Servings { get; set; }
         public string? IncludedIngredients { get; set; }
         public string? ExcludedIngredients { get; set; }
         public string NutrientsJson
@@ -56,7 +59,7 @@ namespace RecipeHelperApp.Models
             ExcludeIngredients = false;
             IncludedIngredients = null;
             ExcludedIngredients = null;
-            Nutrients.Carbs = 0;
+            Nutrients.Carbohydrates = 0;
             Nutrients.Protein = 0;
             Nutrients.Calories = 0;
             Nutrients.Fat = 0;

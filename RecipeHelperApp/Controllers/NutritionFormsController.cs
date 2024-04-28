@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using RecipeHelperApp.Data;
 using RecipeHelperApp.Data.Migrations;
+using RecipeHelperApp.Interfaces;
 using RecipeHelperApp.Models;
 using RecipeHelperApp.ViewModels;
 
@@ -20,7 +21,6 @@ namespace RecipeHelperApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<NutritionFormsController> _logger;
-
         public NutritionFormsController(ApplicationDbContext context, ILogger<NutritionFormsController> logger)
         {
             _context = context;
@@ -52,17 +52,21 @@ namespace RecipeHelperApp.Controllers
             {
                 Id = nutritionForm.Id,
                 UserId = nutritionForm.UserId,
+                IncludeServings = nutritionForm.IncludeServings,
                 IncludeNutrition = nutritionForm.IncludeNutrition,
                 IncludeIngredients = nutritionForm.IncludeIngredients,
+                Servings = nutritionForm.Servings,
                 ExcludeIngredients = nutritionForm.ExcludeIngredients,
                 IncludedIngredients = nutritionForm.IncludedIngredients,
                 ExcludedIngredients = nutritionForm.ExcludedIngredients,
                 Nutrients = nutritionForm.Nutrients,
+                Sex = user.Sex,
+                Age = user.GetAge(),
+                Height = user.Height,
                 Weight = user.Weight,
                 ActivityLevel = user.ActivityLevel,
                 FitnessGoal = user.FitnessGoal,
-                TargetWeight = user.TargetWeight,
-                TargetWeightDate = user.TargetWeightDate
+                PoundsPerWeek = user.PoundsPerWeek
             };
 
             return View(nutritionFormDTO);
@@ -105,8 +109,7 @@ namespace RecipeHelperApp.Controllers
                 Weight = user.Weight,
                 ActivityLevel = user.ActivityLevel,
                 FitnessGoal = user.FitnessGoal,
-                TargetWeight = user.TargetWeight,
-                TargetWeightDate = user.TargetWeightDate
+                PoundsPerWeek = user.PoundsPerWeek
             };
 
             return View(nutritionFormDTO);
@@ -162,17 +165,21 @@ namespace RecipeHelperApp.Controllers
             {
                 Id = nutritionForm.Id,
                 UserId = nutritionForm.UserId,
+                IncludeServings = nutritionForm.IncludeServings,
                 IncludeNutrition = nutritionForm.IncludeNutrition,
                 IncludeIngredients = nutritionForm.IncludeIngredients,
+                Servings = nutritionForm.Servings, 
                 ExcludeIngredients = nutritionForm.ExcludeIngredients,
                 IncludedIngredients = nutritionForm.IncludedIngredients,
                 ExcludedIngredients = nutritionForm.ExcludedIngredients,
                 Nutrients = nutritionForm.Nutrients,
+                Sex = user.Sex,
+                Age = user.GetAge(),
+                Height = user.Height, 
                 Weight = user.Weight,
                 ActivityLevel = user.ActivityLevel,
                 FitnessGoal = user.FitnessGoal,
-                TargetWeight = user.TargetWeight,
-                TargetWeightDate = user.TargetWeightDate
+                PoundsPerWeek = user.PoundsPerWeek
             };
 
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", nutritionForm.UserId);
@@ -184,11 +191,20 @@ namespace RecipeHelperApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,IncludeNutrition,IncludeIngredients,ExcludeIngredients,IncludedIngredients,ExcludedIngredients,Nutrients, Weight, TargetWeight, TargetWeightDate, ActivityLevel, FitnessGoal")] NutritionFormDTO nutritionFormDTO)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId, IncludeServings, IncludeNutrition, Servings, IncludeIngredients,ExcludeIngredients,IncludedIngredients,ExcludedIngredients,Nutrients, Weight, Sex, Age, ActivityLevel, FitnessGoal, PoundsPerWeek")] NutritionFormDTO nutritionFormDTO)
         {
             if (!ModelState.IsValid)
             {
-                // If ModelState is not valid, return the view with the validation errors
+                // If ModelState is not valid, log validation errors and return the view with the validation errors
+                foreach (var key in ModelState.Keys)
+                {
+                    var errors = ModelState[key].Errors;
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"Validation error for {key}: {error.ErrorMessage}");
+                    }
+                }
+
                 return View(nutritionFormDTO);
             }
 
@@ -204,14 +220,16 @@ namespace RecipeHelperApp.Controllers
                 user.Weight = nutritionFormDTO.Weight;
                 user.ActivityLevel = nutritionFormDTO.ActivityLevel;
                 user.FitnessGoal = nutritionFormDTO.FitnessGoal;
-                user.TargetWeight = nutritionFormDTO.TargetWeight;
-                user.TargetWeightDate = nutritionFormDTO.TargetWeightDate;
+                user.PoundsPerWeek = nutritionFormDTO.PoundsPerWeek;
+         
 
                 // Update NutritionForm properties
                 var nutritionForm = new Models.NutritionForm
                 {
                     Id = nutritionFormDTO.Id,
                     UserId = nutritionFormDTO.UserId,
+                    Servings = nutritionFormDTO.Servings,
+                    IncludeServings = nutritionFormDTO.IncludeServings,
                     IncludeNutrition = nutritionFormDTO.IncludeNutrition,
                     IncludeIngredients = nutritionFormDTO.IncludeIngredients,
                     ExcludeIngredients = nutritionFormDTO.ExcludeIngredients,

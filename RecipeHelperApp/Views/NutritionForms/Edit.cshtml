@@ -13,6 +13,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="Sex" />
+            <input type="hidden" asp-for="Height" />
+            <input type="hidden" asp-for="Age" />
+
     
             <!-- NUTRITIONAL CHECKS -->
             <div class="col-md-6">
@@ -30,6 +34,22 @@
                             <br />
                             <i>By checking "include nutrition", you are using your nutritional data when generating your meals.</i>
                         </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" asp-for="IncludeServings" id="includeServingsCheckbox">
+                            <label asp-for="IncludeServings" class="control-label" for="includeServingsCheckbox">
+                                Specify Number of Servings
+                                <span class="checkmark"></span>
+                            </label>
+                            <select asp-for="Servings" class="form-control" id="servingsSelect" name="Servings">
+                                <option value="1">1 serving</option>
+                                <option value="2">2 servings</option>
+                                <option value="3">3 servings</option>
+                                <option value="4">4 servings</option>
+                            </select>
+                            <span asp-validation-for="Servings" class="text-danger"></span>
+                        </div>
+
 
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" asp-for="IncludeIngredients" id="includeIngredientsCheckbox">
@@ -76,9 +96,9 @@
                 <span asp-validation-for="Nutrients.Protein" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Nutrients.Carbs" class="control-label"></label>
-                 <input type="number" asp-for="Nutrients.Carbs" class="form-control" />
-                <span asp-validation-for="Nutrients.Carbs" class="text-danger"></span>
+                <label asp-for="Nutrients.Carbohydrates" class="control-label"></label>
+                 <input type="number" asp-for="Nutrients.Carbohydrates" class="form-control" />
+                <span asp-validation-for="Nutrients.Carbohydrates" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nutrients.Fat" class="control-label"></label>
@@ -128,17 +148,17 @@
                 <span asp-validation-for="FitnessGoal" class="text-danger"></span>
             </div>
 
-            <div class="form-floating mb-3">
-                <label asp-for="TargetWeight">Target Weight (lbs)</label>
-                <input type="number" asp-for="TargetWeight" class="form-control" autocomplete="off" />
-                <span asp-validation-for="TargetWeight" class="text-danger"></span>
-            </div>
+                        <div class="form-floating mb-3">
+                            <label asp-for="PoundsPerWeek">Pounds Per Week</label>
+                            <select id="poundsPerWeek" asp-for="PoundsPerWeek" class="form-control" aria-required="true">
+                                <option value="0.5">Relaxed (0.5 lbs per week)</option>
+                                <option value="1">Moderate (1 lbs per week)</option>
+                                <option value="2">Intense (2 lbs per week)</option>
+                            </select>
+                            <span asp-validation-for="PoundsPerWeek" class="text-danger"></span>
+                        </div>
 
-            <div class="form-floating mb-3">
-                <label asp-for="TargetWeightDate">Target Weight Date</label>
-                <input type="date" asp-for="TargetWeightDate" class="form-control" autocomplete="off" />
-                <span asp-validation-for="TargetWeightDate" class="text-danger"></span>
-            </div>
+
             </div>
                     </div>
 

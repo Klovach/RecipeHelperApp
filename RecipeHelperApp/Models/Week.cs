@@ -15,7 +15,6 @@ namespace RecipeHelperApp.Models
         public Week()
         {
             Days = new List<Day>();
-            // InitializeDays();
         }
         public Week(string weekName)
         {

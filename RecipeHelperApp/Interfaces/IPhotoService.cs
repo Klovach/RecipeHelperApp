@@ -1,6 +1,6 @@
 ﻿using CloudinaryDotNet.Actions;
 
-namespace RecipeHelperApp.Services
+namespace RecipeHelperApp.Interfaces
 {
     //IPhotoService 
     public interface IPhotoService

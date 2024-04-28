@@ -57,10 +57,10 @@ namespace RecipeHelperApp.Models
 
             foreach (var recipe in Recipes)
             {
-                TotalCalories += recipe.Calories;
-                TotalProtein += recipe.Protein;
-                TotalFat += recipe.Fat;
-                TotalCarbs += recipe.Carbs;
+                TotalCalories += Math.Ceiling(recipe.Calories);
+                TotalProtein += Math.Ceiling(recipe.Protein);
+                TotalFat += Math.Ceiling(recipe.Fat);
+                TotalCarbs += Math.Ceiling(recipe.Carbohydrates);
             }
         }
 
@@ -75,42 +75,6 @@ namespace RecipeHelperApp.Models
                 Recipes.Add(recipeTemplate);
             }
         }
-
-        // To alter existing elements in the list, it is wise here to remove them and then add 
-        // the newly generated recipes. 
-
-        /* public async Task GenerateRecipes(NutritionForm nutritionForm)
-        {
-            string[] recipeList = { "Breakfast", "Lunch", "Dinner", "Snack" };
-
-            // Clear existing recipes.
-            Recipes.Clear();
-
-            // Initialize and add new recipes.
-            foreach (var meal in recipeList)
-            {
-                Recipe recipeTemplate = new Recipe(meal);
-                await recipeTemplate.GenerateRecipe(nutritionForm);   
-                Recipes.Add(recipeTemplate);
-            }
-        }
-
-
-        public void ResetRecipes()
-        {
-            Console.WriteLine("Called reset Recipes");
-            string[] recipeList = { "Breakfast", "Lunch", "Dinner", "Snack" };
-
-            Recipes.Clear();
-
-            // Initialize and add new recipes
-            foreach (var meal in recipeList)
-            {
-                Recipe recipeTemplate = new Recipe(meal);
-                Recipes.Add(recipeTemplate);
-            }
-        } 
-    } */
     }
 }
     
