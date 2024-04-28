@@ -7,11 +7,11 @@
 MealMaven is a meal planning application that generates recipes and images with the power of AI, with nutritional data and requirements estimated based upon a user’s dietary needs and preferences. This application is hosted in a cloud computing platform known as Azure, which means you can access and use this application from anywhere. The project’s objective is to provide users with a means to easily generate ideas for meals that fit within their tastes and needs and demonstrate technical skill. 
 
 ## Table of Contents
-1. [Functional Overview](#FunctionalOverview)
-2. [Prerequisites](#Prerequisites)
-3. [Access](#Access)
-4. [TechnicalDesign](#technicaldesign)
-5. [Physical Design](#physicaldesign)
+1. [Functional Overview](#functional-overview)
+2. [Prerequisites](#prerequisites)
+3. [Access](#accessing-the-application)
+4. [Technical Design](#technical-design-decisions)
+5. [Physical Design](#physical-design)
 
 ## Functional Overview
 Here's a rundown of everything MealMaven can do. In a recipe management application that includes and utilizes nutritional data, content should be easily generated and edited without the necessitation of a multitude of menus. MealMaven aims to excel where other applications fail in their user interface by ensuring users can begin generating recipes in as few as possible clicks unless they specify that they would like greater control over the content generated. Users will sign up and disclose their sex, current weight and height, and nutritional goal, and the information will be utilized to generate the recommended macronutrients for that user so they can proceed to adding recipes that align with their goals to their meal plans immediately. 
