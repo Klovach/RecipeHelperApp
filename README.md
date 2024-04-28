@@ -112,21 +112,21 @@ graph TD
     Login --> Dashboard
     Register --> Login
     Dashboard <--> Weeks
-    Weeks -->|Create| WeeksCreate[Create Week]
-    Weeks -->|Edit| WeeksEdit[Edit Week]
-    Weeks -->|Delete| WeeksDelete[Delete Week]
-    Weeks <---->Days 
-    Days -->|Create| DaysCreate[Create Day]
-    Days -->|Edit| DaysEdit[Edit Day]
-    Days -->|Delete| DaysDelete[Delete Day]
-    Days --> DayReset[Reset Day]
-    Days --> DayGenerate[Generate Day]
+    Weeks <-->|Create| WeeksCreate[Create Week]
+    Weeks <-->|Edit| WeeksEdit[Edit Week]
+    Weeks <-->|Delete| WeeksDelete[Delete Week]
+    Weeks <----> Days 
+    Days <-->|Create| DaysCreate[Create Day]
+    Days <-->|Edit| DaysEdit[Edit Day]
+    Days <-->|Delete| DaysDelete[Delete Day]
+    Days <--> DayReset[Reset Day]
+    Days <--> DayGenerate[Generate Day]
     Days <-----> Recipes
-    Recipes -->|Create| RecipeCreate[Create Recipe]
-    Recipes -->|Edit| RecipeEdit[Edit Recipe]
-    Recipes -->|Delete| RecipeDelete[Delete Recipe]
-    Recipes --> RecipeReset[Reset Recipe]
-    Recipes --> RecipeGenerate[Generate Recipe]
+    Recipes <-->|Create| RecipeCreate[Create Recipe]
+    Recipes <-->|Edit| RecipeEdit[Edit Recipe]
+    Recipes <-->|Delete| RecipeDelete[Delete Recipe]
+    Recipes <--> RecipeReset[Reset Recipe]
+    Recipes <--> RecipeGenerate[Generate Recipe]
 ```
 
 This project uses the following approach:
