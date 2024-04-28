@@ -8,13 +8,17 @@ MealMaven is a meal planning application that generates recipes and images with 
 
 ## Table of Contents
 1. [Functional Overview](#functional-overview)
-2. [Prerequisites](#prerequisites)
-3. [Access](#accessing-the-application)
-4. [Technical Design](#technical-design-decisions)
-5. [Physical Design](#physical-design)
+2. [Running and Accessing the ASP.NET Core Project](#running-and-accessing-the-asp.net-core-project)
+3. [Technical Design](#technical-design-decisions)
+4. [Physical Design](#physical-design)
+5. [User Experience & Interface Design](#user-experience-design)
 
 ## Functional Overview
 Here's a rundown of everything MealMaven can do. In a recipe management application that includes and utilizes nutritional data, content should be easily generated and edited without the necessitation of a multitude of menus. MealMaven aims to excel where other applications fail in their user interface by ensuring users can begin generating recipes in as few as possible clicks unless they specify that they would like greater control over the content generated. Users will sign up and disclose their sex, current weight and height, and nutritional goal, and the information will be utilized to generate the recommended macronutrients for that user so they can proceed to adding recipes that align with their goals to their meal plans immediately. 
+
+## Running and Accessing the ASP.NET Core Project
+
+To run and access the ASP.NET Core project locally, follow the steps outlined below: 
 
 ### Prerequisites
 
@@ -31,6 +35,8 @@ Once the application is running, you can access it using a web browser:
 - **Local Access**: Open your web browser and navigate to [http://localhost:44370](http://localhost:44370) or click IIS Express within Visual Studio 2022 to view the application.
 - **Access Online**: You may visit the application online in Azure by going to the application URL in Azure App Service.
 
+- 
+
 | Summary of Features       | Description                                                                       |
 |---------------|-------------------------------------------|
 | Recipe Management     | Generate recipes and their images and edit, read, and reset recipe slots.                 |
@@ -42,6 +48,19 @@ Once the application is running, you can access it using a web browser:
 
 
 ## Technical Design Decisions
+
+### Core Technologies & Tools 
+| Category    | Technology/Tool      | Name/Version | Justification                                                                                                   |
+|-------------|-----------------------|--------------|-----------------------------------------------------------------------------------------------------------------|
+| Language    | C#, JavaScript, HTML, CSS, SQL | 8.0, ES6, 5, 4.15, 16.0 | Core languages and markup for application development and interactivity.                                       |
+| Framework           | ASP.NET Core | 8.0   | Core framework for cross-platform development |
+| Styling Frameworks & Libraries | Bootstrap, Chart.js | 4.1, -| CSS framework for styling, and JavaScript library for charts. |
+| Object-Relational Mapper | Entity Framework Core      | 6.0          | Facilitates object-oriented data handling, reducing reliance on raw SQL queries.                       |
+| IDE         | Microsoft Visual Studio | Platform 2022 | Primary integrated development environment for comprehensive .NET development.                                   |
+| Cloud Computing Platform       | Microsoft Azure       | -            | Hosting, deployment, and scaling for MySQL database and web application, secure key storage.                   |
+| Data Storage| MySQL                 | -            | Primary relational database for storing application data.                                                        |
+
+### Application Programming Interfaces (APIs) 
 | API           | Model/Version (IF Applicable)           | Justification                                                          |
 |---------------|-----------------|-------------------------------------------------------------------------|
 | OpenAI API    |         GPT-3, DALL-E       | Content generation                                                     |
@@ -49,13 +68,6 @@ Once the application is running, you can access it using a web browser:
 | Cloudinary    |        -        | Storing and retrieving images                                           |
 | Sendgrid      |         -       | Sending emails to users                                                 |
 | Twilio        |          -      | Sending text messages to users                                           |
-
-## List of APIs 
-| APIs | OpenAI API, Nutrition Ninja, Cloudinary, Sendgrid, Twilio | GPT-3 & Dall-E,- ,- , -| For content generation, acquiring nutritional data from ingredients, storing and retrieving images, sending emails to users, and sending text messages to users |
-
-## Running and Accessing the ASP.NET Core Project
-
-To run and access the ASP.NET Core project locally, follow the steps outlined below: 
 
 
 ## Logical Solution & Design Objectives 
