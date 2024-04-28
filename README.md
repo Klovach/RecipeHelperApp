@@ -6,6 +6,9 @@
 ### Overview & Abstract 
 MealMaven is a meal planning application that generates recipes and images with the power of AI, with nutritional data and requirements estimated based upon a user’s dietary needs and preferences. This application is hosted in a cloud computing platform known as Azure, which means you can access and use this application from anywhere. The project’s objective is to provide users with a means to easily generate ideas for meals that fit within their tastes and needs and demonstrate technical skill. 
 
+> [!IMPORTANT]
+> This application's name has been changed from RecipeHelper to MealMaven. In the coming weeks, this repository's name will be changed
+
 ## Table of Contents
 1. [Functional Overview](#functional-overview)
 2. [Running and Accessing the ASP.NET Core Project](#running-and-accessing-the-aspnet-core-project)
@@ -22,7 +25,7 @@ To run and access the ASP.NET Core project locally, follow the steps outlined be
 
 ### Prerequisites
 
-1. **Install .NET Core SDK**: Ensure that you have [.NET Core SDK 8.0](https://dotnet.microsoft.com/download) installed on your machine. You can verify the installation by running `dotnet --version` in your terminal or command prompt. It is advised that you use Visual Studio 2022 when working with MealMaven and other ASP.NET Core applications. 
+1. **Install .NET Core SDK**: Ensure that you have [.NET Core SDK 8.0](https://dotnet.microsoft.com/download) installed on your machine. You can verify the installation by running `dotnet --version` in your terminal or command prompt. It is advised that you use Visual Studio 2022 when working with MealMaven and other ASP.NET Core applications. It is highly recommended to utilize Visual Studio 2022 to open and launch this project. 
 
 2. **Clone the Repository**: Clone the project repository from GitHub to your local machine using the following command. Bear in mind that MealMaven will be changing its repository name from RecipeHelperApp to MealMaven. You may follow this repository to see this change. For now, to clone the repository, use the current repository name:
    ```bash
